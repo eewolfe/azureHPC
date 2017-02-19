@@ -64,12 +64,12 @@ _The OS for this solution is CentOS 7.2. All scripts have been tested only for t
 ## Deploying using Azure CLI
 Azure CLI 2.0 preview setup instruction can be found [here](https://docs.microsoft.com/en-us/cli/azure/install-az-cli2)
 
-Below is an example on how to provision the templates. First you have to login with your credentials. If you have several subscriptions, make sure to make the one you want to deploy in the default. Then create a resource group providing the region and a name for it, and finally invoke the template passing your local parameter file. In the template URI make sure to use the RAW URI https://raw.githubusercontent.com/grandparoach/azure-hpc/master/*** and not the github HTML link.
+Below is an example on how to provision the templates. First you have to login with your credentials. If you have several subscriptions, make sure to make the one you want to deploy in the default. Then create a resource group providing the region and a name for it, and finally invoke the template passing your local parameter file. In the template URI make sure to use the RAW URI https://raw.githubusercontent.com/grandparoach/azure-hpc/existingVNet/*** and not the github HTML link.
 
     az login
     az account set --subscription [subscriptionId]
     az resource group create -l "West Europe" -n rg-master
-    az resource group deployment create -g rg-master --template-uri https://raw.githubusercontent.com/grandparoach/azure-hpc/master/Compute-Grid-Infra/deploy-master.json --parameters @myparams.json
+    az resource group deployment create -g rg-master --template-uri https://raw.githubusercontent.com/grandparoach/azure-hpc/existingVNet/Compute-Grid-Infra/deploy-master.json --parameters @myparams.json
 
 
 
@@ -86,7 +86,7 @@ You have to provide these parameters to the template :
 * _adminPassword_ : Password to associate to the administrator account. It is highly encourage to use SSH authentication and passwordless instead.
 * _sshKeyData_ : The public SSH key to associate with the administrator user. Format has to be on a single line 'ssh-rsa key'
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2Fmaster%2FCompute-Grid-Infra%2Fdeploy-master.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FexistingVNet%2FCompute-Grid-Infra%2Fdeploy-master.json)  
 
 ### Check your deployment
 Once the deployment succeed, use the output **masterFQDN** to retrieve the master name and SSH on it. The output **GangliaURI** contains the URI of the Ganglia monitoring page, which should display after few minutes graphs of the current load.
@@ -121,7 +121,7 @@ You have to provide these parameters to the template :
 * _nbMetaDisks_ : Number of data disks to be attached to a single VM. Min is 2, Max is 8, Default is **2**.
 * _customDomain_ : If the VNET is configure to use a custom domain, specify the name of this custom domain to be used
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2Fmaster%2FCompute-Grid-Infra%2FBeeGFS%2Fdeploy-beegfs-vmss.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FexistingVNet%2FCompute-Grid-Infra%2FBeeGFS%2Fdeploy-beegfs-vmss.json)  
 
 ### Check your deployment
 Storage nodes will be named _beegfs000000 beegfs000001 ..._ .
