@@ -19,10 +19,19 @@ while getopts :a:k:u:t:p optname; do
   esac
 done
 
+ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
+ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
+
+wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
+
+rpm -ivh epel-release-7-9.noarch.rpm
+yum install -y -q nfs-utils nfs-utils-lib sshpass nmap htop
+yum groupinstall -y "X Window System"
+
 # Shares
 SHARE_HOME=/share/home
 SHARE_SCRATCH=/share/scratch
-SHARE_APPS=/share/apps
+SHARE_DATA=/share/data
 
 # User
 HPC_USER=hpcuser
@@ -36,10 +45,47 @@ setup_disks()
 {
     mkdir -p $SHARE_HOME
     mkdir -p $SHARE_SCRATCH
-	mkdir -p $SHARE_APPS
+	mkdir -p $SHARE_DATA
 
-	chown $HPC_USER:$HPC_GROUP $SHARE_APPS
+	chown $HPC_USER:$HPC_GROUP $SHARE_DATA
+    echo "*               hard    memlock         unlimited" >> /etc/security/limits.conf
+    echo "*               soft    memlock         unlimited" >> /etc/security/limits.conf
+
+
+# Partitions all data disks attached to the VM and creates
+# a RAID-0 volume with them.
+#
+
+    mountPoint=$SHARE_DATA
+    createdPartitions=""
+
+    # Loop through and partition disks until not found
+    for disk in sdc sdd sde sdf sdg sdh sdi sdj sdk sdl sdm sdn sdo sdp sdq sdr; do
+        fdisk -l /dev/$disk || break
+        fdisk /dev/$disk << EOF
+n
+p
+1
+
+
+t
+fd
+w
+EOF
+        createdPartitions="$createdPartitions /dev/${disk}1"
+    done
+
+    # Create RAID-0 volume
+    if [ -n "$createdPartitions" ]; then
+        devices=`echo $createdPartitions | wc -w`
+        mdadm --create /dev/md10 --level 0 --raid-devices $devices $createdPartitions
+        mkfs -t ext4 /dev/md10
+        echo "/dev/md10 $mountPoint ext4 defaults,nofail 0 2" >> /etc/fstab
+        mount /dev/md10
+    fi
+
 }
+
 
 setup_user()
 {
@@ -85,13 +131,18 @@ mount_nfs()
 {
 	log "install NFS"
 
-	yum -y install nfs-utils nfs-utils-lib
-
-    echo "$SHARE_HOME    *(rw,async)" >> /etc/exports
-    systemctl enable rpcbind || echo "Already enabled"
-    systemctl enable nfs-server || echo "Already enabled"
-    systemctl start rpcbind || echo "Already enabled"
-    systemctl start nfs-server || echo "Already enabled"
+echo "$SHARE_DATA $localip.*(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
+echo "$SHARE_HOME $localip.*(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
+chmod -R 777 $SHARE_DATA
+systemctl enable rpcbind
+systemctl enable nfs-server
+systemctl enable nfs-lock
+systemctl enable nfs-idmap
+systemctl start rpcbind
+systemctl start nfs-server
+systemctl start nfs-lock
+systemctl start nfs-idmap
+systemctl restart nfs-server
 		
 }
 
