@@ -73,10 +73,7 @@
               }
             }
           }
-        ],
-        "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSettings').nsgName)]"
-        }
+        ]
       }
     }
   ],
