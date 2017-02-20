@@ -90,7 +90,7 @@
     },
     "existingVNetResourceGroup": {
       "type": "string",
-      "defaultValue": "",
+       "defaultValue": "",
       "metadata": {
         "description": "name of Resource Group for existing Virtual Network"
       }
@@ -137,7 +137,7 @@
       "publicIPDomainName": "[variables('namingInfix')]",
       "sharedStorage": "[parameters('sharedStorage')]",
       "scheduler": "[parameters('scheduler')]",
-      "dataDiskSize": "[parameters('scheduler')]"
+      "dataDiskSize": "[parameters('dataDiskSize')]"
     },
     "masterOSSettings": {
       "osType": "[variables('osTypes')[parameters('masterImage')]]",
