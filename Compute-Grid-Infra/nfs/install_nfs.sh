@@ -51,10 +51,19 @@ EOF
     
     sleep 10
 
-	mkfs -t $filesystem $createdPartitions
-	echo "$createdPartitions $mountPoint $filesystem defaults,nofail 0 2" >> /etc/fstab
+# Create RAID-0 volume
+    if [ -n "$createdPartitions" ]; then
+        devices=`echo $createdPartitions | wc -w`
+        mdadm --create /dev/md10 --level 0 --raid-devices $devices $createdPartitions
+        mkfs -t ext4 /dev/md10
+        echo "/dev/md10 $mountPoint ext4 defaults,nofail 0 2" >> /etc/fstab
+        mount /dev/md10
+    fi
+
+#	mkfs -t $filesystem $createdPartitions
+#	echo "$createdPartitions $mountPoint $filesystem defaults,nofail 0 2" >> /etc/fstab
 	
-	mount $createdPartitions
+#	mount $createdPartitions
 }
 
 setup_disks()
