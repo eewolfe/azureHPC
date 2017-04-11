@@ -36,15 +36,15 @@
       },
       "P10": {
         "size": 128,
-        "nbDisk": 4 
+        "nbDisk": 8 
       },
       "P20": {
         "size": 512,
-        "nbDisk": 1
+        "nbDisk": 8
       },
       "P30": {
         "size": 1023,
-        "nbDisk": 1
+        "nbDisk": 8
       }
     },
     "nbDataDisks": "[variables('PremiumStorageMap')[parameters('masterSettings').dataDiskSize].nbDisk]",
@@ -68,6 +68,26 @@
       {
         "diskSizeGB": "[variables('diskSize')]",
         "lun": "3",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "4",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "5",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "6",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "7",
         "createOption": "Empty"
       }
     ],
