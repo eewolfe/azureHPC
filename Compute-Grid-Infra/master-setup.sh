@@ -23,7 +23,6 @@ done
 SHARE_HOME=/shared/home
 SHARE_SCRATCH=/shared/scratch
 SHARE_APPS=/shared/apps
-SHARE_DATA=/shared/data 
 
 # User
 HPC_USER=hpcuser
@@ -35,10 +34,10 @@ MASTER_NAME=`hostname`
 
 setup_disks()
 {
+    mkdir -p /shared
     mkdir -p $SHARE_HOME
     mkdir -p $SHARE_SCRATCH
 	mkdir -p $SHARE_APPS
-    mkdir -p $SHARE_DATA
 }
 
 setup_user()
