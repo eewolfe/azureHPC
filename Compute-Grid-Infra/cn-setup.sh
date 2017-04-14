@@ -2,10 +2,10 @@
 export MOUNT_POINT=/mnt/azure
 
 # Shares
-SHARE_HOME=/share/home
-SHARE_SCRATCH=/share/scratch
-NFS_ON_MASTER=/data
-NFS_MOUNT=/data
+SHARE_HOME=/shared/home
+SHARE_SCRATCH=/shared/scratch
+NFS_ON_MASTER=/shared/data
+NFS_MOUNT=/shared/data
 
 # User
 HPC_USER=hpcuser
@@ -19,9 +19,9 @@ log()
 	echo "$1"
 }
 
-usage() { echo "Usage: $0 [-a <azure storage account>] [-k <azure storage key>] [-m <masterName>] [-s <pbspro>] [-S <beegfs, nfsonmaster>]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-a <azure storage account>] [-k <azure storage key>] [-m <masterName>] [-s <pbspro>] [-S <beegfs, nfsonmaster>] [-n <numberofusers>]" 1>&2; exit 1; }
 
-while getopts :a:k:m:S:s: optname; do
+while getopts :a:k:m:S:s:n: optname; do
   log "Option $optname set with value ${OPTARG}"
   
   case $optname in
@@ -40,6 +40,9 @@ while getopts :a:k:m:S:s: optname; do
     s)  # Scheduler (pbspro)
 		export SCHEDULER=${OPTARG}
 		;;
+    n)  # number of users
+		export numusers=${OPTARG}
+		;;    
 	*)
 		usage
 		;;
@@ -82,7 +85,7 @@ install_lsf()
 install_applications()
 {
 	log "install applications"		
-	/apps/Azure/deployment.pex /apps/Azure/plays/setup_software.yml
+	bash spi_p3_client.sh ${numusers} 
 }
 
 mount_nfs()
@@ -154,7 +157,7 @@ setenforce permissive
 #install_azure_cli
 #install_azure_files
 #install_lsf
-#install_applications
+
 setup_user
 install_ganglia
 
@@ -167,6 +170,8 @@ if [ "$SHARED_STORAGE" == "beegfs" ]; then
 elif [ "$SHARED_STORAGE" == "nfsonmaster" ]; then
 	mount_nfs
 fi
+
+install_applications
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
