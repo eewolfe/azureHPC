@@ -9,7 +9,7 @@ if [[ $(id -u) -ne 0 ]] ; then
 fi
 
 # Shares
-NFS_DATA=/data
+NFS_DATA=/shared/data
 
 # User
 HPC_USER=hpcuser
