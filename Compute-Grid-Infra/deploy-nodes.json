@@ -137,6 +137,12 @@
       "metadata": {
         "description": "Name of master VM name"
       }
+    },
+    "numberofusers": {
+      "type": "string",
+      "metadata": {
+        "description": "Number of user IDs to provision"
+      }
     }
   },
   "variables": {
@@ -151,7 +157,8 @@
       "MasterName": "[parameters('masterName')]",
       "storageAccountType": "Standard_LRS",
       "sharedStorage": "[parameters('sharedStorage')]",
-      "scheduler": "[parameters('scheduler')]"
+      "scheduler": "[parameters('scheduler')]",
+      "numberofusers": "[parameters('numberofusers')]"
     },
     "osTypes": {
       "CentOS_6.7": {
