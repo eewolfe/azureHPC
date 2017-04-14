@@ -94,6 +94,24 @@
       "metadata": {
         "description": "SSH rsa public key file as a string."
       }
+    },
+    "storageAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Storage Account where the custom scripts reside"
+      }
+    },
+    "storageKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage Account key."
+      }
+    },
+    "numberofusers": {
+      "type": "string",
+      "metadata": {
+        "description": "Number of user ID's to provision."
+      }
     }
   },
   "variables": {
@@ -124,7 +142,10 @@
       "publicIPDomainName": "[variables('namingInfix')]",
       "sharedStorage": "[parameters('sharedStorage')]",
       "scheduler": "[parameters('scheduler')]",
-      "dataDiskSize": "[parameters('dataDiskSize')]"
+      "dataDiskSize": "[parameters('dataDiskSize')]",
+      "storageAccount": "[parameters('storageAccount')]",
+      "storageKey": "[parameters('storageKey')]",
+      "numberofusers": "[parameters('numberofusers')]"
     },
     "masterOSSettings": {
       "osType": "[variables('osTypes')[parameters('masterImage')]]",
