@@ -85,7 +85,7 @@ install_lsf()
 install_applications()
 {
 	log "install applications"		
-	bash spi_p3_client.sh ${numusers} 
+	bash spi_p3_cn.sh ${numusers} 
 }
 
 mount_nfs()
