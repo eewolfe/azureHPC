@@ -116,6 +116,7 @@
     },
     "gangliaTemplateURI": "[uri(deployment().properties.templateLink.uri, 'Ganglia/ganglia.json')]",
     "masterScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'master-linux-script.json')]",
+    "customScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'custom/custom-script.json')]",
     "computeApiVersion": "2016-04-30-preview",
     "deploymentApiVersion": "2016-09-01"
   },
@@ -241,6 +242,27 @@
         "parameters": {
           "vmName": { "value": "[parameters('masterSettings').Name]" },
           "params": { "value": "[variables('StorageTemplateURIChoice')[parameters('masterSettings').sharedStorage].params]" }
+        }
+      }
+    },
+    {
+      "name": "customscript",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "dependsOn": [
+        "storage"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('customScriptTemplateURI')]",  
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vmName": { "value": "[parameters('masterSettings').Name]" },
+          "storageAccount": { "value": "[parameters('masterSettings').storageAccount]" },
+          "storageKey": { "value": "[parameters('masterSettings').storageKey]" },
+          "numberofusers": { "value": "[parameters('masterSettings').numberofusers]" }
         }
       }
     }
