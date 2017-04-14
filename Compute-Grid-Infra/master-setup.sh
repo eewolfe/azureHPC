@@ -20,9 +20,10 @@ while getopts :a:k:u:t:p optname; do
 done
 
 # Shares
-SHARE_HOME=/share/home
-SHARE_SCRATCH=/share/scratch
-SHARE_APPS=/share/apps
+SHARE_HOME=/shared/home
+SHARE_SCRATCH=/shared/scratch
+SHARE_APPS=/shared/apps
+SHARE_DATA=/shared/data 
 
 # User
 HPC_USER=hpcuser
@@ -37,8 +38,7 @@ setup_disks()
     mkdir -p $SHARE_HOME
     mkdir -p $SHARE_SCRATCH
 	mkdir -p $SHARE_APPS
-
-	chown $HPC_USER:$HPC_GROUP $SHARE_APPS
+    mkdir -p $SHARE_DATA
 }
 
 setup_user()
@@ -79,6 +79,7 @@ setup_user()
 	chmod 644 $SHARE_HOME/$HPC_USER/.ssh/id_rsa.pub
 	
 	chown $HPC_USER:$HPC_GROUP $SHARE_SCRATCH
+    chown $HPC_USER:$HPC_GROUP $SHARE_APPS
 }
 
 mount_nfs()
@@ -98,14 +99,14 @@ mount_nfs()
 ######################################################################
 install_azure_cli()
 {
-	curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -
-	yum -y install nodejs
+	yum check-update; yum install -y gcc libffi-devel python-devel openssl-devel
+    curl --silent -L https://aka.ms/InstallAzureCli | bash << EOF
 
-	[[ -z "$HOME" || ! -d "$HOME" ]] && { echo 'fixing $HOME'; HOME=/root; } 
-	export HOME
-	
-	npm install -g azure-cli
-	azure telemetry --disable
+
+
+
+EOF
+    
 }
 
 ######################################################################
