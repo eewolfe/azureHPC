@@ -49,7 +49,7 @@
           "timestamp": 12345
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash spi_p3_torque_azure.sh ', parameters('storageAccount'), parameters('storageKey'), parameters('numberofusers'))]",
+          "commandToExecute": "[concat('bash spi_p3_torque_azure.sh ', parameters('storageAccount'),' ', parameters('storageKey'),' ', parameters('numberofusers'))]",
           "storageAccountName": "[parameters('storageAccount')]",
           "storageAccountKey": "[parameters('storageKey')]"
         }
