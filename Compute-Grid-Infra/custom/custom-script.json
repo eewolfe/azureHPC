@@ -44,7 +44,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[concat(varibles('customScriptURI'), '/spi_p3_torque_azure.sh')]"
+            "[concat(variables('customScriptURI'), '/spi_p3_torque_azure.sh')]"
           ],
           "timestamp": 12345
         },
