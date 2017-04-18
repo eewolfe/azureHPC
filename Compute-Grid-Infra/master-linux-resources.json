@@ -1,4 +1,4 @@
-{
+ {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
@@ -36,15 +36,15 @@
       },
       "P10": {
         "size": 128,
-        "nbDisk":   
+        "nbDisk": 1    
       },
       "P20": {
         "size": 512,
-        "nbDisk": 8
+        "nbDisk": 1
       },
       "P30": {
         "size": 1023,
-        "nbDisk": 8
+        "nbDisk": 1
       }
     },
     "nbDataDisks": "[variables('PremiumStorageMap')[parameters('masterSettings').dataDiskSize].nbDisk]",
