@@ -22,8 +22,7 @@ while [ $user_count -le $1 ]
 # Set up for passwordless ssh
   set_user_ssh ssuser${user_count}
 
-# Install desktop files
-  desktop_files ssuser${user_count}
+
 
   ((user_count++))
  done
@@ -65,16 +64,7 @@ chown $1:centos ${home_dir}/.ssh/authorized_keys
   
 }
 
-#######################################
-# Install desktop files
-#######################################
 
-function desktop_files () {
-
-  echo "Install desktop files as $1"
-  sudo -u $1 $DIR/install_desktop_files $PROWESS_HOME $PROMAX_HOME
-
-}
 
 #################################
 # Run the script
@@ -93,7 +83,7 @@ echo "Configuring SeisSpace"
 export PROWESS_HOME=/shared/Landmark/SeisSpace5000.10.0/SeisSpace
 export PROMAX_HOME=/shared/Landmark/SeisSpace5000.10.0/ProMAX
 export DIR=$PROWESS_HOME/etc
-export LM_LICENSE_FILE=2013@ip-172-16-21-131
+export LM_LICENSE_FILE=2013@52.45.231.227
 export PROWESS_HOST=$(hostname)
 export PROWESS_PORT=5010
 export PROWESS_DATA_PORT=3282
@@ -116,8 +106,8 @@ sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/e
 
 # Make the shared directory that is mounted from the master node
   echo "Create data home in shared directory:"
-  mkdir -m 777 -p /shared/data
-  mkdir -m 777 -p /shared/home
+  chmod 777 /shared/data
+  chmod 777 /shared/home
 
 # Set no host checking
 set_user_ssh centos
