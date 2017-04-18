@@ -20,6 +20,7 @@ while getopts :a:k:u:t:p optname; do
 done
 
 # Shares
+SHARED=/shared
 SHARE_HOME=/shared/home
 SHARE_SCRATCH=/shared/scratch
 SHARE_APPS=/shared/apps
@@ -71,6 +72,7 @@ setup_user()
 	chown -R $HPC_USER:$HPC_GROUP $SHARE_HOME/$HPC_USER
 
 	# Fix permissions
+	chmod 777 $SHARED
 	chmod 700 $SHARE_HOME/$HPC_USER/.ssh
 	chmod 644 $SHARE_HOME/$HPC_USER/.ssh/config
 	chmod 644 $SHARE_HOME/$HPC_USER/.ssh/authorized_keys
@@ -87,7 +89,8 @@ mount_nfs()
 
 	yum -y install nfs-utils nfs-utils-lib
 
-    echo "$SHARE_HOME    *(rw,async)" >> /etc/exports
+    echo "$SHARED    *(rw,async)" >> /etc/exports
+	echo "$SHARE_HOME    *(rw,async)" >> /etc/exports
     systemctl enable rpcbind || echo "Already enabled"
     systemctl enable nfs-server || echo "Already enabled"
     systemctl start rpcbind || echo "Already enabled"
