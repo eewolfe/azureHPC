@@ -2,6 +2,7 @@
 export MOUNT_POINT=/mnt/azure
 
 # Shares
+SHARED=/shared
 SHARE_HOME=/shared/home
 SHARE_SCRATCH=/shared/scratch
 NFS_ON_MASTER=/shared/data
@@ -98,8 +99,10 @@ mount_nfs()
 
 	log "mounting NFS on " ${MASTER_NAME}
 	showmount -e ${MASTER_NAME}
+	mount -t nfs ${MASTER_NAME}:${SHARED} ${SHARED}
 	mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
 	
+	echo "${MASTER_NAME}:${SHARED} ${SHARED} nfs defaults,nofail  0 0" >> /etc/fstab
 	echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
 }
 
