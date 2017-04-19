@@ -18,8 +18,8 @@ BEEGFS_NODE_TYPE="$2"
 CUSTOMDOMAIN=$4
 
 # Shares
-SHARE_HOME=/share/home
-SHARE_SCRATCH=/share/scratch
+SHARE_HOME=/shared/home
+SHARE_SCRATCH=/shared/scratch
 if [ -n "$3" ]; then
 	SHARE_SCRATCH=$3
 fi
