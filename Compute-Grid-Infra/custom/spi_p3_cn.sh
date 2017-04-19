@@ -78,6 +78,7 @@ numusers=$1
 
 echo "Provision base OS"
 yum -y install epel-release
+yum -y install libXp*-devel
 
 echo "Configuring SeisSpace"
 export PROWESS_HOME=/shared/Landmark/SeisSpace5000.10.0/SeisSpace
@@ -89,7 +90,7 @@ export PROWESS_PORT=5010
 export PROWESS_DATA_PORT=3282
 export LOGDIR=/etc/seisspace/logs
 export INSTALL_DIR=/shared/Landmark/SeisSpace5000.10.0
-
+ 
 
 # This runs on all nodes.
 echo "Check for missing packages"
