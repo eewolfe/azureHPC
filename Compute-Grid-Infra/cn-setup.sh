@@ -2,9 +2,11 @@
 export MOUNT_POINT=/mnt/azure
 
 # Shares
-
-NFS_ON_MASTER=/shared/
-NFS_MOUNT=/shared/
+SHARE_HOME=/shared/home
+SHARE_SCRATCH=/shared/scratch
+SHARED=/shared
+NFS_ON_MASTER=/shared/data
+NFS_MOUNT=/shared/data
 
 # User
 HPC_USER=hpcuser
@@ -93,12 +95,16 @@ mount_nfs()
 
 	yum -y install nfs-utils nfs-utils-lib
 	
+	mkdir -p ${SHARED}
 	mkdir -p ${NFS_MOUNT}
 
 	log "mounting NFS on " ${MASTER_NAME}
 	showmount -e ${MASTER_NAME}
-	mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
+    mount -t nfs ${MASTER_NAME}:${SHARED} ${SHARED}
+    mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
 	
+		
+	echo "${MASTER_NAME}:${SHARED} ${SHARED} nfs defaults,nofail  0 0" >> /etc/fstab
 	echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
 }
 
