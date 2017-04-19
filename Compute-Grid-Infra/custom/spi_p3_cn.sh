@@ -109,6 +109,7 @@ sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/e
   echo "Create data home in shared directory:"
   chmod 777 /shared/data
   chmod 777 /shared/home
+  chmod 777 /mnt/resource
 
 # Set no host checking
 set_user_ssh centos
