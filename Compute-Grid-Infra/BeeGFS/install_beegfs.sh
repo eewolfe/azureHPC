@@ -18,8 +18,9 @@ BEEGFS_NODE_TYPE="$2"
 CUSTOMDOMAIN=$4
 
 # Shares
+SHARED=/shared
 SHARE_HOME=/shared/home
-SHARE_SCRATCH=/shared/scratch
+SHARE_SCRATCH=/shared/data
 if [ -n "$3" ]; then
 	SHARE_SCRATCH=$3
 fi
@@ -308,10 +309,12 @@ setup_domain()
 
 setup_user()
 {
-    mkdir -p $SHARE_HOME
+    mkdir -p $SHARED
+	mkdir -p $SHARE_HOME
     mkdir -p $SHARE_SCRATCH
 
 	echo "$MGMT_HOSTNAME:$SHARE_HOME $SHARE_HOME    nfs4    rw,auto,_netdev 0 0" >> /etc/exports
+	echo "$MGMT_HOSTNAME:$SHARED $SHARED    nfs4    rw,auto,_netdev 0 0" >> /etc/exports
 	mount -a
 	mount
    
