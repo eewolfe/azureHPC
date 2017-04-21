@@ -244,27 +244,6 @@
           "params": { "value": "[variables('StorageTemplateURIChoice')[parameters('masterSettings').sharedStorage].params]" }
         }
       }
-    },
-    {
-      "name": "customscript",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('deploymentApiVersion')]",
-      "dependsOn": [
-        "storage"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('customScriptTemplateURI')]",  
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "vmName": { "value": "[parameters('masterSettings').Name]" },
-          "storageAccount": { "value": "[parameters('masterSettings').storageAccount]" },
-          "storageKey": { "value": "[parameters('masterSettings').storageKey]" },
-          "numberofusers": { "value": "[parameters('masterSettings').numberofusers]" }
-        }
-      }
     }
   ]
 }
