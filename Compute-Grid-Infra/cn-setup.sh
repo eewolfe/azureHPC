@@ -4,7 +4,8 @@ export MOUNT_POINT=/mnt/azure
 # Shares
 SHARE_HOME=/shared/home
 SHARE_SCRATCH=/shared/scratch
-SHARED=/shared
+SHARE_APPS=/shared/Landmark
+# SHARED=/shared
 NFS_ON_MASTER=/shared/data
 NFS_MOUNT=/shared/data
 
@@ -95,17 +96,27 @@ mount_nfs()
 
 	yum -y install nfs-utils nfs-utils-lib
 	
-	mkdir -p ${SHARED}
-	mkdir -p ${NFS_MOUNT}
+	mkdir -p /shared
+	mkdir -p ${SHARE_SCRATCH}
+	mkdir -p ${SHARE_APPS}
+	mkdir -p ${SHARE_HOME}
+
+	# mkdir -p ${SHARED}
+	# mkdir -p ${NFS_MOUNT}
 
 	log "mounting NFS on " ${MASTER_NAME}
 	showmount -e ${MASTER_NAME}
-    mount -t nfs ${MASTER_NAME}:${SHARED} ${SHARED}
-    mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
+	mount -t nfs ${MASTER_NAME}:${SHARE_SCRATCH} ${SHARE_SCRATCH}
+	mount -t nfs ${MASTER_NAME}:${SHARE_APPS} ${SHARE_APPS}
+	mount -t nfs ${MASTER_NAME}:${SHARE_HOME} ${SHARE_HOME}
+    # mount -t nfs ${MASTER_NAME}:${SHARED} ${SHARED}
+    # mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
 	
-		
-	echo "${MASTER_NAME}:${SHARED} ${SHARED} nfs defaults,nofail  0 0" >> /etc/fstab
-	echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
+	echo "${MASTER_NAME}:${SHARE_SCRATCH} ${SHARE_SCRATCH} nfs defaults,nofail  0 0" >> /etc/fstab
+	echo "${MASTER_NAME}:${SHARE_APPS} ${SHARE_APPS} nfs defaults,nofail  0 0" >> /etc/fstab
+	echo "${MASTER_NAME}:${SHARE_HOME} ${SHARE_HOME} nfs defaults,nofail  0 0" >> /etc/fstab	
+	# echo "${MASTER_NAME}:${SHARED} ${SHARED} nfs defaults,nofail  0 0" >> /etc/fstab
+	# echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
 }
 
 install_beegfs_client()
@@ -172,9 +183,11 @@ fi
 
 if [ "$SHARED_STORAGE" == "beegfs" ]; then
 	install_beegfs_client
-elif [ "$SHARED_STORAGE" == "nfsonmaster" ]; then
-	mount_nfs
 fi
+	
+# elif [ "$SHARED_STORAGE" == "nfsonmaster" ]; then
+	mount_nfs
+# fi
 
 install_applications
 
