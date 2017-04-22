@@ -20,10 +20,10 @@ while getopts :a:k:u:t:p optname; do
 done
 
 # Shares
-SHARED=/shared
+
 SHARE_HOME=/shared/home
 SHARE_SCRATCH=/shared/scratch
-SHARE_APPS=/shared/apps
+SHARE_APPS=/shared/Landmark
 
 # User
 HPC_USER=hpcuser
@@ -35,7 +35,7 @@ MASTER_NAME=`hostname`
 
 setup_disks()
 {
-    mkdir -p /shared
+
     mkdir -p $SHARE_HOME
     mkdir -p $SHARE_SCRATCH
 	mkdir -p $SHARE_APPS
@@ -89,7 +89,8 @@ mount_nfs()
 
 	yum -y install nfs-utils nfs-utils-lib
 
-    echo "$SHARED    *(rw,async)" >> /etc/exports
+    echo "$SHARE_SCRATCH    *(rw,async)" >> /etc/exports
+	echo "$SHARE_APPS    *(rw,async)" >> /etc/exports
 	echo "$SHARE_HOME    *(rw,async)" >> /etc/exports
     systemctl enable rpcbind || echo "Already enabled"
     systemctl enable nfs-server || echo "Already enabled"
