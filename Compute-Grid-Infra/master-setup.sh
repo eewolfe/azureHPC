@@ -147,6 +147,16 @@ install_ganglia()
 	bash install_gmond.sh ${MASTER_NAME} "Master" 8649
 }
 
+#install the Linux Integration Services v4.1.3-2
+install_LIS()
+{
+    wget https://download.microsoft.com/download/7/6/B/76BE7A6E-E39F-436C-9353-F4B44EF966E9/lis-rpms-4.1.3-2.tar.gz
+	tar xvzf lis-rpms-4.1.3-2.tar.gz
+	cd LISISO
+	./install.sh
+}
+
+
 SETUP_MARKER=/var/tmp/master-setup.marker
 if [ -e "$SETUP_MARKER" ]; then
     echo "We're already configured, exiting..."
@@ -158,6 +168,7 @@ fi
 setup_disks
 mount_nfs
 setup_user
+install_LIS
 #install_ganglia
 #install_beegfs
 
