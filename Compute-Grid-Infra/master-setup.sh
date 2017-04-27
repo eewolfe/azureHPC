@@ -168,7 +168,7 @@ fi
 setup_disks
 mount_nfs
 setup_user
-install_LIS
+# install_LIS
 #install_ganglia
 #install_beegfs
 
