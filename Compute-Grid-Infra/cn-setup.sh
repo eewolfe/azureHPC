@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 export MOUNT_POINT=/mnt/azure
 
 # Shares
@@ -155,7 +155,7 @@ setup_user()
 	mount -a
 	mount
    
-    groupadd -g $HPC_GID $HPC_GROUP
+#    groupadd -g $HPC_GID $HPC_GROUP
 
     # Don't require password for HPC user sudo
     echo "$HPC_USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -206,5 +206,5 @@ fi
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
 
-shutdown -r +1 &
+#shutdown -r +1 &
 exit 0
