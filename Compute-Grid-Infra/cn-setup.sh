@@ -196,7 +196,7 @@ fi
 
 install_applications
 
-install_LIS
+# install_LIS
 
 if [ "$SHARED_STORAGE" == "beegfs" ]; then
 	install_beegfs_client
