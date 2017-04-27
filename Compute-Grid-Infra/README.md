@@ -86,7 +86,7 @@ You have to provide these parameters to the template :
 * _adminPassword_ : Password to associate to the administrator account. It is highly encourage to use SSH authentication and passwordless instead.
 * _sshKeyData_ : The public SSH key to associate with the administrator user. Format has to be on a single line 'ssh-rsa key'
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2Fnfs%2FCompute-Grid-Infra%2Fdeploy-master.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2Fcustom2%2FCompute-Grid-Infra%2Fdeploy-master.json)  
 
 ### Check your deployment
 Once the deployment succeed, use the output **masterFQDN** to retrieve the master name and SSH on it. The output **GangliaURI** contains the URI of the Ganglia monitoring page, which should display after few minutes graphs of the current load.
@@ -94,7 +94,6 @@ Once the deployment succeed, use the output **masterFQDN** to retrieve the maste
 To check if PBSPro is installed, run the command **pbsnodes -a** this should return no available nodes, but the command should run successfully.
 
 BeeGFS will be checked later once the storage nodes will be deployed.
-
 ## Optionally deploy the BeeGFS nodes
 
 If your compute cluster require a scalable shared file storage, you can deploy BeeGFS nodes to create a unique namespace. Prior doing your deployment you will have to decide how much storage nodes you will require and for each how much data disks you will provide for the storage and metadata services.
@@ -121,7 +120,7 @@ You have to provide these parameters to the template :
 * _nbMetaDisks_ : Number of data disks to be attached to a single VM. Min is 2, Max is 8, Default is **2**.
 * _customDomain_ : If the VNET is configure to use a custom domain, specify the name of this custom domain to be used
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2Fnfs%2FCompute-Grid-Infra%2FBeeGFS%2Fdeploy-beegfs-vmss.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2Ffs%2FCompute-Grid-Infra%2FBeeGFS%2Fdeploy-beegfs-vmss.json)  
 
 ### Check your deployment
 Storage nodes will be named _beegfs000000 beegfs000001 ..._ .
