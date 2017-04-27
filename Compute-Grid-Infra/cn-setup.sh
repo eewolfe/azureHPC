@@ -141,6 +141,7 @@ install_LIS()
 	tar xvzf lis-rpms-4.1.3-2.tar.gz
 	cd LISISO
 	./install.sh
+	cd ..
 }
 
 setup_user()
@@ -196,7 +197,7 @@ fi
 
 install_applications
 
-# install_LIS
+install_LIS
 
 if [ "$SHARED_STORAGE" == "beegfs" ]; then
 	install_beegfs_client
