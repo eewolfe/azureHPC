@@ -154,6 +154,7 @@ install_LIS()
 	tar xvzf lis-rpms-4.1.3-2.tar.gz
 	cd LISISO
 	./install.sh
+	cd ..
 }
 
 
@@ -168,7 +169,7 @@ fi
 setup_disks
 mount_nfs
 setup_user
-# install_LIS
+install_LIS
 #install_ganglia
 #install_beegfs
 
