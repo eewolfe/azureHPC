@@ -1,4 +1,4 @@
- {
+{
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
@@ -19,12 +19,6 @@
       "metadata": {
         "Description": "master OS settings object"
       }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "password for the Virtual Machine."
-      }
     }
   },
   "variables": {
@@ -36,7 +30,7 @@
       },
       "P10": {
         "size": 128,
-        "nbDisk": 1    
+        "nbDisk": 1 
       },
       "P20": {
         "size": 512,
@@ -118,7 +112,20 @@
     "masterScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'master-linux-script.json')]",
     "customScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'custom/custom-script.json')]",
     "computeApiVersion": "2016-04-30-preview",
-    "deploymentApiVersion": "2016-09-01"
+    "deploymentApiVersion": "2016-09-01",
+    "linuxConfiguration_sshPublicKey": {
+      "disablePasswordAuthentication": "true",
+      "ssh": {
+        "publicKeys": [
+          {
+            "path": "[variables('sshKeyPath')]",
+            "keyData": "[parameters('masterOSSettings').sshPublicKey]"
+          }
+        ]
+      }
+    },
+    "linuxConfiguration_password": { },
+    "linuxConfiguration": "[variables(concat('linuxConfiguration_',parameters('masterOSSettings').authenticationType))]"
   },
   "resources": [
     {
@@ -135,17 +142,8 @@
         "osProfile": {
           "computerName": "[parameters('masterSettings').Name]",
           "adminUsername": "[parameters('masterOSSettings').adminUserName]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": "true",
-            "ssh": {
-              "publicKeys": [
-                {
-                  "path": "[variables('sshKeyPath')]",
-                  "keyData": "[parameters('masterOSSettings').sshKeyData]"
-                }
-              ]
-            }
-          }
+          "adminPassword": "[parameters('masterOSSettings').adminPassword]",
+          "linuxConfiguration": "[variables('linuxConfiguration')]"
         },
         "storageProfile": {
           "imageReference": "[parameters('masterOSSettings').imageReference]",
@@ -242,6 +240,27 @@
         "parameters": {
           "vmName": { "value": "[parameters('masterSettings').Name]" },
           "params": { "value": "[variables('StorageTemplateURIChoice')[parameters('masterSettings').sharedStorage].params]" }
+        }
+      }
+    },
+    {
+      "name": "customscript",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('deploymentApiVersion')]",
+      "dependsOn": [
+        "storage"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('customScriptTemplateURI')]",  
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vmName": { "value": "[parameters('masterSettings').Name]" },
+          "storageAccount": { "value": "[parameters('masterSettings').storageAccount]" },
+          "storageKey": { "value": "[parameters('masterSettings').storageKey]" },
+          "numberofusers": { "value": "[parameters('masterSettings').numberofusers]" }
         }
       }
     }
