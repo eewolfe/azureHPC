@@ -82,18 +82,29 @@
         "description": "User name for the Virtual Machine."
       }
     },
+    "authenticationType": {
+      "type": "string",
+      "defaultValue": "password",
+      "allowedValues": [
+        "password",
+        "sshPublicKey"
+      ],
+      "metadata": {
+        "description": "Authentication type for the virtual machines"
+      }
+    },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "password for the Virtual Machine."
+        "description": "Admin password for the virtual machines"
       }
     },
-    "sshKeyData": {
+    "sshPublicKey": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "SSH rsa public key file as a string."
+        "description": "SSH public key that will be included on all nodes. The OpenSSH public key can be generated with tools like ssh-keygen on Linux or OS X."
       }
     },
     "storageAccount": {
@@ -151,7 +162,9 @@
     "masterOSSettings": {
       "osType": "[variables('osTypes')[parameters('masterImage')]]",
       "adminUserName": "[parameters('adminUserName')]",
-      "sshKeyData": "[parameters('sshKeyData')]",
+      "authenticationType": "[parameters('authenticationType')]",
+      "adminPassword": "[parameters('adminPassword')]",
+      "sshPublicKey": "[parameters('sshPublicKey')]",
       "imageReference": "[variables('computeImages')[parameters('masterImage')]]"
     },
 
@@ -284,9 +297,6 @@
           },
           "masterOSSettings": {
             "value": "[variables('masterOSSettings')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
           }
         }
       }
