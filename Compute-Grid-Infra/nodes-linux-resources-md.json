@@ -81,13 +81,13 @@
         "publicKeys": [
           {
             "path": "[variables('sshKeyPath')]",
-            "keyData": "[parameters('masterOSSettings').sshPublicKey]"
+            "keyData": "[parameters('nodeOSSettings').sshPublicKey]"
           }
         ]
       }
     },
     "linuxConfiguration_password": { },
-    "linuxConfiguration": "[variables(concat('linuxConfiguration_',parameters('masterOSSettings').authenticationType))]"
+    "linuxConfiguration": "[variables(concat('linuxConfiguration_',parameters('nodeOSSettings').authenticationType))]"
   },
   "resources": [
     {
@@ -129,7 +129,7 @@
           "osProfile": {
             "computerNamePrefix": "[variables('namingInfix')]",
             "adminUsername": "[parameters('nodeOSSettings').adminUserName]",
-            "adminPassword": "[parameters('masterOSSettings').adminPassword]",
+            "adminPassword": "[parameters('nodeOSSettings').adminPassword]",
             "linuxConfiguration": "[variables('linuxConfiguration')]"
           },
           "storageProfile": {
