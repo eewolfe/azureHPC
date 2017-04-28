@@ -20,7 +20,7 @@ while getopts :a:k:u:t:p optname; do
 done
 
 # Shares
-
+chmod 777 /mnt/resource 
 SHARE_HOME=/shared/home
 SHARE_SCRATCH=/shared/scratch
 SHARE_APPS=/shared/Landmark
