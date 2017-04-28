@@ -31,12 +31,6 @@
     },
     "newStorageAccountSuffix": {
       "type": "string"
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "password for the Virtual Machine."
-      }
     }
   },
   "variables": {
@@ -76,11 +70,24 @@
         "[uri(deployment().properties.templateLink.uri, 'PBSPro/install_pbspro.sh')]",
         "[uri(deployment().properties.templateLink.uri, 'PBSPro/pbs_selfregister.sh')]",
         "[uri(deployment().properties.templateLink.uri, 'Ganglia/install_ganglia.sh')]", 
-        "[uri(deployment().properties.templateLink.uri, 'custom/spi_p3_cn.sh')]"
+        "[uri(deployment().properties.templateLink.uri, 'custom/spi_p3_client.sh')]"
       ],
       "commandToExecute": "[concat('bash ', variables('cnSetupScript'), variables('ScriptsOptions')['master'].params, variables('ScriptsOptions')[parameters('nodeSettings').scheduler].params, variables('ScriptsOptions')[parameters('nodeSettings').sharedStorage].params, variables('ScriptsOptions')['numberofusers'].params)]"
     },
-    "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]"
+    "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]",
+    "linuxConfiguration_sshPublicKey": {
+      "disablePasswordAuthentication": "true",
+      "ssh": {
+        "publicKeys": [
+          {
+            "path": "[variables('sshKeyPath')]",
+            "keyData": "[parameters('masterOSSettings').sshPublicKey]"
+          }
+        ]
+      }
+    },
+    "linuxConfiguration_password": { },
+    "linuxConfiguration": "[variables(concat('linuxConfiguration_',parameters('masterOSSettings').authenticationType))]"
   },
   "resources": [
     {
@@ -94,7 +101,7 @@
         "capacity": "[parameters('instanceCount')]"
       },
       "properties": {
-        "overprovision": "false",
+        "overprovision": "true",
         "upgradePolicy": {
           "mode": "Manual"
         },
@@ -122,17 +129,8 @@
           "osProfile": {
             "computerNamePrefix": "[variables('namingInfix')]",
             "adminUsername": "[parameters('nodeOSSettings').adminUserName]",
-            "linuxConfiguration": {
-              "disablePasswordAuthentication": "true",
-              "ssh": {
-                "publicKeys": [
-                  {
-                    "path": "[variables('sshKeyPath')]",
-                    "keyData": "[parameters('nodeOSSettings').sshKeyData]"
-                  }
-                ]
-              }
-            }
+            "adminPassword": "[parameters('masterOSSettings').adminPassword]",
+            "linuxConfiguration": "[variables('linuxConfiguration')]"
           },
           "storageProfile": {
             "imageReference": "[parameters('nodeOSSettings').imageReference]",
