@@ -5,7 +5,10 @@
     "vmName": {
       "type": "string"
     },
-    "params": {
+    "UserName": {
+      "type": "string"
+    },
+    "Password": {
       "type": "securestring"
     }
   },
@@ -30,7 +33,7 @@
           "timestamp": 12345
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash user_authentication.sh ', parameters('params'))]"
+          "commandToExecute": "[concat('bash user_authentication.sh ', parameters('UserName'),' ',parameters('Password'),' 172.0.0')]"
         }
       }
     }
