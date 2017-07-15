@@ -8,8 +8,3 @@ qmgr -c "set queue $queuename started=true"
 qmgr -c "set queue $queuename enabled=true"
 
 qstat -Q
-install_pkgs
-install_gmond
-
-# Create marker file so we know we're configured
-touch $SETUP_MARKER
