@@ -67,4 +67,3 @@ install_gmond
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
-
