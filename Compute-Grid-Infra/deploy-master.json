@@ -4,6 +4,7 @@
   "parameters": {
     "VMsku": {
       "type": "string",
+      "defaultValue": "Standard_DS2_v2",
       "allowedValues": [
         "Standard_DS1_v2",
         "Standard_DS2_v2",
@@ -37,7 +38,7 @@
     },
     "sharedStorage": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "nfsonmaster",
       "allowedValues": [
         "none",
         "beegfs",
@@ -49,7 +50,7 @@
     },
     "dataDiskSize": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "P10",
       "allowedValues": [
         "none",
         "P10",
@@ -65,7 +66,7 @@
       "metadata": {
         "description": "Number of data disks to attach to the master"
       },
-      "defaultValue": 2,
+      "defaultValue": 4,
       "maxValue": 16
     },
     "monitoring": {
@@ -81,7 +82,7 @@
     },
     "scheduler": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "pbspro",
       "allowedValues": [
         "none",
         "pbspro"
