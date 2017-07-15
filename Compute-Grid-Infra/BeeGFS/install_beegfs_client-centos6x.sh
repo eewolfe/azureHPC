@@ -112,4 +112,3 @@ touch $SETUP_MARKER
 
 #shutdown -r +1 &
 exit 0
-
