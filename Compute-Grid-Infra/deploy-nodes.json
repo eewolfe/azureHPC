@@ -4,7 +4,7 @@
   "parameters": {
     "VMsku": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_A8",
       "allowedValues": [
         "Standard_A8",
         "Standard_A9",
@@ -49,7 +49,7 @@
     },
     "sharedStorage": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "nfsonmaster",
       "allowedValues": [
         "none",
         "beegfs",
@@ -61,7 +61,7 @@
     },
     "scheduler": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "pbspro",
       "allowedValues": [
         "none",
         "pbspro"
@@ -83,7 +83,7 @@
     },
     "computeNodeImage": {
       "type": "string",
-      "defaultValue": "CentOS_7.2",
+      "defaultValue": "CentOS-HPC_7.3",
       "allowedValues": [
         "Ubuntu_16.04",
         "CentOS_6.7",
