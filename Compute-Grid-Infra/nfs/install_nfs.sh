@@ -112,7 +112,8 @@ setup_disks()
 	nbDisks=`fdisk -l | grep '^Disk /dev/' | grep -v $rootDevice | grep -v $tmpDevice | wc -l`
 	echo "nbDisks=$nbDisks"
 	
-	dataDevices="`fdisk -l | grep '^Disk /dev/' | grep $dataDiskSize | awk '{print $2}' | awk -F: '{print $1}' | sort | head -$nbDisks | tr '\n' ' ' | sed 's|/dev/||g'`"
+#	dataDevices="`fdisk -l | grep '^Disk /dev/' | grep $dataDiskSize | awk '{print $2}' | awk -F: '{print $1}' | sort | head -$nbDisks | tr '\n' ' ' | sed 's|/dev/||g'`"
+	dataDevices="sdc sdd sde sdf"
 
 	mkdir -p $NFS_DATA
 	setup_data_disks $NFS_DATA "xfs" "$dataDevices" "md10"
