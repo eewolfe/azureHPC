@@ -9,4 +9,3 @@ param (
 
 &net use
 
-
