@@ -68,4 +68,3 @@ install_ganglia_metad
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
-
