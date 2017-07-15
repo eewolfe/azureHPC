@@ -177,6 +177,7 @@
         "osProfile": {
           "computerName": "[parameters('masterSettings').Name]",
           "adminUsername": "[parameters('masterOSSettings').adminUserName]",
+          "adminPassword": "[parameters('masterOSSettings').adminPassword]",
           "linuxConfiguration": "[parameters('masterOSSettings').linuxConfiguration]"
         },
         "storageProfile": {
