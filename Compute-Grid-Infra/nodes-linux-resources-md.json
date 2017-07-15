@@ -32,12 +32,6 @@
     "newStorageAccountSuffix": {
       "type": "string"
     },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "password for the Virtual Machine."
-      }
-    },
     "postInstallCommand": {
       "type": "string",
       "defaultValue": "",
@@ -88,8 +82,7 @@
         "[uri(deployment().properties.templateLink.uri, 'Ganglia/install_ganglia.sh')]"
       ],
       "commandToExecute": "[concat('bash ', variables('cnSetupScript'), variables('ScriptsOptions')['master'].params, variables('ScriptsOptions')[parameters('nodeSettings').scheduler].params, variables('ScriptsOptions')[parameters('nodeSettings').sharedStorage].params, variables('ScriptsOptions')[parameters('nodeSettings').monitoring].params, variables('ScriptsOptions')['postinstall'].params)]"
-    },
-    "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]"
+    }
   },
   "resources": [
     {
@@ -131,17 +124,8 @@
           "osProfile": {
             "computerNamePrefix": "[variables('namingInfix')]",
             "adminUsername": "[parameters('nodeOSSettings').adminUserName]",
-            "linuxConfiguration": {
-              "disablePasswordAuthentication": "true",
-              "ssh": {
-                "publicKeys": [
-                  {
-                    "path": "[variables('sshKeyPath')]",
-                    "keyData": "[parameters('nodeOSSettings').sshKeyData]"
-                  }
-                ]
-              }
-            }
+            "adminPassword": "[parameters('nodeOSSettings').adminPassword]",
+            "linuxConfiguration": "[parameters('nodeOSSettings').linuxConfiguration]"
           },
           "storageProfile": {
             "imageReference": "[parameters('nodeOSSettings').imageReference]",
