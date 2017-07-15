@@ -8,16 +8,16 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# != 2 ]; then
-    echo "Usage: $0 <ManagementHost> <Mount>"
+if [ $# != 1 ]; then
+    echo "Usage: $0 <ManagementHost>"
     exit 1
 fi
 
-# Use the first storage server for management server
+# management server
 MGMT_HOSTNAME=$1
 
 # Shares
-SHARE_SCRATCH=$2
+SHARE_SCRATCH=/share/scratch
 
 
 # Installs all required packages.
@@ -26,9 +26,6 @@ install_pkgs()
 {
     yum -y install epel-release
     yum -y install zlib zlib-devel bzip2 bzip2-devel bzip2-libs openssl openssl-devel openssl-libs gcc gcc-c++ nfs-utils rpcbind mdadm wget python-pip kernel kernel-devel openmpi openmpi-devel automake autoconf
-	
-	systemctl stop firewalld
-	systemctl disable firewalld	
 }
 
 install_beegfs_repo()
@@ -49,12 +46,18 @@ install_beegfs()
     sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
     setenforce 0
 
-    yum install -y beegfs-client beegfs-helperd beegfs-utils
+    yum install -y beegfs-mgmtd beegfs-client beegfs-helperd beegfs-utils beegfs-admon
         
+    # Install management server and client
+    mkdir -p /data/beegfs/mgmtd
+    sed -i 's|^storeMgmtdDirectory.*|storeMgmtdDirectory = /data/beegfs/mgmt|g' /etc/beegfs/beegfs-mgmtd.conf
+    sed -i 's/^sysMgmtdHost.*/sysMgmtdHost = '$MGMT_HOSTNAME'/g' /etc/beegfs/beegfs-admon.conf
+    systemctl daemon-reload
+    systemctl enable beegfs-mgmtd.service
+	systemctl enable beegfs-admon.service
+
     # setup client
     sed -i 's/^sysMgmtdHost.*/sysMgmtdHost = '$MGMT_HOSTNAME'/g' /etc/beegfs/beegfs-client.conf
-    sed -i 's/^connMaxInternodeNum.*/connMaxInternodeNum = 16/g' /etc/beegfs/beegfs-client.conf
-
     echo "$SHARE_SCRATCH /etc/beegfs/beegfs-client.conf" > /etc/beegfs/beegfs-mounts.conf
 	
     systemctl daemon-reload
@@ -62,14 +65,7 @@ install_beegfs()
     systemctl enable beegfs-client.service
 }
 
-tune_tcp()
-{
-    echo "net.ipv4.neigh.default.gc_thresh1=1100" >> /etc/sysctl.conf
-    echo "net.ipv4.neigh.default.gc_thresh2=2200" >> /etc/sysctl.conf
-    echo "net.ipv4.neigh.default.gc_thresh3=4400" >> /etc/sysctl.conf
-}
-
-SETUP_MARKER=/var/local/install_beegfs_client.marker
+SETUP_MARKER=/var/tmp/install_beegfs_mgmt.marker
 if [ -e "$SETUP_MARKER" ]; then
     echo "We're already configured, exiting..."
     exit 0
@@ -80,7 +76,6 @@ mkdir -p $SHARE_SCRATCH
 install_pkgs
 install_beegfs_repo
 install_beegfs
-tune_tcp
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
