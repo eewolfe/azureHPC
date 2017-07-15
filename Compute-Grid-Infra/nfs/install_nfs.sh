@@ -71,7 +71,7 @@ EOF
         devices=`echo $createdPartitions | wc -w`
         mdadm --create /dev/$raidDevice --level 0 --raid-devices $devices $createdPartitions
         
-        sleep 10
+        sleep 30
         
         mdadm /dev/$raidDevice
 
