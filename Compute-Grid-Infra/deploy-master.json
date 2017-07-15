@@ -103,17 +103,29 @@
         "description": "User name for the Virtual Machine."
       }
     },
+    "authenticationType": {
+      "type": "string",
+      "defaultValue": "password",
+      "allowedValues": [
+        "password",
+        "sshPublicKey"
+      ],
+      "metadata": {
+        "description": "Authentication type for the virtual machines"
+      }
+    },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "password for the Virtual Machine."
+        "description": "Admin password for the virtual machines"
       }
     },
     "sshKeyData": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "SSH rsa public key file as a string."
+        "description": "SSH public key that will be included on all nodes. The OpenSSH public key can be generated with tools like ssh-keygen on Linux or OS X."
       }
     }
   },
@@ -135,6 +147,20 @@
       "nsgName": "nsg-master"
     },
     "masterBoxName": "[concat(variables('longNamingInfix'), 'master')]",
+    "sshKeyPath": "[concat('/home/',parameters('adminUserName'),'/.ssh/authorized_keys')]",
+    "linuxConfiguration_sshPublicKey": {
+      "disablePasswordAuthentication": "true",
+      "ssh": {
+        "publicKeys": [
+          {
+            "path": "[variables('sshKeyPath')]",
+            "keyData": "[parameters('sshKeyData')]"
+          }
+        ]
+      }
+    },
+    "linuxConfiguration_password": { },
+    "linuxConfiguration": "[variables(concat('linuxConfiguration_',parameters('authenticationType')))]",
     "masterSettings": {
       "Name": "[variables('masterBoxName')]",
       "DiagSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'diag')]",
@@ -152,7 +178,9 @@
     "masterOSSettings": {
       "osType": "[variables('osTypes')[parameters('masterImage')]]",
       "adminUserName": "[parameters('adminUserName')]",
+      "adminPassword": "[parameters('adminPassword')]",
       "sshKeyData": "[parameters('sshKeyData')]",
+      "linuxConfiguration": "[variables('linuxConfiguration')]",
       "imageReference": "[variables('computeImages')[parameters('masterImage')]]"
     },
 
