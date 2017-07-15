@@ -177,17 +177,7 @@
         "osProfile": {
           "computerName": "[parameters('masterSettings').Name]",
           "adminUsername": "[parameters('masterOSSettings').adminUserName]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": "true",
-            "ssh": {
-              "publicKeys": [
-                {
-                  "path": "[variables('sshKeyPath')]",
-                  "keyData": "[parameters('masterOSSettings').sshKeyData]"
-                }
-              ]
-            }
-          }
+          "linuxConfiguration": "[parameters('masterOSSettings').linuxConfiguration]"
         },
         "storageProfile": {
           "imageReference": "[parameters('masterOSSettings').imageReference]",
