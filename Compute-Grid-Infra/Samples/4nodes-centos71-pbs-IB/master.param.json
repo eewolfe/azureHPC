@@ -3,9 +3,9 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vmPrefix": { "value": "ready" },
-    "adminUsername": { "value": "<Add YOUR ADMIN NAME HERE>" },
+    "adminUsername": { "value": "" },
     "authenticationType": { "value": "sshPublicKey" },
     "adminPassword": { "value": "" },
-    "sshKeyData": { "value": "<ADD YOUR SSH KEY HERE>" }
+    "sshKeyData": { "value": "" }
   }
 }
