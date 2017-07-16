@@ -2,13 +2,9 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "VMsku": { "value": "Standard_DS2_v2" },
     "vmPrefix": { "value": "ready" },
-    "sharedStorage": { "value": "none" },
-    "scheduler": { "value": "pbspro" },
-    "masterImage": { "value": "CentOS_7.3" },
-    
     "adminUsername": { "value": "<Add YOUR ADMIN NAME HERE>" },
+    "authenticationType": { "value": "sshPublicKey" },
     "adminPassword": { "value": "" },
     "sshKeyData": { "value": "<ADD YOUR SSH KEY HERE>" }
   }
