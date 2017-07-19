@@ -90,8 +90,11 @@ You have to provide these parameters to the template :
 * _adminPassword_ : Password to associate to the administrator account. It is highly encourage to use SSH authentication and passwordless instead.
 * _sshKeyData_ : The public SSH key to associate with the administrator user. Format has to be on a single line 'ssh-rsa key'
 
-*****************  Ready Tech-CAD-ILL300 Exercise #1 ************************************ 
+*****************  Ready Tech-CAD-ILL300 Exercise #1 ************************************
+
 [![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FReady%2FCompute-Grid-Infra%2Fdeploy-master.json)  
+
+*****************  Ready Tech-CAD-ILL300 Exercise #1 ************************************
 
 ### Check your deployment
 Once the deployment succeed, use the output **masterFQDN** to retrieve the master name and SSH on it. The output **GangliaURI** contains the URI of the Ganglia monitoring page, which should display after few minutes graphs of the current load.
