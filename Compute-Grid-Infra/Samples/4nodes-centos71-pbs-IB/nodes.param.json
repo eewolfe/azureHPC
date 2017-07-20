@@ -2,12 +2,9 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vmSSPrefix": { "value": "ready" },
-    "RGvnetName": { "value": "ready" },
-    "adminUsername": { "value": "<Add YOUR ADMIN NAME HERE>" },
+    "adminUsername": { "value": "" },
     "authenticationType": { "value": "sshPublicKey" },
-    "adminPassword": { "value": "" },
-    "sshKeyData": { "value": "<ADD YOUR SSH KEY HERE>"},
+    "sshKeyData": { "value": ""},
     "masterName": { "value": "readymaster" }
   }
 }
