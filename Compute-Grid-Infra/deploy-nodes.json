@@ -4,7 +4,7 @@
   "parameters": {
     "VMsku": {
       "type": "string",
-      "defaultValue": "Standard_A8",
+      "defaultValue": "Standard_D3_v2",
       "allowedValues": [
         "Standard_A8",
         "Standard_A9",
@@ -49,7 +49,7 @@
     },
     "sharedStorage": {
       "type": "string",
-      "defaultValue": "nfsonmaster",
+      "defaultValue": "none",
       "allowedValues": [
         "none",
         "beegfs",
@@ -61,7 +61,7 @@
     },
     "scheduler": {
       "type": "string",
-      "defaultValue": "pbspro",
+      "defaultValue": "none",
       "allowedValues": [
         "none",
         "pbspro"
@@ -83,7 +83,7 @@
     },
     "computeNodeImage": {
       "type": "string",
-      "defaultValue": "CentOS-HPC_7.3",
+      "defaultValue": "CentOS_7.2",
       "allowedValues": [
         "Ubuntu_16.04",
         "CentOS_6.7",
@@ -93,9 +93,7 @@
         "CentOS-HPC_7.3",
         "SLES12-HPC",
         "RHEL_7.2",
-        "W2012R2",
-        "CustomLinux",
-        "CustomWindows"
+        "W2012R2"
       ],
       "metadata": {
         "description": "The VM image of the compute nodes"
@@ -215,13 +213,7 @@
       "RHEL_7.2": {
         "os": "linux"
       },
-      "CustomLinux": {
-        "os": "linux"
-      },
       "W2012R2": {
-        "os": "windows"
-      },
-      "CustomWindows": {
         "os": "windows"
       }
     },
@@ -279,12 +271,6 @@
         "offer": "WindowsServer",
         "sku": "2012-R2-Datacenter",
         "version": "latest"
-      },
-      "CustomLinux": {
-        "id": "[parameters('imageId')]"
-      },
-      "CustomWindows": {
-        "id": "[parameters('imageId')]"
       }
     },
     "sshKeyPath": "[concat('/home/',parameters('adminUserName'),'/.ssh/authorized_keys')]",
