@@ -125,7 +125,6 @@
     },
     "RGvnetName": {
       "type": "string",
-      "defaultValue": "ready",
       "metadata": {
         "description": "Name of the RG of the virtual network to use."
       }
