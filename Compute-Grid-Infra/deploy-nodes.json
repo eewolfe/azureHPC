@@ -4,7 +4,7 @@
   "parameters": {
     "VMsku": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_A8",
       "allowedValues": [
         "Standard_A8",
         "Standard_A9",
@@ -49,7 +49,7 @@
     },
     "sharedStorage": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "nfsonmaster",
       "allowedValues": [
         "none",
         "beegfs",
@@ -61,7 +61,7 @@
     },
     "scheduler": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "pbspro",
       "allowedValues": [
         "none",
         "pbspro"
@@ -83,7 +83,7 @@
     },
     "computeNodeImage": {
       "type": "string",
-      "defaultValue": "CentOS_7.2",
+      "defaultValue": "CentOS-HPC_7.3",
       "allowedValues": [
         "Ubuntu_16.04",
         "CentOS_6.7",
@@ -101,6 +101,7 @@
     },
     "vmSSPrefix": {
       "type": "string",
+      "defaultValue": "ready",
       "metadata": {
         "description": "Base string for naming resources (max length of 8)"
       },
@@ -124,6 +125,7 @@
     },
     "RGvnetName": {
       "type": "string",
+      "defaultValue": "ready",
       "metadata": {
         "description": "Name of the RG of the virtual network to use."
       }
@@ -161,6 +163,7 @@
     },
     "masterName": {
       "type": "string",
+      "defaultValue": "readymaster",
       "metadata": {
         "description": "Name of master VM name"
       }
