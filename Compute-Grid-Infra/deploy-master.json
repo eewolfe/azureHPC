@@ -93,6 +93,7 @@
     },
     "vmPrefix": {
       "type": "string",
+      "defaultValue": "ready",
       "metadata": {
         "description": "Base string for naming resources (max length of 8)"
       },
