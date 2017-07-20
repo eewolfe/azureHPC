@@ -5,6 +5,6 @@
     "adminUsername": { "value": "" },
     "authenticationType": { "value": "sshPublicKey" },
     "sshKeyData": { "value": ""},
-    "masterName": { "value": "readymaster" }
+    "RGvnetName": { "value": "ready1" }
   }
 }
