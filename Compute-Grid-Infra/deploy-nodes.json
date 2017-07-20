@@ -173,13 +173,6 @@
       "metadata": {
         "description": "post install command to run as a post script install"
       }
-    },
-    "imageId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "image Id to the custom image to use, format is /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroup}/providers/Microsoft.Compute/images/{ImageName}"
-      }
     }
   },
   "variables": {
