@@ -1,16 +1,17 @@
 #!/bin/bash
 
-set -x
-
 # Shares
 SHARE_HOME=/share/home
 SHARE_SCRATCH=/share/scratch
+SHARE_APPS=/share/apps
 NFS_ON_MASTER=/data
 NFS_MOUNT=/data
 
 # User
 HPC_USER=hpcuser
 HPC_UID=7007
+HPC_USER1=hpcuser1
+HPC_UID1=7008
 HPC_GROUP=hpc
 HPC_GID=7007
 
@@ -81,12 +82,15 @@ mount_nfs()
 	fi
 	
 	mkdir -p ${NFS_MOUNT}
+    mkdir -p ${SHARE_APPS}
 
 	log "mounting NFS on " ${MASTER_NAME}
 	showmount -e ${MASTER_NAME}
 	mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
+    mount -t nfs ${MASTER_NAME}:${SHARE_APPS} ${SHARE_APPS}
 	
 	echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
+    echo "${MASTER_NAME}:${SHARE_APPS} ${SHARE_APPS} nfs defaults,nofail  0 0" >> /etc/fstab
 }
 
 install_beegfs_client()
@@ -139,6 +143,7 @@ setup_user()
     sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
 
 	useradd -c "HPC User" -g $HPC_GROUP -d $SHARE_HOME/$HPC_USER -s /bin/bash -u $HPC_UID $HPC_USER
+    useradd -c "HPC User1" -g $HPC_GROUP -d $SHARE_HOME/$HPC_USER1 -s /bin/bash -u $HPC_UID1 $HPC_USER1
 
     chown $HPC_USER:$HPC_GROUP $SHARE_SCRATCH	
 }
