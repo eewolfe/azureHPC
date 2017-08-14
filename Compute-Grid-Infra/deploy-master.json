@@ -4,7 +4,7 @@
   "parameters": {
     "VMsku": {
       "type": "string",
-      "defaultValue": "Standard_DS2_v2",
+      "defaultValue": "Standard_DS4_v2",
       "allowedValues": [
         "Standard_DS1_v2",
         "Standard_DS2_v2",
@@ -23,7 +23,7 @@
     },
     "masterImage": {
       "type": "string",
-      "defaultValue": "CentOS_7.3",
+      "defaultValue": "CentOS_7.2",
       "allowedValues": [
         "CentOS_6.7",
         "CentOS_7.2",
@@ -93,7 +93,7 @@
     },
     "vmPrefix": {
       "type": "string",
-      "defaultValue": "ready",
+      "defaultValue": "oxy",
       "metadata": {
         "description": "Base string for naming resources (max length of 8)"
       },
