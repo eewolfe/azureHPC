@@ -30,6 +30,10 @@ HPC_UID=7007
 HPC_GROUP=hpc
 HPC_GID=7007
 
+HPC_USER1=hpcuser1
+HPC_UID1=7008
+
+
 MASTER_NAME=`hostname`
 
 is_centos()
@@ -65,8 +69,10 @@ setup_user()
     sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
    
 	useradd -c "HPC User" -g $HPC_GROUP -m -d $SHARE_HOME/$HPC_USER -s /bin/bash -u $HPC_UID $HPC_USER
+    useradd -c "HPC User1" -g $HPC_GROUP -m -d $SHARE_HOME/$HPC_USER1 -s /bin/bash -u $HPC_UID1 $HPC_USER1
 
 	mkdir -p $SHARE_HOME/$HPC_USER/.ssh
+    mkdir -p $SHARE_HOME/$HPC_USER1/.ssh
 	
 	# Configure public key auth for the HPC user
 	ssh-keygen -t rsa -f $SHARE_HOME/$HPC_USER/.ssh/id_rsa -q -P ""
@@ -89,6 +95,26 @@ setup_user()
 	
 	chown $HPC_USER:$HPC_GROUP $SHARE_SCRATCH
 	chown $HPC_USER:$HPC_GROUP $SHARE_APPS
+
+    # Configure public key auth for the HPC1 user
+	ssh-keygen -t rsa -f $SHARE_HOME/$HPC_USER1/.ssh/id_rsa -q -P ""
+	cat $SHARE_HOME/$HPC_USER1/.ssh/id_rsa.pub >> $SHARE_HOME/$HPC_USER1/.ssh/authorized_keys
+
+	echo "Host *" > $SHARE_HOME/$HPC_USER1/.ssh/config
+	echo "    StrictHostKeyChecking no" >> $SHARE_HOME/$HPC_USER1/.ssh/config
+	echo "    UserKnownHostsFile /dev/null" >> $SHARE_HOME/$HPC_USER1/.ssh/config
+	echo "    PasswordAuthentication no" >> $SHARE_HOME/$HPC_USER1/.ssh/config
+
+	# Fix .ssh folder ownership
+	chown -R $HPC_USER1:$HPC_GROUP $SHARE_HOME/$HPC_USER1
+
+	# Fix permissions
+	chmod 700 $SHARE_HOME/$HPC_USER1/.ssh
+	chmod 644 $SHARE_HOME/$HPC_USER1/.ssh/config
+	chmod 644 $SHARE_HOME/$HPC_USER1/.ssh/authorized_keys
+	chmod 600 $SHARE_HOME/$HPC_USER1/.ssh/id_rsa
+	chmod 644 $SHARE_HOME/$HPC_USER1/.ssh/id_rsa.pub
+	
 }
 
 ######################################################################
@@ -99,6 +125,7 @@ mount_nfs()
 	yum -y install nfs-utils nfs-utils-lib
 
     echo "$SHARE_HOME    *(rw,async)" >> /etc/exports
+    echo "$SHARE_APPS    *(rw,async)" >> /etc/exports
     systemctl enable rpcbind || echo "Already enabled"
     systemctl enable nfs-server || echo "Already enabled"
     systemctl start rpcbind || echo "Already enabled"
