@@ -4,7 +4,7 @@
   "parameters": {
     "VMsku": {
       "type": "string",
-      "defaultValue": "Standard_A8",
+      "defaultValue": "Standard_H16r",
       "allowedValues": [
         "Standard_A8",
         "Standard_A9",
@@ -162,7 +162,7 @@
     },
     "masterName": {
       "type": "string",
-      "defaultValue": "readymaster",
+      "defaultValue": "oxymaster",
       "metadata": {
         "description": "Name of master VM name"
       }
