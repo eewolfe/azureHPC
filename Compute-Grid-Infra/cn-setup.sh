@@ -15,6 +15,15 @@ HPC_UID1=7008
 HPC_GROUP=hpc
 HPC_GID=7007
 
+
+############################################################################
+#  Setup for OXY
+cd /opt/intel/compilers_and_libraries_2017.2.174/linux/mpi/intel64/lib
+
+wget https://sroachwest.blob.core.windows.net/public/libiomp5.so
+
+cd ~
+
 #############################################################################
 log()
 {
