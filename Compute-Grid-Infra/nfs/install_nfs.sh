@@ -69,6 +69,9 @@ EOF
     # Create RAID-0 volume
     if [ -n "$createdPartitions" ]; then
         devices=`echo $createdPartitions | wc -w`
+	
+	sleep 30
+	
         mdadm --create /dev/$raidDevice --level 0 --raid-devices $devices $createdPartitions
         
         sleep 30
