@@ -4,8 +4,8 @@
 SHARE_HOME=/share/home
 SHARE_SCRATCH=/share/scratch
 SHARE_APPS=/share/apps
-NFS_ON_MASTER=/data
-NFS_MOUNT=/data
+NFS_ON_MASTER=/share/data
+NFS_MOUNT=/share/data
 
 # User
 HPC_USER=hpcuser
