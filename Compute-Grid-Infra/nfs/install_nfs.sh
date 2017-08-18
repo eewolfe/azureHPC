@@ -9,7 +9,7 @@ if [[ $(id -u) -ne 0 ]] ; then
 fi
 
 # Shares
-NFS_DATA=/data
+NFS_DATA=/share/data
 
 # User
 HPC_USER=hpcuser
@@ -113,7 +113,6 @@ setup_disks()
 	echo "nbDisks=$nbDisks"
 	
 	dataDevices="`fdisk -l | grep '^Disk /dev/' | grep $dataDiskSize | awk '{print $2}' | awk -F: '{print $1}' | sort | head -$nbDisks | tr '\n' ' ' | sed 's|/dev/||g'`"
-#	dataDevices="sdc sdd sde sdf"
 
 	mkdir -p $NFS_DATA
 	setup_data_disks $NFS_DATA "xfs" "$dataDevices" "md10"
