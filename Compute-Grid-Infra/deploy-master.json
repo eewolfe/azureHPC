@@ -23,7 +23,7 @@
     },
     "masterImage": {
       "type": "string",
-      "defaultValue": "CentOS_7.2",
+      "defaultValue": "CentOS_7.3",
       "allowedValues": [
         "CentOS_6.7",
         "CentOS_7.2",
