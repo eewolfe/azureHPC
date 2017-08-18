@@ -101,7 +101,7 @@
     },
     "vmSSPrefix": {
       "type": "string",
-      "defaultValue": "ready",
+      "defaultValue": "oxy",
       "metadata": {
         "description": "Base string for naming resources (max length of 8)"
       },
@@ -112,7 +112,7 @@
       "metadata": {
         "description": "Number of VM instances per Scaleset (100 or less)."
       },
-      "defaultValue": 2,
+      "defaultValue": 25,
       "maxValue": 100
     },
     "numberOfVMSS": {
