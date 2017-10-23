@@ -90,11 +90,11 @@ You have to provide these parameters to the template :
 * _adminPassword_ : Password to associate to the administrator account. It is highly encourage to use SSH authentication and passwordless instead.
 * _sshKeyData_ : The public SSH key to associate with the administrator user. Format has to be on a single line 'ssh-rsa key'
 
-*****************  Ready Tech-CAD-ILL300 Exercise #1 ************************************
+*****************  Hands-On Lab Exercise #1 ************************************
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FReady%2FCompute-Grid-Infra%2Fdeploy-master.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FLab%2FCompute-Grid-Infra%2Fdeploy-master.json)  
 
-*****************  Ready Tech-CAD-ILL300 Exercise #1 ************************************
+*****************  Hands-On Lab Exercise #1 ************************************
 
 ### Check your deployment
 Once the deployment succeed, use the output **masterFQDN** to retrieve the master name and SSH on it. The output **GangliaURI** contains the URI of the Ganglia monitoring page, which should display after few minutes graphs of the current load.
@@ -131,7 +131,7 @@ You have to provide these parameters to the template :
 * _nbMetaDisks_ : Number of data disks to be attached to a single VM. Min is 2, Max is 8, Default is **2**.
 * _customDomain_ : If the VNET is configure to use a custom domain, specify the name of this custom domain to be used
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FReady%2FCompute-Grid-Infra%2FBeeGFS%2Fdeploy-beegfs-vmss.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FLab%2FCompute-Grid-Infra%2FBeeGFS%2Fdeploy-beegfs-vmss.json)  
 
 ### Check your deployment
 Storage nodes will be named _beegfs000000 beegfs000001 ..._ .
@@ -165,11 +165,11 @@ You have to provide these parameters to the template :
 * _postInstallCommand_ : a post installation command to launch after povisioning. This command needs to be encapsulated in quotes, for example **'bash /data/postinstall.sh'**.
 * _imageId_ : Specify the resource ID of the image to be used in the format **/subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroup}/providers/Microsoft.Compute/images/{ImageName}** this value is only used when the _computeNodeImage_ is set to **CustomLinux** or **CustomWindows**
 
-*****************  Ready Tech-CAD-ILL300 Exercise #2 ************************************
+*****************  Hands-On Lab Exercise #2 ************************************
 
-[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FReady%2FCompute-Grid-Infra%2Fdeploy-nodes.json)  
+[![Click to deploy template on Azure](http://azuredeploy.net/deploybutton.png "Click to deploy template on Azure")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgrandparoach%2Fazure-hpc%2FLab%2FCompute-Grid-Infra%2Fdeploy-nodes.json)  
 
-*****************  Ready Tech-CAD-ILL300 Exercise #2 ************************************
+*****************  Hands-On Lab Exercise #2 ************************************
 
 ### Check your deployment
 After few minutes, once the provision succeed, you should see the new hosts added on the Ganglia monitoring page if setup.
