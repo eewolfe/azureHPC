@@ -83,7 +83,7 @@
     },
     "computeNodeImage": {
       "type": "string",
-      "defaultValue": "CentOS-HPC_7.3",
+      "defaultValue": "CentOS-HPC_7.1",
       "allowedValues": [
         "Ubuntu_16.04",
         "CentOS_6.7",
@@ -131,6 +131,7 @@
     },
     "adminUsername": {
       "type": "string",
+      "defaultValue": "odl_user",
       "metadata": {
         "description": "Admin username on all VMs."
       }
@@ -162,7 +163,7 @@
     },
     "masterName": {
       "type": "string",
-      "defaultValue": "readymaster",
+      "defaultValue": "hpclabmaster",
       "metadata": {
         "description": "Name of master VM name"
       }
