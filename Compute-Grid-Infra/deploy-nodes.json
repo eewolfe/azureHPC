@@ -101,7 +101,7 @@
     },
     "vmSSPrefix": {
       "type": "string",
-      "defaultValue": "ready",
+      "defaultValue": "hpclab",
       "metadata": {
         "description": "Base string for naming resources (max length of 8)"
       },
