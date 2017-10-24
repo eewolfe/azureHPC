@@ -93,7 +93,7 @@
     },
     "vmPrefix": {
       "type": "string",
-      "defaultValue": "ready",
+      "defaultValue": "hpclab",
       "metadata": {
         "description": "Base string for naming resources (max length of 8)"
       },
@@ -101,6 +101,7 @@
     },
     "adminUserName": {
       "type": "string",
+      "defaultValue": "odl_user",
       "metadata": {
         "description": "User name for the Virtual Machine."
       }
