@@ -90,7 +90,6 @@
         "CentOS_7.2",
         "CentOS_7.3",
         "CentOS-HPC_7.1",
-        "CentOS-HPC_7.3",
         "SLES12-HPC",
         "RHEL_7.2",
         "W2012R2"
@@ -205,9 +204,6 @@
         "os": "linux"
       },
       "CentOS-HPC_7.1": {
-        "os": "linux"
-      },
-      "CentOS-HPC_7.3": {
         "os": "linux"
       },
       "SLES12-HPC": {
