@@ -235,12 +235,6 @@
         "sku": "7.1",
         "version": "latest"
       },
-      "CentOS-HPC_7.3": {
-        "publisher": "OpenLogic",
-        "offer": "CentOS-HPC",
-        "sku": "7.3",
-        "version": "latest"
-      },
       "CentOS_7.2": {
         "publisher": "OpenLogic",
         "offer": "CentOS",
