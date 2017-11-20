@@ -45,6 +45,12 @@
             }
           },
           {
+            "name": "appGatewaySubnet",
+            "properties": {
+              "addressPrefix": "[parameters('networkSettings').appgatewaySubnetPrefix]"
+            }
+          },
+          {
             "name": "GatewaySubnet",
             "properties": {
               "addressPrefix": "[parameters('networkSettings').gatewaySubnetPrefix]"

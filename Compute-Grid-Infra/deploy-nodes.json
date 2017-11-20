@@ -83,7 +83,7 @@
     },
     "computeNodeImage": {
       "type": "string",
-      "defaultValue": "CentOS_7.2",
+      "defaultValue": "RHEL_7.2",
       "allowedValues": [
         "Ubuntu_16.04",
         "CentOS_6.7",
@@ -126,6 +126,7 @@
     },
     "RGvnetName": {
       "type": "string",
+      "defaultValue": "cvx-shared-rg",
       "metadata": {
         "description": "Name of the RG of the virtual network to use."
       }
@@ -177,7 +178,7 @@
     "nodeSettings": {
       "VMsku": "[parameters('VMsku')]",
       "vnetRG": "[parameters('RGvnetName')]",
-      "vnetName": "grid-vnet",
+      "vnetName": "cvx-scus-vnet01",
       "subnetName": "computeSubnet",
       "MasterName": "[parameters('masterName')]",
       "storageAccountType": "Standard_LRS",

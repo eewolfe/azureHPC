@@ -50,7 +50,7 @@
             }
           },
           {
-            "name": "beegfs-admon",
+            "name": "beegfs-admin",
             "properties": {
               "description": "Allow BeeGFS admin UI",
               "protocol": "Tcp",
