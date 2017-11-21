@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmPrefix": { "value": "spi" },
+    "sharedStorage": { "value": "beegfs" },
+    "dataDiskSize": { "value": "P10" },
+    "scheduler": { "value": "pbspro" },
+    "masterImage": { "value": "CentOS_7.2" },
+    "storageKey": { "value": "" },
+    "VMsku": { "value": "Standard_DS5_v2" },
+    "adminUserName": { "value": "centos" },
+    "storageAccount": { "value": "" },
+    "numberofusers": { "value": "5" },
+    "adminPassword": { "value": "" },
+    "sshKeyData": { "value": ""}
+  }
+}
+
