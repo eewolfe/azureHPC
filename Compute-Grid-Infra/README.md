@@ -70,7 +70,7 @@ Below is an example on how to provision the templates. First you have to login w
     az login
     az account set --subscription [subscriptionId]
     az group create -l "West Europe" -n rg-master
-    az group deployment create -g rg-master --template-uri https://raw.githubusercontent.com/grandparoach/azure-hpc/master/Compute-Grid-Infra/deploy-master.json --parameters @myparams.json
+    az group deployment create -g rg-master --template-uri https://raw.githubusercontent.com/eewolfe/azureHPC/master/Compute-Grid-Infra/deploy-master.json --parameters @myparams.json
 
 
 
