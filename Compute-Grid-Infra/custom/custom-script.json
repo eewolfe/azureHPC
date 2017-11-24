@@ -44,12 +44,12 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[concat(variables('customScriptURI'), '/spi_p3_torque_azure.sh')]"
+            "[concat(variables('customScriptURI'), '/spi_p4_azure_master.sh')]"
           ],
           "timestamp": 12345
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash spi_p3_torque_azure.sh ', parameters('storageAccount'),' ', parameters('storageKey'),' ', parameters('numberofusers'))]",
+          "commandToExecute": "[concat('bash spi_p4_azure_master.sh ', parameters('storageAccount'),' ', parameters('storageKey'),' ', parameters('numberofusers'))]",
           "storageAccountName": "[parameters('storageAccount')]",
           "storageAccountKey": "[parameters('storageKey')]"
         }
