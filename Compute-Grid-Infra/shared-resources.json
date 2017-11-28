@@ -16,6 +16,7 @@
   "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks",
+      "condition": "[equals(parameters('networkSettings').newOrExisting,'new')]",
       "name": "[parameters('networkSettings').virtualNetworkName]",
       "location": "[resourceGroup().location]",
       "apiVersion": "[variables('networkApiVersion')]",

@@ -47,6 +47,13 @@
         "description": "Name of the RG of the virtual network to use."
       }
     },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual network to use.",
+        "defaultValue": "grid-vnet"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -132,7 +139,7 @@
     "beeGFSNodeSettings": {
       "VMsku": "[parameters('VMsku')]",
       "vnetRG": "[parameters('RGvnetName')]",
-      "vnetName": "grid-vnet",
+      "vnetName": "[parameters('vnetName')]",
       "subnetName": "storageSubnet",
       "MasterName": "[parameters('masterName')]",
       "storageDiskSize": "[variables('PremiumStorageMap')[parameters('storageDiskSize')].size]",

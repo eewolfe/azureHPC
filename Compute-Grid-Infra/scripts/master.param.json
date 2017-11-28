@@ -9,6 +9,18 @@
     "masterImage": { "value": "CentOS_7.2" },
     "storageKey": { "value": "" },
     "VMsku": { "value": "Standard_DS5_v2" },
+    "networkDetails":  {
+      "value": {
+        "newOrExisting": "new",
+        "virtualNetworkName": "cvx-scus-vnet01",
+        "addressPrefix": "10.127.90.0/23",
+        "computeSubnetPrefix": "10.127.90.0/24",
+        "storageSubnetPrefix": "10.127.91.0/25",
+        "infraSubnetPrefix": "10.127.91.128/26",
+        "appGatewaySubnetPrefix": "10.127.91.192/27",
+        "gatewaySubnetPrefix": "10.127.91.224/27"
+      }
+    },
     "adminUserName": { "value": "centos" },
     "storageAccount": { "value": "" },
     "numberofusers": { "value": "5" },

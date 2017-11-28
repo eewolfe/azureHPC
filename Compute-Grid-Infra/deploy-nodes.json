@@ -113,6 +113,13 @@
         "description": "Name of the RG of the virtual network to use."
       }
     },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual network to use.",
+        "default": "grid-vnet"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -146,13 +153,12 @@
     }
   },
   "variables": {
-    "location": "[resourceGroup().location]",
     "newStorageAccountSuffix": "[toLower(parameters('vmSSPrefix'))]",
     "deploymentApiVersion": "2015-11-01",
     "nodeSettings": {
       "VMsku": "[parameters('VMsku')]",
       "vnetRG": "[parameters('RGvnetName')]",
-      "vnetName": "grid-vnet",
+      "vnetName": "[parameters('vnetName')]",
       "subnetName": "computeSubnet",
       "MasterName": "[parameters('masterName')]",
       "storageAccountType": "Standard_LRS",

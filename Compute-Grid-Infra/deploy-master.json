@@ -113,22 +113,36 @@
       "metadata": {
         "description": "Number of user ID's to provision."
       }
+    },
+    "networkdetails": {
+      "type": "object",
+      "metadata": {
+        "description": "Vnet name",
+        "default": {
+          "newOrExisting": "new",
+          "virtualNetworkName": "grid-vnet",
+          "addressPrefix": "10.127.90.0/23",
+          "computeSubnetPrefix": "10.127.90.0/24",
+          "storageSubnetPrefix": "10.127.91.0/25",
+          "infraSubnetPrefix": "10.127.91.128/26",
+          "appGatewaySubnetPrefix": "10.127.91.192/27",
+          "gatewaySubnetPrefix": "10.127.91.224/27"
+        }
+      }
     }
   },
   "variables": {
-    "location": "[resourceGroup().location]",
     "namingInfix": "[toLower(substring(concat(parameters('vmPrefix'), uniqueString(resourceGroup().id)), 0, 9))]",
     "longNamingInfix": "[toLower(parameters('vmPrefix'))]",
     "newStorageAccountSuffix": "[concat(variables('longNamingInfix'), 'sa')]",
-    "virtualNetworkName": "grid-vnet",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-    "networkSettings": {
-      "virtualNetworkName": "[variables('virtualNetworkName')]",
-      "addressPrefix": "172.0.0.0/20",
-      "computeSubnetPrefix": "172.0.0.0/21",
-      "storageSubnetPrefix": "172.0.10.0/25",
-      "infraSubnetPrefix": "172.0.8.0/28",
-      "gatewaySubnetPrefix": "172.0.9.0/29",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('networkdetails').virtualNetworkName)]",
+    "networkSettings":  {
+      "virtualNetworkName": "[parameters('networkdetails').virtualNetworkName]",
+      "addressPrefix": "[parameters('networkdetails').addressPrefix]",
+      "computeSubnetPrefix": "[parameters('networkdetails').computeSubnetPrefix]",
+      "storageSubnetPrefix": "[parameters('networkdetails').storageSubnetPrefix]",
+      "infraSubnetPrefix": "[parameters('networkdetails').infraSubnetPrefix]",
+      "gatewaySubnetPrefix": "[parameters('networkdetails').gatewaySubnetPrefix]",
       "infraSubnetRef": "[concat(variables('vnetID'),'/subnets/infraSubnet/')]",
       "nsgName": "nsg-master"
     },
