@@ -137,6 +137,7 @@
     "newStorageAccountSuffix": "[concat(variables('longNamingInfix'), 'sa')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
     "networkSettings":  {
+      "newOrExisting": "[parameters('networkDetails').newOrExisting]",
       "virtualNetworkName": "[parameters('networkDetails').virtualNetworkName]",
       "addressPrefix": "[parameters('networkDetails').addressPrefix]",
       "computeSubnetPrefix": "[parameters('networkDetails').computeSubnetPrefix]",
