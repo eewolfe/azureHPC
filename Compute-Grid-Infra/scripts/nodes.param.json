@@ -4,17 +4,16 @@
   "parameters": {
     "VMsku": { "value": "Standard_DS4_v2" },
     "vmSSPrefix": { "value": "spi" },
-    "computeNodeImage": { "value": "CentOS_7.2" },
+    "computeNodeImage": { "value": "RHEL_7.3" },
     "numberOfVMSS": { "value": 1 },
     "instanceCountPerVMSS": { "value": 1 },
-    "RGvnetName": { "value": "spix" },
-    "adminUsername": { "value": "centos" },
+    "vnetName": { "value": "" },
+    "adminUsername": { "value": "" },
     "adminPassword": { "value": "" },
     "sshKeyData": {"value": ""},
-    "masterName": { "value": "spimaster" },
+    "masterName": { "value": "" },
     "sharedStorage": { "value": "beegfs" },
     "scheduler": { "value": "pbspro" },
     "numberofusers": { "value": "5" }
   }
 }
-

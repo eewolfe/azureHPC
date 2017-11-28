@@ -6,7 +6,7 @@
     "sharedStorage": { "value": "beegfs" },
     "dataDiskSize": { "value": "P10" },
     "scheduler": { "value": "pbspro" },
-    "masterImage": { "value": "CentOS_7.2" },
+    "masterImage": { "value": "RHEL_7.3" },
     "VMsku": { "value": "Standard_DS5_v2" },
     "networkDetails":  {
       "value": {
