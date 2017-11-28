@@ -108,7 +108,7 @@
         "description": "Vnet name",
         "default": {
           "newOrExisting": "new",
-          "resourceGroup": "[resourceGroup()]",
+          "resourceGroup": "[resourceGroup().name]",
           "virtualNetworkName": "grid-vnet",
           "addressPrefix": "10.127.90.0/23",
           "computeSubnetPrefix": "10.127.90.0/24",
@@ -124,7 +124,7 @@
     "namingInfix": "[toLower(substring(concat(parameters('vmPrefix'), uniqueString(resourceGroup().id)), 0, 9))]",
     "longNamingInfix": "[toLower(parameters('vmPrefix'))]",
     "newStorageAccountSuffix": "[concat(variables('longNamingInfix'), 'sa')]",
-    "vnetID": "[resourceId(if(equals(parameters('networkDetails').resourceGroup,''),resourceGroup(),parameters('networkDetails').resourceGroup), 'Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
+    "vnetID": "[resourceId(if(equals(parameters('networkDetails').resourceGroup,''),resourceGroup().name,parameters('networkDetails').resourceGroup), 'Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
     "networkSettings":  {
       "newOrExisting": "[parameters('networkDetails').newOrExisting]",
       "virtualNetworkName": "[parameters('networkDetails').virtualNetworkName]",
