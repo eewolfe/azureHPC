@@ -114,7 +114,7 @@
         "description": "Number of user ID's to provision."
       }
     },
-    "networkdetails": {
+    "networkDetails": {
       "type": "object",
       "metadata": {
         "description": "Vnet name",
@@ -135,14 +135,14 @@
     "namingInfix": "[toLower(substring(concat(parameters('vmPrefix'), uniqueString(resourceGroup().id)), 0, 9))]",
     "longNamingInfix": "[toLower(parameters('vmPrefix'))]",
     "newStorageAccountSuffix": "[concat(variables('longNamingInfix'), 'sa')]",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('networkdetails').virtualNetworkName)]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
     "networkSettings":  {
-      "virtualNetworkName": "[parameters('networkdetails').virtualNetworkName]",
-      "addressPrefix": "[parameters('networkdetails').addressPrefix]",
-      "computeSubnetPrefix": "[parameters('networkdetails').computeSubnetPrefix]",
-      "storageSubnetPrefix": "[parameters('networkdetails').storageSubnetPrefix]",
-      "infraSubnetPrefix": "[parameters('networkdetails').infraSubnetPrefix]",
-      "gatewaySubnetPrefix": "[parameters('networkdetails').gatewaySubnetPrefix]",
+      "virtualNetworkName": "[parameters('networkDetails').virtualNetworkName]",
+      "addressPrefix": "[parameters('networkDetails').addressPrefix]",
+      "computeSubnetPrefix": "[parameters('networkDetails').computeSubnetPrefix]",
+      "storageSubnetPrefix": "[parameters('networkDetails').storageSubnetPrefix]",
+      "infraSubnetPrefix": "[parameters('networkDetails').infraSubnetPrefix]",
+      "gatewaySubnetPrefix": "[parameters('networkDetails').gatewaySubnetPrefix]",
       "infraSubnetRef": "[concat(variables('vnetID'),'/subnets/infraSubnet/')]",
       "nsgName": "nsg-master"
     },
