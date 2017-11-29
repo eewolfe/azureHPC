@@ -309,9 +309,8 @@ setup_domain()
 
 setup_user()
 {
-    # mkdir -p $SHARED
-	mkdir -p $SHARE_HOME
-    mkdir -p $SHARE_SCRATCH
+    mkdir -p -m 777 $SHARE_HOME
+    mkdir -p -m 777 $SHARE_SCRATCH
 
 	echo "$MGMT_HOSTNAME:$SHARE_HOME $SHARE_HOME    nfs4    rw,auto,_netdev 0 0" >> /etc/exports
 	# echo "$MGMT_HOSTNAME:$SHARED $SHARED    nfs4    rw,auto,_netdev 0 0" >> /etc/exports
