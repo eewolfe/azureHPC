@@ -16,7 +16,7 @@ user_count=1
 while [ $user_count -le $1 ]
  do
 
-  adduser -g centos -b /shared/home ssuser${user_count}
+  adduser -u 700${user_count} -g centos -b /shared/home ssuser${user_count}
   echo "ssuser${user_count}:ssuser${user_count}pw" | chpasswd
 
 # Set up for passwordless ssh
