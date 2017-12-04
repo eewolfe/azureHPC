@@ -10,4 +10,3 @@ az vmss deallocate -n BeeGFS --instance-ids * --no-wait
 az vmss scale -g $rg -n spi00 --new-capacity 0 --no-wait
 az vm stop -g $rg -n spimaster --no-wait
 
-
