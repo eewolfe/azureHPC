@@ -31,6 +31,15 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[parameters('masterSettings').CustomerSAName]",
+      "location": "[variables('location')]",
+      "apiVersion": "[variables('storageApiVersion')]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('masterSettings').publicIPAddressName]",
       "location": "[variables('location')]",

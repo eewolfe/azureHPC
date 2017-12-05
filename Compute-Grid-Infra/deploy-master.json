@@ -140,6 +140,7 @@
     "masterSettings": {
       "Name": "[variables('masterBoxName')]",
       "DiagSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'diag')]",
+      "CustomerSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'cust')]",
       "IPConfigName": "[concat(variables('masterBoxName'), 'ipconfig')]",
       "NicName": "[concat(variables('masterBoxName'), 'nic')]",
       "VMsku": "[parameters('VMsku')]",
@@ -301,6 +302,10 @@
     },
     "masterFQDN": {
       "value": "[reference('master-shared-resources').outputs.masterFQDN.value]",
+      "type": "string"
+    },
+    "CustomerStorage": {
+      "value": "[variables('masterSettings').CustomerSAName]",
       "type": "string"
     }
   }

@@ -39,17 +39,11 @@ done
 
 # Install Docker and then run docker image with cli
 
-sudo apt-get -y update
-sudo apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
-sudo apt-get -y update
-sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get -y update
-sudo apt-get -y install docker-ce
-sudo docker run -v `pwd`:/scripts --network='host' \
--e STORAGE_ACCOUNT=${storage_account} \
--e CONTAINER_NAME=${container_name} \
--e RESOURCE_GROUP=${resource_group} \
--e PORT=${PORT} \
-${docker_image} "./scripts/${script_file}" 
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+yum check-update
+sudo yum -y install azure-cli
+
+export STORAGE_ACCOUNT='$storage_account'
+export RESOURCE_GROUP='$resource_group'
+./scripts/${script_file}

@@ -3,7 +3,8 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "mastervmname": { "value": "spimaster" },
-      "vmssName": { "value": "spi00" }
+      "vmssName": { "value": "spi00" },
+      "storageAccountName": { "value": "mzspicustomer"}
     }
   }
   

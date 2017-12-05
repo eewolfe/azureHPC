@@ -125,6 +125,9 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('masterSettings').Name]",
       "location": "[variables('location')]",
+      "identity": { 
+          "type": "systemAssigned"
+      },
       "apiVersion": "[variables('computeApiVersion')]",
       "dependsOn": [
       ],

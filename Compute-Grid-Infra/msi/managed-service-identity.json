@@ -15,6 +15,12 @@
         },
         "maxLength": 61
       },
+      "storageAccountName": {
+        "type": "string",
+        "metadata": {
+          "description": "Storage Account to use for Customer Data"
+        }
+      },
       "dnsLabelPrefix": {
         "type": "string",
         "metadata": {
@@ -52,7 +58,7 @@
       }
     },
     "variables": {
-      "storageAccountName": "[take(concat(uniquestring(resourceGroup().id), parameters('dnsLabelPrefix')),24)]",
+
 
       "containerName": "msi",
       "createRBACUrl": "[concat(parameters('_artifactsLocation'), '/setUpRBAC.json', parameters('_artifactsLocationSasToken'))]",
@@ -74,7 +80,7 @@
               "value": "[reference(variables('mastervmPrincipalID'),'2015-08-31-PREVIEW').principalId]"
             },
             "storageAccountName": {
-              "value": "[variables('storageAccountName')]"
+              "value": "[parameters('storageAccountName')]"
             },
             "vmssName": {
              "value": "[parameters('vmssName')]"
@@ -102,7 +108,7 @@
             ]
           },
           "protectedSettings": {
-            "commandToExecute": "[concat('./install-and-run-cli-2.sh -i \"', parameters('azureCLI2DockerImage'),'\" -a \"', variables('storageAccountName'), '\" -c \"', variables('containerName'), '\" -r \"', resourceGroup().Name,'\"')]"
+            "commandToExecute": "[concat('./install-and-run-cli-2.sh -i \"', parameters('azureCLI2DockerImage'),'\" -a \"', parameters('storageAccountName'), '\" -c \"', variables('containerName'), '\" -r \"', resourceGroup().Name,'\"')]"
           }
         }
       }
@@ -111,7 +117,7 @@
 
       "principalId": {
         "type": "string",
-        "value": "[reference('Microsoft.Resources/deployments/creatingVM', '2016-09-01').outputs.principalId.value]"
+        "value": "[reference(variables('mastervmPrincipalID'),'2015-08-31-PREVIEW').principalId]"
       }
     }
   }
