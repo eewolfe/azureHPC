@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "VMsku": { "value": "Standard_DS4_v2" },
+    "vmSSPrefix": { "value": "spi" },
+    "computeNodeImage": { "value": "RHEL_7.2" },
+    "instanceCount": { "value": 1 },
+    "RGvnetName": { "value": "" },
+    "vnetName": { "value": "" },
+    "adminUsername": { "value": "" },
+    "adminPassword": { "value": "" },
+    "sshKeyData": { "value": ""},
+    "masterName": { "value": "" },
+    "sharedStorage": { "value": "beegfs" },
+    "scheduler": { "value": "pbspro" },
+    "numberofusers": { "value": "5" }
+  }
+}

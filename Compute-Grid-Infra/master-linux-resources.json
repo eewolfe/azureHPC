@@ -117,7 +117,6 @@
     "gangliaTemplateURI": "[uri(deployment().properties.templateLink.uri, 'Ganglia/ganglia.json')]",
     "masterScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'master-linux-script.json')]",
     "customScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'custom/custom-script.json')]",
-    "computeApiVersion": "2016-04-30-preview",
     "deploymentApiVersion": "2016-09-01"
   },
   "resources": [
@@ -126,9 +125,9 @@
       "name": "[parameters('masterSettings').Name]",
       "location": "[variables('location')]",
       "identity": { 
-          "type": "systemAssigned"
+          "type": "SystemAssigned"
       },
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2017-03-30",
       "dependsOn": [
       ],
       "properties": {
@@ -139,7 +138,7 @@
           "computerName": "[parameters('masterSettings').Name]",
           "adminUsername": "[parameters('masterOSSettings').adminUserName]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": "true",
+            "disablePasswordAuthentication": true,
             "ssh": {
               "publicKeys": [
                 {
@@ -174,6 +173,25 @@
       }
     },
     {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('masterSettings').Name,'/MSILinuxExtension')]",
+      "apiVersion": "2017-03-30",
+      "location": "[variables('location')]",
+      "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('masterSettings').Name)]"
+      ],
+      "properties": {
+          "publisher": "Microsoft.ManagedIdentity",
+          "type": "ManagedIdentityExtensionForLinux",
+          "typeHandlerVersion": "1.0",
+          "autoUpgradeMinorVersion": true  ,
+          "settings": {
+              "port": 50342
+          },
+          "protectedSettings": {}
+      }
+    }, 
+    {
       "name": "masterExtension",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "[variables('deploymentApiVersion')]",
@@ -187,7 +205,8 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "vmName": { "value": "[parameters('masterSettings').Name]" }
+          "vmName": { "value": "[parameters('masterSettings').Name]" },
+          "customerStorageAccount": { "value": "[parameters('masterSettings').Name]" }
         }
       }
     },

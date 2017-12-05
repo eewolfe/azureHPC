@@ -1,0 +1,277 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "nodeSettings": {
+      "type": "object",
+      "metadata": {
+        "Description": "master settings object"
+      }
+    },
+    "nodeOSSettings": {
+      "type": "object",
+      "metadata": {
+        "Description": "master OS settings object"
+      }
+    },
+    "nsgName": {
+      "type": "string",
+      "metadata": {
+        "Description": "Network Security Group Name for Public IP"
+      }
+    },
+    "vmNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "String used as a base for naming resources. Must be 3-61 characters in length and globally unique across Azure. A hash is prepended to this string for some resources, and resource-specific information is appended."
+      },
+      "maxLength": 61
+    },
+    "dataDiskSize": {
+      "type": "string",
+      "defaultValue": "none",
+      "allowedValues": [
+        "none",
+        "P10",
+        "P20",
+        "P30"
+      ],
+      "metadata": {
+        "description": "Premium storage disk size to attach"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "password for the Virtual Machine."
+      }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      },
+      "defaultValue": "https://raw.githubusercontent.com/eewolfe/azureHPC/custom2/Compute-Grid-Infra"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation."
+      },
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "namingInfix": "[toLower(take(concat(parameters('vmNamePrefix'), uniqueString(resourceGroup().id)), 9))]",
+    "vnetID": "[resourceId(parameters('nodeSettings').vnetRG, 'Microsoft.Network/virtualNetworks', parameters('nodeSettings').vnetName)]",
+    "extensionApiVersion": "2015-06-15",
+    "ScriptsOptions": {
+      "none": {
+        "params": ""
+      },
+      "beegfs": {
+        "params": " -S beegfs"
+      },
+      "pbspro": {
+        "params": " -s pbspro"
+      },
+      "master": {
+        "params": "[concat(' -m ', parameters('nodeSettings').MasterName)]"
+      }
+    },
+
+    "infraSubnetRef": "[concat(variables('vnetID'),'/subnets/infraSubnet/')]",
+    "cnSetupScript": "usernode-setup.sh",
+    "vmScripts": {
+      "scriptsToDownload": [
+        "[concat(parameters('_artifactsLocation'), '/UserNodes/', variables('cnSetupScript'),parameters('_artifactsLocationSasToken') )]",
+        "[concat(parameters('_artifactsLocation'), 'BeeGFS/install_beegfs.sh',parameters('_artifactsLocationSasToken') )]",
+        "[concat(parameters('_artifactsLocation'), 'PBSPro/install_pbspro.sh',parameters('_artifactsLocationSasToken') )]",
+        "[concat(parameters('_artifactsLocation'), 'PBSPro/pbs_selfregister.sh',parameters('_artifactsLocationSasToken') )]",
+        "[concat(parameters('_artifactsLocation'), 'Ganglia/install_ganglia.sh',parameters('_artifactsLocationSasToken') )]"
+      ],
+      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), variables('ScriptsOptions')['master'].params, variables('ScriptsOptions')[parameters('nodeSettings').scheduler].params, variables('ScriptsOptions')[parameters('nodeSettings').sharedStorage].params)]"
+    },
+    "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]",
+    "PremiumStorageMap": {
+      "none": {
+        "size": 0,
+        "nbDisk": 0
+      },
+      "P10": {
+        "size": 128,
+        "nbDisk": 1    
+      },
+      "P20": {
+        "size": 512,
+        "nbDisk": 1
+      },
+      "P30": {
+        "size": 1023,
+        "nbDisk": 1
+      }
+    },
+    "nbDataDisks": "[variables('PremiumStorageMap')[parameters('dataDiskSize')].nbDisk]",
+    "diskSize": "[variables('PremiumStorageMap')[parameters('dataDiskSize')].size]",
+    "dataDiskArray": [
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "0",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "1",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "2",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "3",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "4",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "5",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "6",
+        "createOption": "Empty"
+      },
+      {
+        "diskSizeGB": "[variables('diskSize')]",
+        "lun": "7",
+        "createOption": "Empty"
+      }
+    ]
+  },
+  "resources": [
+   
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(parameters('vmNamePrefix'), 'IP')]",
+      "location": "[variables('location')]",
+      "apiVersion": "2017-06-01",
+
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(variables('namingInfix'), parameters('vmNamePrefix'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(parameters('vmNamePrefix'), 'nic')]",
+      "location": "[variables('location')]",
+      "apiVersion": "2017-06-01",
+
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('vmNamePrefix'), 'IP')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "[concat(parameters('vmNamePrefix'), 'IPConfig')]",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('vmNamePrefix'), 'IP'))]"
+              },
+              "subnet": {
+                "id": "[variables('infraSubnetRef')]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(parameters('vmNamePrefix'))]",
+      "location": "[variables('location')]",
+      "apiVersion": "2017-03-30",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', parameters('vmNamePrefix'), 'nic')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('nodeSettings').VMsku]"
+        },
+        "osProfile": {
+          "computerName": "[concat(parameters('vmNamePrefix'))]",
+          "adminUsername": "[parameters('nodeOSSettings').adminUserName]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('nodeOSSettings').sshKeyData]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": "[parameters('nodeOSSettings').imageReference]",
+          "osDisk": {
+            "caching": "ReadOnly",
+            "createOption": "FromImage"
+          },
+          "dataDisks": "[take(variables('dataDiskArray'),variables('nbDataDisks'))]"    
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('vmNamePrefix'), 'nic'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": false
+           
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmNamePrefix'), '/installUserNode')]",
+      "apiVersion": "[variables('extensionApiVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmNamePrefix'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": "[variables('vmScripts').scriptsToDownload]",
+          "timestamp": 12345
+        },
+        "protectedSettings": {
+          "commandToExecute": "[variables('vmScripts').commandToExecute]"
+        }
+      }
+    }
+  ]
+}
