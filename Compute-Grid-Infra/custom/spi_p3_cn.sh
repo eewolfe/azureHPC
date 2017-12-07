@@ -94,6 +94,8 @@ export INSTALL_DIR=/shared/Landmark/SeisSpace5000.10.0
 
 # This runs on all nodes.
 echo "Check for missing packages"
+# Hack to set to version 7
+sed -i 's|echo \"version=\$ver\"|ver=7|' check_packages
 printf "y\ny\n" | $DIR/check_packages
 
 echo "Disabling transparent huge page compaction."
@@ -117,15 +119,6 @@ set_user_ssh centos
 # Add any requested users
 add_users $numusers
   
-# Mount the EFS filesystem
-# echo "Mount EFS filesystem"
-# mkdir -p /data/efs
-# mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).fs-261eca6f.efs.us-east-1.amazonaws.com:/ /data/efs
-
-echo "Centos 7 only..."
-ver=$(rpm -q --queryformat '%{VERSION}' centos-release)
-echo "version=$ver"
-if [ "$ver" -gt 6  ]; then
   # Hack for openmotif
   echo "Installing openmotif because the configure script will fail for this package on 7.x"
   yum -y install openmotif
@@ -135,9 +128,5 @@ if [ "$ver" -gt 6  ]; then
   fi
   # Increase the number of process threads RHEL 7
  sed -i 's|4096|16384|' /etc/security/limits.d/20-nproc.conf
-else
-  # Increase the number of process threads RHEL 6
- sed -i 's|1024|16384|' /etc/security/limits.d/90-nproc.conf
-fi
 
 echo "Finished"
