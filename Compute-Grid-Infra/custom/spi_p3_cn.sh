@@ -94,8 +94,6 @@ export INSTALL_DIR=/shared/Landmark/SeisSpace5000.10.0
 
 # This runs on all nodes.
 echo "Check for missing packages"
-# Hack to set to version 7
-sed -i 's|echo \"version=\$ver\"|ver=7|' check_packages
 printf "y\ny\n" | $DIR/check_packages
 
 echo "Disabling transparent huge page compaction."
