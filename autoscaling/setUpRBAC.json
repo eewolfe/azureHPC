@@ -13,7 +13,7 @@
         "metadata": {
           "description": "The storage account to set access for"
         }
-      }
+      },
       "vmssName": {
         "type": "string",
         "metadata": {
