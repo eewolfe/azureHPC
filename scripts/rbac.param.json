@@ -4,7 +4,7 @@
     "parameters": {
       "mastervmname": { "value": "spimaster" },
       "vmssName": { "value": "spi00" },
-      "storageAccountName": { "value": "mzspicustomer"}
+      "storageAccountName": { "value": ""}
     }
   }
   
