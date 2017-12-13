@@ -101,7 +101,7 @@
         "[concat(parameters('_artifactsLocation'), 'PBSPro/pbs_selfregister.sh',parameters('_artifactsLocationSasToken') )]",
         "[concat(parameters('_artifactsLocation'), 'Ganglia/install_ganglia.sh',parameters('_artifactsLocationSasToken') )]"
       ],
-      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), parameters('numberofusers'))]"
+      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), ' ', parameters('numberofusers'))]"
     },
     "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]",
     "PremiumStorageMap": {
