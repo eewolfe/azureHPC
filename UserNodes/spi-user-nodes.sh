@@ -86,6 +86,9 @@ function desktop_files () {
 
 echo "Command line arguments are $@"
 
+# Get the number of users from the command line.
+numusers=$1
+
 echo "Provision base OS"
 yum -y install epel-release
 
@@ -149,7 +152,6 @@ echo "Provision x2g0"
 
 echo "Check for missing packages"
 # Hack to set to version 7 
-sed -i 's|echo \"version=\$ver\"|ver=7|' $PROWESS_HOME/etc/check_packages
 printf "y\ny\n" | $DIR/check_packages
 
 echo "Disabling transparent huge page compaction."
