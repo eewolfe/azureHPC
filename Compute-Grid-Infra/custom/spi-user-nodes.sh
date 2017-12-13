@@ -22,7 +22,8 @@ while [ $user_count -le $1 ]
 # Set up for passwordless ssh
   set_user_ssh ssuser${user_count}
 
-
+# Install desktop files
+  desktop_files ssuser${user_count}
 
   ((user_count++))
  done
@@ -51,8 +52,6 @@ chown -R $1:centos ${home_dir}
 
 if [ ! -e "${home_dir}/.ssh/authorized_keys" ]; then
 su -c 'cat /dev/zero | ssh-keygen -q -N "" -t rsa' $1
-su -c 'cat /dev/zero | ssh-keygen -q -N "" -t rsa1' $1
-su -c 'cat /dev/zero | ssh-keygen -q -N "" -t dsa' $1
 cat ${home_dir}/.ssh/*.pub >> ${home_dir}/.ssh/authorized_keys
 cat /home/centos/.ssh/authorized_keys >> ${home_dir}/.ssh/authorized_keys
 fi
@@ -64,7 +63,16 @@ chown $1:centos ${home_dir}/.ssh/authorized_keys
   
 }
 
+#######################################
+# Install desktop files
+#######################################
 
+function desktop_files () {
+
+  echo "Install desktop files as $1"
+  sudo -u $1 $DIR/install_desktop_files $PROWESS_HOME $PROMAX_HOME
+
+}
 
 #################################
 # Run the script
@@ -74,26 +82,74 @@ chown $1:centos ${home_dir}/.ssh/authorized_keys
 # Get command line arguments, if any
 ######################################
 
-numusers=$1
+# Initialize arguments
+
+echo "Command line arguments are $@"
 
 echo "Provision base OS"
 yum -y install epel-release
-yum -y install libXp*-devel
 
 echo "Configuring SeisSpace"
 export PROWESS_HOME=/shared/Landmark/SeisSpace5000.10.0/SeisSpace
 export PROMAX_HOME=/shared/Landmark/SeisSpace5000.10.0/ProMAX
 export DIR=$PROWESS_HOME/etc
-export LM_LICENSE_FILE=2013@52.45.231.227
+export LM_LICENSE_FILE=2013@13.84.128.69
 export PROWESS_HOST=$(hostname)
 export PROWESS_PORT=5010
 export PROWESS_DATA_PORT=3282
 export LOGDIR=/etc/seisspace/logs
 export INSTALL_DIR=/shared/Landmark/SeisSpace5000.10.0
- 
+export azstgacct=$1
+export BLOBXFER_STORAGEACCOUNTKEY=$2
+export BLOBDIR="5000-10-scripts"
 
-# This runs on all nodes.
+  echo "Provision Desktop"
+  yum -y install xorg-x11-utils*
+  yum -y install xorg-x11-fonts-misc
+  yum -y install xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi
+  yum -y install tigervnc tigervnc-server
+  yum -y install compat-libf2c-34
+  yum -y install glibc-2.17
+  yum -y install firefox
+  yum -y install evince
+  yum -y install redhat-lsb-core
+
+#  Install blobxfer
+echo "Provision blobxfer"
+yum -y install epel-release gcc libffi-devel openssl-devel python-devel
+
+#  Download and install pip for RHEL 7
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+
+wget https://pypi.python.org/packages/source/s/setuptools/setuptools-7.0.tar.gz --no-check-certificate
+tar xzf setuptools-7.0.tar.gz
+cd setuptools-7.0
+python setup.py install
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
+cd ..
+
+pip install blobxfer --upgrade
+
+echo "Provision x2g0"
+ yum -y --enablerepo=epel install x2goserver-xsession.x86_64
+
+ yum groupinstall "Xfce" -y
+ yum groupinstall "Fonts" -y
+
+# Remove tty requirement for sudo
+  sed -i 's/requiretty/!requiretty/g' /etc/sudoers
+  
+# Adding service entries to every machine that may run a SeisSpace job
+  echo "Adding services entry for PD"
+  $DIR/add_promax_service lgc_pd pd
+  echo "Adding services entry for promax"
+  $DIR/add_promax_service promax promax
+
 echo "Check for missing packages"
+# Hack to set to version 7 
+sed -i 's|echo \"version=\$ver\"|ver=7|' $PROWESS_HOME/etc/check_packages
 printf "y\ny\n" | $DIR/check_packages
 
 echo "Disabling transparent huge page compaction."
@@ -104,12 +160,7 @@ echo "Creating /etc/rc.local.bak"
 sed -i.bak "/transparent_hugepage/d" /etc/rc.local
 echo "Updating /etc/rc.local."
 sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/etc/rc.local"
-
-# Make the shared directory that is mounted from the master node
-  echo "Create data home in shared directory:"
-  chmod 777 /shared/data
-  chmod 777 /shared/home
-  chmod 777 /mnt/resource
+sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.local
 
 # Set no host checking
 set_user_ssh centos
@@ -128,3 +179,4 @@ add_users $numusers
  sed -i 's|4096|16384|' /etc/security/limits.d/20-nproc.conf
 
 echo "Finished"
+

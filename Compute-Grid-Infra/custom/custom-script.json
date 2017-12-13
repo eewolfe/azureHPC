@@ -28,7 +28,7 @@
     }
   },
   "variables": {
-    "customScriptURI" : "[concat('https://', parameters('storageAccount'),'.blob.core.windows.net/scripts')]",
+    "customScriptURI" : "[concat('https://', parameters('storageAccount'),'.blob.core.windows.net/5000-10-scripts')]",
     "extensionApiVersion": "2015-06-15"
   },
   "resources": [
