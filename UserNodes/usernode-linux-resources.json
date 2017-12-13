@@ -94,8 +94,8 @@
     "cnSetupScript": "usernode-setup.sh",
     "vmScripts": {
       "scriptsToDownload": [
-        "[concat(parameters('_artifactsLocation'), '/UserNodes/', variables('cnSetupScript'),parameters('_artifactsLocationSasToken') )]",
-        "[concat(parameters('_artifactsLocation'), '/UserNodes/spi-user-nodes.sh',parameters('_artifactsLocationSasToken') )]",
+        "[concat(parameters('_artifactsLocation'), 'UserNodes/', variables('cnSetupScript'),parameters('_artifactsLocationSasToken') )]",
+        "[concat(parameters('_artifactsLocation'), 'UserNodes/spi-user-nodes.sh',parameters('_artifactsLocationSasToken') )]",
         "[concat(parameters('_artifactsLocation'), 'BeeGFS/install_beegfs.sh',parameters('_artifactsLocationSasToken') )]",
         "[concat(parameters('_artifactsLocation'), 'PBSPro/install_pbspro.sh',parameters('_artifactsLocationSasToken') )]",
         "[concat(parameters('_artifactsLocation'), 'PBSPro/pbs_selfregister.sh',parameters('_artifactsLocationSasToken') )]",
