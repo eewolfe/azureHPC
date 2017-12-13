@@ -86,7 +86,7 @@ install_lsf()
 install_applications()
 {
 	log "install applications"		
-	bash spi_p3_cn.sh ${numusers} 
+	bash spi-user-nodes.sh ${numusers} 
 }
 
 mount_nfs()
@@ -179,7 +179,7 @@ fi
 sed -i 's/enforcing/disabled/g' /etc/selinux/config
 setenforce permissive
 
-install_azure_cli
+#install_azure_cli
 #install_azure_files
 #install_lsf
 
