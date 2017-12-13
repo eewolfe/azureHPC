@@ -159,8 +159,8 @@ sh -c "$_COMMAND"
 echo "Creating /etc/rc.local.bak"
 sed -i.bak "/transparent_hugepage/d" /etc/rc.local
 echo "Updating /etc/rc.local."
-sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/etc/rc.local"
-sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.local
+sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\"" >>/etc/rc.local
+sh -c "echo -e \"chmod 777 /mnt/resource\"" >> /etc/rc.local
 
 # Set no host checking
 set_user_ssh centos
