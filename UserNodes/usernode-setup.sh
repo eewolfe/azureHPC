@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 export MOUNT_POINT=/mnt/azure
 
 # Shares
