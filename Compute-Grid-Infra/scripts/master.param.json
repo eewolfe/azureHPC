@@ -2,17 +2,17 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vmPrefix": { "value": "spi" },
+    "vmPrefix": { "value": "" },
     "sharedStorage": { "value": "beegfs" },
     "dataDiskSize": { "value": "P10" },
     "scheduler": { "value": "pbspro" },
-    "masterImage": { "value": "RHEL_7.3" },
+    "masterImage": { "value": "RHEL_7.2" },
     "VMsku": { "value": "Standard_DS5_v2" },
     "networkDetails":  {
       "value": {
         "newOrExisting": "new",
         "resourceGroup": "",
-        "virtualNetworkName": "grid-vnet",
+        "virtualNetworkName": "",
         "addressPrefix": "10.127.90.0/23",
         "computeSubnetPrefix": "10.127.90.0/24",
         "storageSubnetPrefix": "10.127.91.0/25",
