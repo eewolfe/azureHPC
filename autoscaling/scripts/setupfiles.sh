@@ -30,6 +30,10 @@ az login --msi --msi-port ${PORT}
 
 storage_account_key=`az storage account keys list -n ${STORAGE_ACCOUNT} -g ${RESOURCE_GROUP}|jq '.[0].value'`
 
+# poll storage account for all containers
+# download to ___?
+az storage container list --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key}
+
 if [ `az storage container exists -n ${CONTAINER_NAME} --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key} |jq '.exists'` = 'false' ]; then
     echo "Creating container ${CONTAINER_NAME} in storage account ${STORAGE_ACCOUNT}"
     az storage container create -n ${CONTAINER_NAME} --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key}
@@ -39,3 +43,5 @@ blob_name=$(hostname|tr '[:upper:]' '[:lower:]')
 file_name=mktemp
 date > $file_name
 az storage blob upload --container-name ${CONTAINER_NAME} --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key} --name ${blob_name} --file ${file_name}
+
+
