@@ -306,6 +306,9 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },    
+          "numberofusers": {
+           "value": "[parameters('numberofusers')]"
           },
           "_artifactsLocation": {
            "value": "[parameters('_artifactsLocation')]"

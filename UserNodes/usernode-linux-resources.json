@@ -46,6 +46,12 @@
         "description": "password for the Virtual Machine."
       }
     },
+    "numberofusers": {
+      "type": "string",
+      "metadata": {
+        "description": "Number of user IDs to provision"
+      }
+    },
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -78,6 +84,9 @@
       },
       "master": {
         "params": "[concat(' -m ', parameters('nodeSettings').MasterName)]"
+      },
+      "users": {
+        "params": "[concat(' -m ', parameters('nodeSettings').MasterName)]"
       }
     },
 
@@ -92,7 +101,7 @@
         "[concat(parameters('_artifactsLocation'), 'PBSPro/pbs_selfregister.sh',parameters('_artifactsLocationSasToken') )]",
         "[concat(parameters('_artifactsLocation'), 'Ganglia/install_ganglia.sh',parameters('_artifactsLocationSasToken') )]"
       ],
-      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), variables('ScriptsOptions')['master'].params, variables('ScriptsOptions')[parameters('nodeSettings').scheduler].params, variables('ScriptsOptions')[parameters('nodeSettings').sharedStorage].params)]"
+      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), parameters('numberofusers'))]"
     },
     "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]",
     "PremiumStorageMap": {
