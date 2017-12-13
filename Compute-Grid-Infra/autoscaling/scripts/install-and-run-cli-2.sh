@@ -2,11 +2,7 @@
 
 while getopts ":i:a:c:r:" opt; do
   case $opt in
-    i) docker_image="$OPTARG"
-    ;;
     a) storage_account="$OPTARG"
-    ;;
-    c) container_name="$OPTARG"
     ;;
     r) resource_group="$OPTARG"
     ;;
@@ -19,9 +15,6 @@ while getopts ":i:a:c:r:" opt; do
   esac
 done
 
-if [ -z $docker_image ]; then
-    docker_image="azuresdk/azure-cli-python:latest"
-fi
 
 if [ -z $script_file ]; then
     script_file="writeblob.sh"

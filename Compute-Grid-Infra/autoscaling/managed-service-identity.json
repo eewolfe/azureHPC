@@ -103,12 +103,12 @@
           "autoUpgradeMinorVersion": true,
           "settings": {
             "fileUris": [
-              "[concat(parameters('_artifactsLocation'), '/scripts/writeblob.sh', parameters('_artifactsLocationSasToken'))]",
+              "[concat(parameters('_artifactsLocation'), '/scripts/setupfiles.sh', parameters('_artifactsLocationSasToken'))]",
               "[concat(parameters('_artifactsLocation'), '/scripts/install-and-run-cli-2.sh', parameters('_artifactsLocationSasToken'))]"
             ]
           },
           "protectedSettings": {
-            "commandToExecute": "[concat('./install-and-run-cli-2.sh -i \"', parameters('azureCLI2DockerImage'),'\" -a \"', parameters('storageAccountName'), '\" -c \"', variables('containerName'), '\" -r \"', resourceGroup().Name,'\"')]"
+            "commandToExecute": "[concat('./install-and-run-cli-2.sh\"','\" -a \"', parameters('storageAccountName'), '\" -t setupfiles.sh \"', '\" -r \"', resourceGroup().Name,'\"')]"
           }
         }
       }
