@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "VMsku": { "value": "Standard_DS4_v2" },
-    "vmSSPrefix": { "value": "spi" },
+    "vmNamePrefix": { "value": "nav" },
     "computeNodeImage": { "value": "RHEL_7.2" },
     "instanceCount": { "value": 1 },
     "RGvnetName": { "value": "" },
