@@ -25,6 +25,20 @@
       "metadata": {
         "description": "password for the Virtual Machine."
       }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      },
+      "defaultValue": "https://raw.githubusercontent.com/eewolfe/azureHPC/master"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation."
+      },
+      "defaultValue": ""
     }
   },
   "variables": {
@@ -94,29 +108,29 @@
     "sshKeyPath": "[concat('/home/',parameters('masterOSSettings').adminUserName,'/.ssh/authorized_keys')]",
     "StorageTemplateURIChoice": {
       "none": {
-        "uri": "[uri(deployment().properties.templateLink.uri, 'storage-none.json')]",
+        "uri": "[concat(parameters('_artifactsLocation'), 'Default/storage-none.json', parameters('_artifactsLocationSasToken'))]",
         "params": ""
       },
       "beegfs": {
-        "uri": "[uri(deployment().properties.templateLink.uri, 'BeeGFS/beegfs-script.json')]",
+        "uri": "[concat(parameters('_artifactsLocation'), 'BeeGFS/beegfs-script.json', parameters('_artifactsLocationSasToken'))]",
         "params": "[concat(parameters('masterSettings').Name, ' client')]"
       },
       "nfsonmaster": {
-        "uri": "[uri(deployment().properties.templateLink.uri, 'nfs/nfsonmaster.json')]",
+        "uri": "[concat(parameters('_artifactsLocation'), 'nfs/nfsonmaster.json', parameters('_artifactsLocationSasToken'))]",
         "params": ""
       }
     },
     "SchedulerTemplateURIChoice": {
       "none": {
-        "uri": "[uri(deployment().properties.templateLink.uri, 'scheduler-none.json')]"
+        "uri": "[concat(parameters('_artifactsLocation'), 'Default/scheduler-none.json', parameters('_artifactsLocationSasToken'))]"
       },
       "pbspro": {
-        "uri": "[uri(deployment().properties.templateLink.uri, 'PBSPro/pbspro.json')]"
+        "uri": "[concat(parameters('_artifactsLocation'), 'PBSPro/pbspro.json', parameters('_artifactsLocationSasToken'))]"
       }
     },
-    "gangliaTemplateURI": "[uri(deployment().properties.templateLink.uri, 'Ganglia/ganglia.json')]",
-    "masterScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'master-linux-script.json')]",
-    "customScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'custom/custom-script.json')]",
+    "gangliaTemplateURI": "[concat(parameters('_artifactsLocation'), 'Ganglia/ganglia.json', parameters('_artifactsLocationSasToken'))]",
+    "masterScriptTemplateURI": "[concat(parameters('_artifactsLocation'), 'Master/master-linux-script.json', parameters('_artifactsLocationSasToken'))]",
+    "customScriptTemplateURI": "[concat(parameters('_artifactsLocation'), 'custom/custom-script.json', parameters('_artifactsLocationSasToken'))]",
     "deploymentApiVersion": "2016-09-01"
   },
   "resources": [

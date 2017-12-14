@@ -5,13 +5,13 @@
     "nodeSettings": {
       "type": "object",
       "metadata": {
-        "Description": "master settings object"
+        "Description": "node settings object"
       }
     },
     "nodeOSSettings": {
       "type": "object",
       "metadata": {
-        "Description": "master OS settings object"
+        "Description": "node OS settings object"
       }
     },
     "vmssName": {
@@ -24,10 +24,10 @@
     "instanceCount": {
       "type": "int",
       "metadata": {
-        "description": "Number of VM instances (100 or less)."
+        "description": "Number of VM instances (1000 or less)."
       },
       "defaultValue": 1,
-      "maxValue": 40
+      "maxValue": 1000
     },
     "newStorageAccountSuffix": {
       "type": "string"
@@ -37,39 +37,37 @@
       "metadata": {
         "description": "password for the Virtual Machine."
       }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      },
+      "defaultValue": "https://raw.githubusercontent.com/eewolfe/azureHPC/master"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation."
+      },
+      "defaultValue": ""
     }
   },
   "variables": {
     "location": "[resourceGroup().location]",
     "namingInfix": "[toLower(take(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 9))]",
-    "uniqueStringArray": [
-      "[concat(take(uniqueString(concat(resourceGroup().id, parameters('newStorageAccountSuffix'), '0')), 9), parameters('newStorageAccountSuffix'))]",
-      "[concat(take(uniqueString(concat(resourceGroup().id, parameters('newStorageAccountSuffix'), '1')), 9), parameters('newStorageAccountSuffix'))]",
-      "[concat(take(uniqueString(concat(resourceGroup().id, parameters('newStorageAccountSuffix'), '2')), 9), parameters('newStorageAccountSuffix'))]",
-      "[concat(take(uniqueString(concat(resourceGroup().id, parameters('newStorageAccountSuffix'), '3')), 9), parameters('newStorageAccountSuffix'))]",
-      "[concat(take(uniqueString(concat(resourceGroup().id, parameters('newStorageAccountSuffix'), '4')), 9), parameters('newStorageAccountSuffix'))]"
-    ],
-    "vhdContainers": [
-      "[concat('https://', variables('uniqueStringArray')[0], '.blob.core.windows.net/', variables('vhdContainerName'))]",
-      "[concat('https://', variables('uniqueStringArray')[1], '.blob.core.windows.net/', variables('vhdContainerName'))]",
-      "[concat('https://', variables('uniqueStringArray')[2], '.blob.core.windows.net/', variables('vhdContainerName'))]",
-      "[concat('https://', variables('uniqueStringArray')[3], '.blob.core.windows.net/', variables('vhdContainerName'))]",
-      "[concat('https://', variables('uniqueStringArray')[4], '.blob.core.windows.net/', variables('vhdContainerName'))]"
-    ],
-    // total storage account used for OSDisks in the VMSS is 2 + instance/30, for a max of 5 SA with 100 VMs.
-    "saCount": "[add(2, div(parameters('instanceCount'), 30))]",
-    "vhdContainerName": "[concat(variables('namingInfix'), 'vhd')]",
-    "osDiskName": "[concat(variables('namingInfix'), 'osdisk')]",
     "vnetID": "[resourceId(parameters('nodeSettings').vnetRG, 'Microsoft.Network/virtualNetworks', parameters('nodeSettings').vnetName)]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/', parameters('nodeSettings').subnetName)]",
     "nicName": "[concat(variables('namingInfix'), 'nic')]",
     "ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
-    "computeApiVersion": "2016-03-30",
+    "computeApiVersion": "2016-04-30-preview",
     "networkApiVersion": "2016-03-30",
-    "storageApiVersion": "2015-06-15",
     "ScriptsOptions": {
       "none": {
         "params": ""
+      },
+      "nfsonmaster": {
+        "params": " -S nfsonmaster"
       },
       "beegfs": {
         "params": " -S beegfs"
@@ -79,50 +77,39 @@
       },
       "master": {
         "params": "[concat(' -m ', parameters('nodeSettings').MasterName)]"
+      },
+      "numberofusers": {
+        "params": "[concat(' -n ', parameters('nodeSettings').numberofusers)]"
       }
     },
     "cnSetupScript": "cn-setup.sh",
     "vmScripts": {
       "scriptsToDownload": [
-        "[uri(deployment().properties.templateLink.uri, variables('cnSetupScript'))]",
-        "[uri(deployment().properties.templateLink.uri, 'BeeGFS/install_beegfs.sh')]",
-        "[uri(deployment().properties.templateLink.uri, 'PBSPro/install_pbspro.sh')]",
-        "[uri(deployment().properties.templateLink.uri, 'PBSPro/pbs_selfregister.sh')]",
-        "[uri(deployment().properties.templateLink.uri, 'Ganglia/install_ganglia.sh')]"
+        "[concat(parameters('_artifactsLocation'),  'ComputeNodes/scripts/', variables('cnSetupScript'))]",
+        "[concat(parameters('_artifactsLocation'), 'BeeGFS/install_beegfs.sh', parameters('_artifactsLocationSasToken'))]",
+        "[concat(parameters('_artifactsLocation'), 'PBSPro/install_pbspro.sh', parameters('_artifactsLocationSasToken'))]",
+        "[concat(parameters('_artifactsLocation'), 'PBSPro/pbs_selfregister.sh', parameters('_artifactsLocationSasToken'))]",
+        "[concat(parameters('_artifactsLocation'), 'Ganglia/install_ganglia.sh', parameters('_artifactsLocationSasToken'))]",
+        "[concat(parameters('_artifactsLocation'), 'custom/spi_p3_cn.sh', parameters('_artifactsLocationSasToken'))]"
       ],
-      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), variables('ScriptsOptions')['master'].params, variables('ScriptsOptions')[parameters('nodeSettings').scheduler].params, variables('ScriptsOptions')[parameters('nodeSettings').sharedStorage].params)]"
+      "commandToExecute": "[concat('bash ', variables('cnSetupScript'), variables('ScriptsOptions')['master'].params, variables('ScriptsOptions')[parameters('nodeSettings').scheduler].params, variables('ScriptsOptions')[parameters('nodeSettings').sharedStorage].params, variables('ScriptsOptions')['numberofusers'].params)]"
     },
     "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]"
+
   },
   "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('uniqueStringArray')[copyIndex()]]",
-      "location": "[variables('location')]",
-      "apiVersion": "[variables('storageApiVersion')]",
-      "copy": {
-        "name": "storageLoop",
-        "count": "[variables('saCount')]"
-      },
-      "properties": {
-        "accountType": "[parameters('nodeSettings').storageAccountType]"
-      }
-    },
     {
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[parameters('vmssName')]",
       "location": "[variables('location')]",
       "apiVersion": "[variables('computeApiVersion')]",
-      "dependsOn": [
-        "storageLoop"
-      ],
       "sku": {
         "name": "[parameters('nodeSettings').VMsku]",
         "tier": "Standard",
         "capacity": "[parameters('instanceCount')]"
       },
       "properties": {
-        "overprovision": "true",
+        "overprovision": "false",
         "upgradePolicy": {
           "mode": "Manual"
         },
@@ -165,11 +152,10 @@
           "storageProfile": {
             "imageReference": "[parameters('nodeOSSettings').imageReference]",
             "osDisk": {
-              "vhdContainers": "[take(variables('vhdContainers'),variables('saCount'))]",
-              "name": "[variables('osDiskName')]",
-              "caching": "ReadOnly",
-              "createOption": "FromImage"
-            }
+              "createOption": "FromImage",
+              "caching": "ReadOnly"
+            },
+            "dataDisks": []
           },
           "extensionProfile": {
             "extensions": [

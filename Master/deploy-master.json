@@ -214,10 +214,10 @@
     },
     "deploymentApiVersion": "2015-01-01",
 
-    "sharedTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'shared-resources.json')]",
-    "master-sharedTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'master-shared-resources.json')]",
-    "master-OSTemplateUrl": "[uri(deployment().properties.templateLink.uri, concat('master-', variables('masterOSSettings').osType.os, '-resources.json'))]",
-    "master-NSGTemplateUrl": "[uri(deployment().properties.templateLink.uri, concat('nsg-master-', variables('masterOSSettings').osType.os, '.json'))]"
+    "sharedTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Shared/shared-resources.json', parameters('_artifactsLocationSasToken'))]",
+    "master-sharedTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Master/master-shared-resources.json', parameters('_artifactsLocationSasToken'))]",
+    "master-OSTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Master/', concat('master-', variables('masterOSSettings').osType.os, '-resources.json', parameters('_artifactsLocationSasToken')))]",
+    "master-NSGTemplateUrl": "[concat(parameters('_artifactsLocation'), concat('nsg-master-', variables('masterOSSettings').osType.os, '.json', parameters('_artifactsLocationSasToken')))]"
   },
   "resources": [
     {
@@ -304,6 +304,12 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('_artifactsLocation')]"
+          },
+          "_artifactsLocationSasToken": {
+            "value": "[parameters('_artifactsLocationSasToken')]"
           }
         }
       }

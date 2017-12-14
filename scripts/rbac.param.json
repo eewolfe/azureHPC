@@ -2,9 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "mastervmname": { "value": "spimaster" },
+      "mastervmname": { "value": "fgtmaster" },
       "vmssName": { "value": "spi00" },
-      "storageAccountName": { "value": ""}
+      "storageAccountName": { "value": "vgg736r3f2mzscust"}
     }
   }
   
