@@ -69,10 +69,19 @@ Below is an example on how to provision the templates. First you have to login w
 
     az login
     az account set --subscription [subscriptionId]
-    az group create -l "West Europe" -n rg-master
+    az group create -l "SouthCentralUS" -n rg-master
     az group deployment create -g rg-master --template-uri https://raw.githubusercontent.com/eewolfe/azureHPC/master/Compute-Grid-Infra/deploy-master.json --parameters @myparams.json
 
+## Helper scripts to aid in deployment
 
+* upload.sh <storage account name> - This script will upload all of the templates to a storage account and return the uri and key to support ARM deployment directly from the storage account. This eliminates the need to host this repository in a public location
+
+After running upload.sh, export the SCRIPT_URL and SCRIPT_SASKEY so that the following scripts will pick up the new location. Otherwise, it will default to this github repository
+
+* deploy.master.sh <resource group name> - Creates the resource group and deploys the master node
+* deploy.beegfs.sh <resource group name> - Deploys a VM scale set and a BeeGFS cluster
+* deploy.nodes.sh <resource group name> - Deploys the compute cluster
+* deploy.usernodes.sh <resource group name> - Deploys several nodes for users to log into and run the UI for the applications
 
 ## Create the networking infrastructure and the jumpbox
 The template __deploy-master.json__ will provision the networking infrastructure as well as a master VM exposing an SSH endpoint for remote connection.   
