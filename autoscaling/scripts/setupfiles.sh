@@ -33,6 +33,7 @@ storage_account_key=`az storage account keys list -n ${STORAGE_ACCOUNT} -g ${RES
 # poll storage account for all containers
 # download to ___?
 az storage container list --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key}
+az storage blob download-batch --destination /shared/data --source ${CONTAINER_NAME} --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key}
 
 if [ `az storage container exists -n ${CONTAINER_NAME} --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key} |jq '.exists'` = 'false' ]; then
     echo "Creating container ${CONTAINER_NAME} in storage account ${STORAGE_ACCOUNT}"
@@ -43,5 +44,4 @@ blob_name=$(hostname|tr '[:upper:]' '[:lower:]')
 file_name=mktemp
 date > $file_name
 az storage blob upload --container-name ${CONTAINER_NAME} --account-name ${STORAGE_ACCOUNT} --account-key ${storage_account_key} --name ${blob_name} --file ${file_name}
-
 
