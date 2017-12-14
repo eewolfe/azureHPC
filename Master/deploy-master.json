@@ -217,7 +217,7 @@
     "sharedTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Shared/shared-resources.json', parameters('_artifactsLocationSasToken'))]",
     "master-sharedTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Master/master-shared-resources.json', parameters('_artifactsLocationSasToken'))]",
     "master-OSTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Master/', concat('master-', variables('masterOSSettings').osType.os, '-resources.json', parameters('_artifactsLocationSasToken')))]",
-    "master-NSGTemplateUrl": "[concat(parameters('_artifactsLocation'), concat('nsg-master-', variables('masterOSSettings').osType.os, '.json', parameters('_artifactsLocationSasToken')))]"
+    "master-NSGTemplateUrl": "[concat(parameters('_artifactsLocation'), concat('Master/nsg-master-', variables('masterOSSettings').osType.os, '.json', parameters('_artifactsLocationSasToken')))]"
   },
   "resources": [
     {

@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vmPrefix": { "value": "" },
+    "vmPrefix": { "value": "spi" },
     "sharedStorage": { "value": "beegfs" },
     "dataDiskSize": { "value": "P10" },
     "scheduler": { "value": "pbspro" },
@@ -12,7 +12,7 @@
       "value": {
         "newOrExisting": "new",
         "resourceGroup": "",
-        "virtualNetworkName": "",
+        "virtualNetworkName": "vnet-grid",
         "addressPrefix": "10.127.90.0/23",
         "computeSubnetPrefix": "10.127.90.0/24",
         "storageSubnetPrefix": "10.127.91.0/25",
@@ -21,10 +21,10 @@
         "gatewaySubnetPrefix": "10.127.91.224/27"
       }
     },
-    "adminUserName": { "value": "" },
+    "adminUserName": { "value": "localadmin" },
     "adminPassword": { "value": "" },
     "numberofusers": { "value": "5" },
-    "sshKeyData": { "value": ""}
+    "sshKeyData": { "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwfhd1Pjd8pmCntQ+hA4X/c17srobPtzhZEzcEZG0ZqcUyvQMnwPWAChTgw3QGpTjlXR9onQb+AK584NqGqoasJoaCe3dhqcLnreDW/Kgq5NRda/bHd8AWmu0p4dOxiFQnrVjkTCEriCmFuKEFRUiCwjZ6+xgjS65eHVnFskaLJD0nDmlBP1WTgXhvRvOvm/bx4nitiXzYFIVYWRI8aSTYiCyvW0mNFkimH7rkNA6wcRMI8gkq1nm8gt+VX2qThIiavXzIxOrHEQwJCyMLKVVIpvjDH4eLx+YkxhSb6N0j3tPqYtq8A7DicnEMy/2pBW0rtiz4PTBafRQrL4bSUhqh mjz115@mzalta"}
   }
 }
 

@@ -120,6 +120,20 @@
       "metadata": {
         "description": "custom domain name to use for name resolution"
       }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      },
+      "defaultValue": "https://raw.githubusercontent.com/eewolfe/azureHPC/master"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation."
+      },
+      "defaultValue": ""
     }
   },
   "variables": {
@@ -176,8 +190,8 @@
     "gangliaInstall": "[concat('bash install_ganglia.sh ', variables('beeGFSNodeSettings').MasterName, ' Master 8649')]",
     "vmScripts": {
       "scriptsToDownload": [
-        "[uri(deployment().properties.templateLink.uri, 'install_beegfs.sh')]",
-        "[uri(deployment().properties.templateLink.uri, '../Ganglia/install_ganglia.sh')]"
+        "[concat(parameters('_artifactsLocation'), 'BeeGFS/install_beegfs.sh', parameters('_artifactsLocationSasToken'))]",
+        "[concat(parameters('_artifactsLocation'), 'Ganglia/install_ganglia.sh', parameters('_artifactsLocationSasToken'))]"
       ],
       "commandToExecute": "[concat('bash install_beegfs.sh ', variables('installParams'), ';', variables('gangliaInstall'))]"
     },

@@ -2,6 +2,14 @@
 
 set -x 
 
-az account set -s ""
-az group deployment create -g $1 --template-uri https://raw.githubusercontent.com/eewolfe/azureHPC/master/custom/custom-script.json --parameters @seisspace.param.json --parameters _artifactsLocation='https://raw.githubusercontent.com/eewolfe/azureHPC/master/'
+if [ -z $SCRIPT_SASKEY ]; then
+    SCRIPT_SASKEY=""
+fi
+if [ -z $SCRIPT_URL ]; then
+    SCRIPT_URL='https://raw.githubusercontent.com/eewolfe/azureHPC/master'
+fi
+
+templateuri=$SCRIPT_URL'/custom/custom-script.json'$SCRIPT_SASKEY
+
+az group deployment create -g $1 --template-uri "$templateuri" --parameters @seisspace.param.json --parameters _artifactsLocation="$SCRIPT_URL/" _artifactsLocationSasToken="$SCRIPT_SASKEY"
 

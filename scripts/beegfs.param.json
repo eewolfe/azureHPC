@@ -6,10 +6,10 @@
     "nodeCount": { "value": 3 },
     "storageDiskSize": { "value": "P10" },
     "nbStorageDisks": { "value": 3 },
-    "RGvnetName": { "value": "" },
-    "vnetName": { "value": "" },
-    "adminUsername": { "value": "" },
-    "sshKeyData": {"value": ""},
-    "masterName": { "value": "" },
+    "RGvnetName": { "value": "mzspi9" },
+    "vnetName": { "value": "vnet-grid" },
+    "adminUsername": { "value": "localadmin" },
+    "sshKeyData": {"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwfhd1Pjd8pmCntQ+hA4X/c17srobPtzhZEzcEZG0ZqcUyvQMnwPWAChTgw3QGpTjlXR9onQb+AK584NqGqoasJoaCe3dhqcLnreDW/Kgq5NRda/bHd8AWmu0p4dOxiFQnrVjkTCEriCmFuKEFRUiCwjZ6+xgjS65eHVnFskaLJD0nDmlBP1WTgXhvRvOvm/bx4nitiXzYFIVYWRI8aSTYiCyvW0mNFkimH7rkNA6wcRMI8gkq1nm8gt+VX2qThIiavXzIxOrHEQwJCyMLKVVIpvjDH4eLx+YkxhSb6N0j3tPqYtq8A7DicnEMy/2pBW0rtiz4PTBafRQrL4bSUhqh mjz115@mzalta"},
+    "masterName": { "value": "spimaster" }
   }
 }

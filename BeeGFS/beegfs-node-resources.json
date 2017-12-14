@@ -20,6 +20,20 @@
         "description": "Index number of the VM"
       },
       "maxLength": 2
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      },
+      "defaultValue": "https://raw.githubusercontent.com/eewolfe/azureHPC/master"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation."
+      },
+      "defaultValue": ""
     }
   },
   "variables": {
@@ -50,8 +64,8 @@
     "storageApiVersion": "2015-06-15",
     "extensionApiVersion": "2015-06-15",
     "deploymentApiVersion": "2016-09-01",
-    "beeGFSScriptTemplateURI": "[uri(deployment().properties.templateLink.uri, 'beegfs-script.json')]",
-    "gangliaTemplateURI": "[uri(deployment().properties.templateLink.uri, '../Ganglia/ganglia.json')]",
+    "beeGFSScriptTemplateURI": "[concat(parameters('_artifactsLocation'), 'BeeGFS/beegfs-script.json', parameters('_artifactsLocationSasToken'))]",
+    "gangliaTemplateURI": "[concat(parameters('_artifactsLocation'), 'Ganglia/ganglia.json', parameters('_artifactsLocationSasToken'))]",
     "installParams": "[concat(parameters('nodeSettings').MasterName, ' ', parameters('nodeSettings').nodeType, ' \"', parameters('nodeSettings').customDomain, '\"')]",
     "sshKeyPath": "[concat('/home/',parameters('nodeOSSettings').adminUserName,'/.ssh/authorized_keys')]",
     "storageDiskArray": [
