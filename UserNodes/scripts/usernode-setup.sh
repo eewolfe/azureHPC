@@ -133,7 +133,7 @@ install_ganglia()
 
 install_pbspro()
 {
-	bash install_pbspro.sh ${MASTER_NAME}
+	bash install_pbspro_usernode.sh ${MASTER_NAME}
 }
 
 #install the Linux Integration Services v4.1.3-2
