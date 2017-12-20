@@ -86,7 +86,7 @@
         "params": "[concat(' -m ', parameters('nodeSettings').MasterName)]"
       },
       "users": {
-        "params": "[concat(' -n ', parameters('nodeSettings').MasterName)]"
+        "params": "[concat(' -n ', parameters('nodeSettings').numberofusers)]"
       }
     },
 
