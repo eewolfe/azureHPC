@@ -93,7 +93,7 @@
     "infraSubnetRef": "[concat(variables('vnetID'),'/subnets/infraSubnet/')]",
     "cnSetupScript": "usernode-setup.sh",
     "cnSetupScriptArgs" : "[concat(variables('ScriptsOptions').master.params,' ', variables('ScriptsOptions').users.params, ' ',variables('ScriptsOptions').beegfs.params, ' ',variables('ScriptsOptions').pbspro.params )]",
-    "vmScripts": {https://github.com/eewolfe/azureHPC/tree/master/UserNodes
+    "vmScripts": {
       "scriptsToDownload": [
         "[concat(parameters('_artifactsLocation'), 'UserNodes/scripts/', variables('cnSetupScript'),parameters('_artifactsLocationSasToken') )]",
         "[concat(parameters('_artifactsLocation'), 'UserNodes/scripts/spi-user-nodes.sh',parameters('_artifactsLocationSasToken') )]",
