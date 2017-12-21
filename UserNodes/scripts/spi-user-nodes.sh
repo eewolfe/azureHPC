@@ -19,9 +19,6 @@ while [ $user_count -le $1 ]
   adduser -u 700${user_count} -g centos -b /shared/home ssuser${user_count}
   echo "ssuser${user_count}:ssuser${user_count}pw" | chpasswd
 
-# Set up for passwordless ssh
-  set_user_ssh ssuser${user_count}
-
 # Install desktop files
   desktop_files ssuser${user_count}
 
