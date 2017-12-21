@@ -154,16 +154,6 @@ echo "Check for missing packages"
 # Hack to set to version 7 
 printf "y\ny\n" | $DIR/check_packages
 
-echo "Disabling transparent huge page compaction."
-_COMMAND="echo never > /sys/kernel/mm/transparent_hugepage/defrag"
-echo "Disabling transparent huge page compaction now and for future restarts."
-sh -c "$_COMMAND"
-echo "Creating /etc/rc.local.bak"
-sed -i.bak "/transparent_hugepage/d" /etc/rc.local
-echo "Updating /etc/rc.local."
-sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/etc/rc.local"
-sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.local"
-
 # Set no host checking
 set_user_ssh centos
 
@@ -177,8 +167,7 @@ add_users $numusers
     echo "Add symbolic link for libXm.so.3"
     ln -s /usr/lib64/libXm.so.4 /usr/lib64/libXm.so.3
   fi
-  # Increase the number of process threads RHEL 7
- sed -i 's|4096|16384|' /etc/security/limits.d/20-nproc.conf
+
 
 echo "Finished"
 
