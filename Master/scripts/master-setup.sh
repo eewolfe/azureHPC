@@ -113,6 +113,24 @@ EOF
 }
 
 ######################################################################
+setup_system()
+{
+echo "Disabling transparent huge page compaction."
+_COMMAND="echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+echo "Disabling transparent huge page compaction now and for future restarts"
+sh -c "$_COMMAND"
+
+echo "Creating /etc/rc.d/rc.local.bak"
+sed -i.bak "/transparent_hugepage/d" /etc/rc.d/rc.local
+echo "Updating /etc/rc.d/rc.local"
+sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/etc/rc.d/rc.local"
+sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.d/rc.local"
+chmod u+x /etc/rc.d/rc.local
+systemctl start rc-local
+
+}
+
+######################################################################
 install_azure_files()
 {
 	log "install samba and cifs utils"
@@ -166,10 +184,13 @@ fi
 
 #install_azure_cli
 #install_azure_files
+
 setup_disks
 mount_nfs
 setup_user
+setup_system
 install_LIS
+
 #install_ganglia
 #install_beegfs
 
