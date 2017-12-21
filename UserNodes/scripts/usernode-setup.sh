@@ -80,6 +80,24 @@ install_azure_files()
 	
 }
 
+######################################################################
+setup_system()
+{
+echo "Disabling transparent huge page compaction."
+_COMMAND="echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+echo "Disabling transparent huge page compaction now and for future restarts"
+sh -c "$_COMMAND"
+
+echo "Creating /etc/rc.d/rc.local.bak"
+sed -i.bak "/transparent_hugepage/d" /etc/rc.d/rc.local
+echo "Updating /etc/rc.d/rc.local"
+sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/etc/rc.d/rc.local"
+sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.d/rc.local"
+chmod u+x /etc/rc.d/rc.local
+systemctl start rc-local
+
+}
+
 install_lsf()
 {
 	log "install lsf"
@@ -204,6 +222,8 @@ install_LIS
 if [ "$SHARED_STORAGE" == "beegfs" ]; then
 	install_beegfs_client
 fi
+
+setup_system
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
