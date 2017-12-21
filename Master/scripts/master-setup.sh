@@ -115,11 +115,11 @@ EOF
 ######################################################################
 setup_system()
 {
+# Disable transparent huge pages and open permissions on /mnt/resource
 echo "Disabling transparent huge page compaction."
 _COMMAND="echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 echo "Disabling transparent huge page compaction now and for future restarts"
 sh -c "$_COMMAND"
-
 echo "Creating /etc/rc.d/rc.local.bak"
 sed -i.bak "/transparent_hugepage/d" /etc/rc.d/rc.local
 echo "Updating /etc/rc.d/rc.local"
@@ -127,6 +127,9 @@ sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/e
 sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.d/rc.local"
 chmod u+x /etc/rc.d/rc.local
 systemctl start rc-local
+
+# Increase the number of available processes
+sed -i 's|4096|16384|' /etc/security/limits.d/20-nproc.conf
 
 }
 
