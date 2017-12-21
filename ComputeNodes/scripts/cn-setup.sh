@@ -77,6 +77,25 @@ install_azure_files()
 	
 }
 
+######################################################################
+setup_system()
+{
+echo "Disabling transparent huge page compaction."
+_COMMAND="echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+echo "Disabling transparent huge page compaction now and for future restarts"
+sh -c "$_COMMAND"
+
+echo "Creating /etc/rc.d/rc.local.bak"
+sed -i.bak "/transparent_hugepage/d" /etc/rc.d/rc.local
+echo "Updating /etc/rc.d/rc.local"
+sh -c "echo -e \"\n# Disable transparent huge page compaction.\n$_COMMAND\" >>/etc/rc.d/rc.local"
+sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.d/rc.local"
+chmod u+x /etc/rc.d/rc.local
+systemctl start rc-local
+
+}
+
+######################################################################
 install_lsf()
 {
 	log "install lsf"
@@ -89,6 +108,7 @@ install_applications()
 	bash spi_p3_cn.sh ${numusers} 
 }
 
+######################################################################
 mount_nfs()
 {
 	log "install NFS"
@@ -118,21 +138,25 @@ mount_nfs()
 	# echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
 }
 
+######################################################################
 install_beegfs_client()
 {
 	bash install_beegfs.sh ${MASTER_NAME} "client"
 }
 
+######################################################################
 install_ganglia()
 {
 	bash install_ganglia.sh ${MASTER_NAME} "Cluster" 8649
 }
 
+######################################################################
 install_pbspro()
 {
 	bash install_pbspro.sh ${MASTER_NAME}
 }
 
+######################################################################
 #install the Linux Integration Services v4.1.3-2
 install_LIS()
 {
@@ -143,6 +167,7 @@ install_LIS()
 	cd ..
 }
 
+######################################################################
 setup_user()
 {
 	yum -y install nfs-utils nfs-utils-lib
@@ -166,6 +191,9 @@ setup_user()
 
     chown $HPC_USER:$HPC_GROUP $SHARE_SCRATCH	
 }
+
+######################################################################
+######################################################################
 
 #install_applications
 
@@ -201,6 +229,9 @@ install_LIS
 if [ "$SHARED_STORAGE" == "beegfs" ]; then
 	install_beegfs_client
 fi
+
+# Finish the final system configuration
+setup_system
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
