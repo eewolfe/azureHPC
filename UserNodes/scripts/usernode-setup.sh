@@ -13,7 +13,7 @@ NFS_ON_MASTER=/shared/data
 NFS_MOUNT=/shared/data
 
 # User
-HPC_USER=hpcuser
+HPC_USER=hpcsvc
 HPC_UID=7007
 HPC_GROUP=hpc
 HPC_GID=7007

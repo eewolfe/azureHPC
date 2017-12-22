@@ -21,7 +21,7 @@ SHARE_SCRATCH=$2
 SHARE_HOME=/share/home
 
 # User
-HPC_USER=hpcuser
+HPC_USER=hpcsvc
 HPC_UID=7007
 HPC_GROUP=hpc
 HPC_GID=7007

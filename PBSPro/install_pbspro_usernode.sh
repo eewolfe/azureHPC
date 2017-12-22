@@ -14,7 +14,7 @@ fi
 
 # Set user args
 MASTER_HOSTNAME=$1
-PBS_MANAGER=hpcuser
+PBS_MANAGER=hpcsvc
 
 # Downloads and installs PBS Pro OSS on the node.
 #

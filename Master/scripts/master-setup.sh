@@ -26,7 +26,7 @@ SHARE_SCRATCH=/shared/scratch
 SHARE_APPS=/shared/Landmark
 
 # User
-HPC_USER=hpcuser
+HPC_USER=hpcsvc
 HPC_UID=7007
 HPC_GROUP=hpc
 HPC_GID=7007

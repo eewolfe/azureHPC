@@ -29,7 +29,7 @@ BEEGFS_METADATA=/data/beegfs/meta
 BEEGFS_STORAGE=/data/beegfs/storage
 
 # User
-HPC_USER=hpcuser
+HPC_USER=hpcsvc
 HPC_UID=7007
 HPC_GROUP=hpc
 HPC_GID=7007

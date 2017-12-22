@@ -2,6 +2,8 @@
 
 set -x 
 
+az account set -s "Commercial-Chevron"
+
 if [ -z $SCRIPT_SASKEY ]; then
     SCRIPT_SASKEY=""
 fi
@@ -11,5 +13,4 @@ fi
 
 templateuri=$SCRIPT_URL'/custom/custom-script.json'$SCRIPT_SASKEY
 
-az group deployment create -g $1 --template-uri "$templateuri" --parameters @seisspace.param.json --parameters _artifactsLocation="$SCRIPT_URL/" _artifactsLocationSasToken="$SCRIPT_SASKEY"
-
+az group deployment create -g $1 --template-uri "$templateuri" --parameters @seisspace.param.json

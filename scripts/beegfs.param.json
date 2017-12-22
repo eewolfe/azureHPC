@@ -6,10 +6,10 @@
     "nodeCount": { "value": 3 },
     "storageDiskSize": { "value": "P10" },
     "nbStorageDisks": { "value": 3 },
-    "RGvnetName": { "value": "mzspi9" },
-    "vnetName": { "value": "vnet-grid" },
-    "adminUsername": { "value": "localadmin" },
-    "sshKeyData": {"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwfhd1Pjd8pmCntQ+hA4X/c17srobPtzhZEzcEZG0ZqcUyvQMnwPWAChTgw3QGpTjlXR9onQb+AK584NqGqoasJoaCe3dhqcLnreDW/Kgq5NRda/bHd8AWmu0p4dOxiFQnrVjkTCEriCmFuKEFRUiCwjZ6+xgjS65eHVnFskaLJD0nDmlBP1WTgXhvRvOvm/bx4nitiXzYFIVYWRI8aSTYiCyvW0mNFkimH7rkNA6wcRMI8gkq1nm8gt+VX2qThIiavXzIxOrHEQwJCyMLKVVIpvjDH4eLx+YkxhSb6N0j3tPqYtq8A7DicnEMy/2pBW0rtiz4PTBafRQrL4bSUhqh mjz115@mzalta"},
-    "masterName": { "value": "spimaster" }
+    "RGvnetName": { "value": "cvx-shared-rg" },
+    "vnetName": { "value": "cvx-scus-vnet01" },
+    "adminUsername": { "value": "centos" },
+    "sshKeyData": {"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCh5Xui7T3TrCaV+5AsA4L4ZquHoUJAbf6My7q30awN09vYTfSwTf2esoEGJOr1cJbwvhnNKVCV71jMqC8nU3M2ogZ/3hHD7EBuVnFVMUAfSG2CQDaO5BJ88aBxT2sVfPI0bZqYarPW2pUHCG3JBv00lOMASHpI7Nc20PGBNtfexSrBFneJRUGjf3Q3KpN/yAiaIAgVHK+S75TAUjoDR9OslXqUOMSJiGWeRI5O6T8NnR4uJvbkqH+0Ag0FqLcGMFv4tMP2HRhJqUpFmo5dy+LElHYyPLrEtlSxWYMmAwQO4omuYYhVHvUojAkLaqyOwyHWZpWSFr0FBki8rKs7QqtP root@azUtilityServer"},
+    "masterName": { "value": "cvxmaster" }
   }
 }

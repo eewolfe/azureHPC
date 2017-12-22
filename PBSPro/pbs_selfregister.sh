@@ -2,7 +2,7 @@
 # chkconfig: 345 99 10
 # description: auto start pbs_selfregister
 #
-PBS_MANAGER=hpcuser
+PBS_MANAGER=hpcsvc
 nodename=`hostname`
 
 case "$1" in

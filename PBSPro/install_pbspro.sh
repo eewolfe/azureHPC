@@ -14,7 +14,7 @@ fi
 
 # Set user args
 MASTER_HOSTNAME=$1
-PBS_MANAGER=hpcuser
+PBS_MANAGER=hpcsvc
 
 # Returns 0 if this node is the master node.
 #
@@ -76,7 +76,7 @@ EOF
         /opt/pbs/bin/qmgr -c "s s job_history_enable = true"
         /opt/pbs/bin/qmgr -c "s s job_history_duration = 336:0:0"
 
-		# add hpcuser as manager
+		# add hpcsvc as manager
         /opt/pbs/bin/qmgr -c "s s managers = $PBS_MANAGER@*"
 
     else
