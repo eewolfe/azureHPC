@@ -175,7 +175,7 @@ setup_user()
 	mount -a
 	mount
    
-#    groupadd -g $HPC_GID $HPC_GROUP
+    groupadd -g $HPC_GID $HPC_GROUP
 
     # Don't require password for HPC user sudo
     echo "$HPC_USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
