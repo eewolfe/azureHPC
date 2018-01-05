@@ -63,7 +63,7 @@
           "timestamp": 12345
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash ', 'custom/', variables('ssSetupScript'), ' ', parameters('storageAccount'),' ', parameters('storageKey'),' ', parameters('numberofusers'))]"
+          "commandToExecute": "[concat('bash ', variables('ssSetupScript'), ' ', parameters('storageAccount'),' ', parameters('storageKey'),' ', parameters('numberofusers'))]"
       }
     }
     }]
