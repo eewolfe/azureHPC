@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vmPrefix": { "value": "cvx" },
+    "vmPrefix": { "value": "VMP" },
     "sharedStorage": { "value": "beegfs" },
     "dataDiskSize": { "value": "P10" },
     "scheduler": { "value": "pbspro" },
@@ -11,8 +11,8 @@
     "networkDetails":  {
       "value": {
         "newOrExisting": "existing",
-        "resourceGroup": "cvx-shared-rg",
-        "virtualNetworkName": "cvx-scus-vnet01",
+        "resourceGroup": "RGP",
+        "virtualNetworkName": "VNN",
         "addressPrefix": "10.127.90.0/23",
         "computeSubnetPrefix": "10.127.90.0/24",
         "storageSubnetPrefix": "10.127.91.0/25",
@@ -21,10 +21,10 @@
         "gatewaySubnetPrefix": "10.127.91.224/27"
       }
     },
-    "adminUserName": { "value": "centos" },
+    "adminUserName": { "value": "hpcadmin" },
     "adminPassword": { "value": "" },
     "numberofusers": { "value": "5" },
-    "sshKeyData": { "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCh5Xui7T3TrCaV+5AsA4L4ZquHoUJAbf6My7q30awN09vYTfSwTf2esoEGJOr1cJbwvhnNKVCV71jMqC8nU3M2ogZ/3hHD7EBuVnFVMUAfSG2CQDaO5BJ88aBxT2sVfPI0bZqYarPW2pUHCG3JBv00lOMASHpI7Nc20PGBNtfexSrBFneJRUGjf3Q3KpN/yAiaIAgVHK+S75TAUjoDR9OslXqUOMSJiGWeRI5O6T8NnR4uJvbkqH+0Ag0FqLcGMFv4tMP2HRhJqUpFmo5dy+LElHYyPLrEtlSxWYMmAwQO4omuYYhVHvUojAkLaqyOwyHWZpWSFr0FBki8rKs7QqtP root@azUtilityServer"}
+    "sshKeyData": { "value": "ssh-rsa"}
   }
 }
 
