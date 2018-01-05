@@ -80,7 +80,7 @@ function desktop_files () {
 install_blobfuse () {
 
   rpm -Uvh https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
-  yum install blobfuse
+  yum -y install blobfuse
 
   mkdir -m 777 $BLOBFUSEDIR
   mkdir -m 777 $BLOBMNT
