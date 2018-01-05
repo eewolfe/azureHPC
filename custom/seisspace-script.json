@@ -52,5 +52,5 @@
           "commandToExecute": "[concat('bash ', 'custom/', variables('ssSetupScript'), ' ', parameters('storageAccount'),' ', parameters('storageKey'),' ', parameters('numberofusers'))]"
       }
     }
-  ]
+    }]
 }
