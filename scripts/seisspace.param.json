@@ -2,9 +2,9 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vmName": { "value": "cvxmaster" },
-    "storageAccount": { "value": "seisspacefg" },
-    "storageKey": { "value": "6OWbnGTVwHJXXHm8U8Da4Hc3BLCIFjUWGbmZEfpYLAYvxCY51U5CRC3wSWQd2Zsxf9qDK4YGuuDNjAK+CMSSQQ==" },
+    "vmName": { "value": "VMPmaster" },
+    "storageAccount": { "value": "StoreA" },
+    "storageKey": { "value": "StoreK" },
     "numberofusers": { "value": "5" }
   }
 }
