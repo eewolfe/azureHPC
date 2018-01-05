@@ -58,7 +58,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[concat(parameters('_artifactsLocation'), 'custom/', parameters('_artifactsLocationSasToken'))]"
+            "[concat(parameters('_artifactsLocation'), 'custom/', variables('ssSetupScript'), parameters('_artifactsLocationSasToken'))]"
           ],
           "timestamp": 12345
         },
