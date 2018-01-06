@@ -120,22 +120,15 @@ mount_nfs()
 	mkdir -p ${SHARE_APPS}
 	mkdir -p ${SHARE_HOME}
 
-	# mkdir -p ${SHARED}
-	# mkdir -p ${NFS_MOUNT}
-
 	log "mounting NFS on " ${MASTER_NAME}
 	showmount -e ${MASTER_NAME}
 	mount -t nfs ${MASTER_NAME}:${SHARE_SCRATCH} ${SHARE_SCRATCH}
 	mount -t nfs ${MASTER_NAME}:${SHARE_APPS} ${SHARE_APPS}
 	mount -t nfs ${MASTER_NAME}:${SHARE_HOME} ${SHARE_HOME}
-    # mount -t nfs ${MASTER_NAME}:${SHARED} ${SHARED}
-    # mount -t nfs ${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT}
 	
 	echo "${MASTER_NAME}:${SHARE_SCRATCH} ${SHARE_SCRATCH} nfs defaults,nofail  0 0" >> /etc/fstab
 	echo "${MASTER_NAME}:${SHARE_APPS} ${SHARE_APPS} nfs defaults,nofail  0 0" >> /etc/fstab
 	echo "${MASTER_NAME}:${SHARE_HOME} ${SHARE_HOME} nfs defaults,nofail  0 0" >> /etc/fstab	
-	# echo "${MASTER_NAME}:${SHARED} ${SHARED} nfs defaults,nofail  0 0" >> /etc/fstab
-	# echo "${MASTER_NAME}:${NFS_ON_MASTER} ${NFS_MOUNT} nfs defaults,nofail  0 0" >> /etc/fstab
 }
 
 ######################################################################
@@ -178,8 +171,6 @@ setup_user()
 	echo "$MASTER_NAME:$SHARE_HOME $SHARE_HOME    nfs4    rw,auto,_netdev 0 0" >> /etc/fstab
 	mount -a
 	mount
-   
-#    groupadd -g $HPC_GID $HPC_GROUP
 
     # Don't require password for HPC user sudo
     echo "$HPC_USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -187,7 +178,7 @@ setup_user()
     # Disable tty requirement for sudo
     sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
 
-	useradd -c "HPC User" -g $HPC_GROUP -d $SHARE_HOME/$HPC_USER -s /bin/bash -u $HPC_UID $HPC_USER
+    useradd -c "HPC User" -g $HPC_GROUP -d $SHARE_HOME/$HPC_USER -s /bin/bash -u $HPC_UID $HPC_USER
 
     chown $HPC_USER:$HPC_GROUP $SHARE_SCRATCH	
 }
@@ -208,9 +199,6 @@ sed -i 's/enforcing/disabled/g' /etc/selinux/config
 setenforce permissive
 
 install_azure_cli
-#install_azure_files
-#install_lsf
-
 setup_user
 install_ganglia
 
@@ -223,7 +211,6 @@ fi
 # fi
 
 install_applications
-
 install_LIS
 
 if [ "$SHARED_STORAGE" == "beegfs" ]; then
