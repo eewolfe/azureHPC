@@ -187,14 +187,18 @@ setup_user()
 
 #install_applications
 
-# Disable tty requirement for sudo
-    sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
-
 SETUP_MARKER=/var/local/cn-setup.marker
 if [ -e "$SETUP_MARKER" ]; then
     echo "We're already configured, exiting..."
     exit 0
 fi
+
+# Install epel repository for ganglia
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+
+# Disable tty requirement for sudo
+    sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
 
 # disable selinux
 sed -i 's/enforcing/disabled/g' /etc/selinux/config
