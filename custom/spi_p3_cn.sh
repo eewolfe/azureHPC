@@ -19,45 +19,9 @@ while [ $user_count -le $1 ]
   adduser -u 700${user_count} -g users -b /shared/home ssuser${user_count}
   echo "ssuser${user_count}:ssuser${user_count}pw" | chpasswd
 
-# Set up for passwordless ssh
-  set_user_ssh ssuser${user_count}
-
   ((user_count++))
  done
 
-}
-
-##################################
-# Function to set passwordless ssh
-##################################
-
-function set_user_ssh() {
-
-eval home_dir=`getent passwd $1 | cut -d: -f6`
-
-if [ ! -d "${home_dir}/.ssh" ]; then
- mkdir -m 700 ${home_dir}/.ssh
-fi
-
-cat << EOF > ${home_dir}/.ssh/config
-Host *
-  StrictHostKeyChecking=no
-  UserKnownHostsFile=/dev/null
-EOF
-
-chown -R $1:users ${home_dir}
-
-if [ ! -e "${home_dir}/.ssh/authorized_keys" ]; then
-su -c 'cat /dev/zero | ssh-keygen -q -N "" -t rsa' $1
-cat ${home_dir}/.ssh/*.pub >> ${home_dir}/.ssh/authorized_keys
-cat /home/centos/.ssh/authorized_keys >> ${home_dir}/.ssh/authorized_keys
-fi
-
-chmod 700 ${home_dir}/.ssh
-chmod 600 ${home_dir}/.ssh/config
-chmod 600 ${home_dir}/.ssh/authorized_keys
-chown $1:users ${home_dir}/.ssh/authorized_keys
-  
 }
 
 #####################################
