@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "VMsku": { "value": "Standard_DS2_v2" },
-    "vmSSPrefix": { "value": "VMPC" },
+    "vmSSPrefix": { "value": "VNODE" },
     "computeNodeImage": { "value": "RHEL_7.2" },
     "numberOfVMSS": { "value": 1 },
     "RGvnetName": { "value": "RGP" },
