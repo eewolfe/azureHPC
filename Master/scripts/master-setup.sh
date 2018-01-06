@@ -38,7 +38,7 @@ setup_disks()
 
     mkdir -p $SHARE_HOME
     mkdir -p $SHARE_SCRATCH
-	mkdir -p $SHARE_APPS
+    mkdir -p $SHARE_APPS
 }
 
 setup_user()
@@ -115,6 +115,7 @@ EOF
 ######################################################################
 setup_system()
 {
+
 # Disable transparent huge pages and open permissions on /mnt/resource
 echo "Disabling transparent huge page compaction."
 _COMMAND="echo never > /sys/kernel/mm/transparent_hugepage/defrag"
@@ -185,17 +186,11 @@ if [ -e "$SETUP_MARKER" ]; then
     exit 0
 fi
 
-#install_azure_cli
-#install_azure_files
-
 setup_disks
 mount_nfs
 setup_user
 setup_system
 install_LIS
-
-#install_ganglia
-#install_beegfs
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
