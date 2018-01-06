@@ -70,7 +70,7 @@ update_usernode () {
   sed -i "s|VNN|$virtualNetworkName|"  ./usernode.param.json
   sed -i "s|ssh-rsa|$sshKeyData|"      ./usernode.param.json
   sed -i "s|VMP|$vmPrefix|"            ./usernode.param.json
-  sed -i "s|VMPN|$vmNamePrefix|"       ./usernode.param.json
+  sed -i "s|VNODE|$vmNamePrefix|"       ./usernode.param.json
 
 }
 
