@@ -78,5 +78,6 @@ update_master
 update_beegfs
 update_seisspace
 update_nodes
+update_usernode
 
 exit 0
