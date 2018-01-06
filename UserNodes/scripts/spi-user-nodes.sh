@@ -19,59 +19,12 @@ while [ $user_count -le $1 ]
   adduser -u 700${user_count} -g users -b /shared/home ssuser${user_count}
   echo "ssuser${user_count}:ssuser${user_count}pw" | chpasswd
 
-# Install desktop files
-  desktop_files ssuser${user_count}
-
   ((user_count++))
  done
 
 }
 
 ##################################
-# Function to set passwordless ssh
-##################################
-
-function set_user_ssh() {
-
-eval home_dir=`getent passwd $1 | cut -d: -f6`
-
-if [ ! -d "${home_dir}/.ssh" ]; then
- mkdir -m 700 ${home_dir}/.ssh
-fi
-
-cat << EOF > ${home_dir}/.ssh/config
-Host *
-  StrictHostKeyChecking=no
-  UserKnownHostsFile=/dev/null
-EOF
-
-chown -R $1:centos ${home_dir}
-
-if [ ! -e "${home_dir}/.ssh/authorized_keys" ]; then
-su -c 'cat /dev/zero | ssh-keygen -q -N "" -t rsa' $1
-cat ${home_dir}/.ssh/*.pub >> ${home_dir}/.ssh/authorized_keys
-cat /home/centos/.ssh/authorized_keys >> ${home_dir}/.ssh/authorized_keys
-fi
-
-chmod 700 ${home_dir}/.ssh
-chmod 600 ${home_dir}/.ssh/config
-chmod 600 ${home_dir}/.ssh/authorized_keys
-chown $1:centos ${home_dir}/.ssh/authorized_keys
-  
-}
-
-#######################################
-# Install desktop files
-#######################################
-
-function desktop_files () {
-
-  echo "Install desktop files as $1"
-  sudo -u $1 $DIR/install_desktop_files $PROWESS_HOME $PROMAX_HOME
-
-}
-
-#################################
 # Run the script
 ##################################
 
@@ -93,15 +46,7 @@ echo "Configuring SeisSpace"
 export PROWESS_HOME=/shared/Landmark/SeisSpace5000.10.0/SeisSpace
 export PROMAX_HOME=/shared/Landmark/SeisSpace5000.10.0/ProMAX
 export DIR=$PROWESS_HOME/etc
-export LM_LICENSE_FILE=2013@13.84.128.69
-export PROWESS_HOST=$(hostname)
-export PROWESS_PORT=5010
-export PROWESS_DATA_PORT=3282
-export LOGDIR=/etc/seisspace/logs
-export INSTALL_DIR=/shared/Landmark/SeisSpace5000.10.0
-export azstgacct=$1
-export BLOBXFER_STORAGEACCOUNTKEY=$2
-export BLOBDIR="5000-10-scripts"
+
 
   echo "Provision Desktop"
   yum -y install xorg-x11-utils*
@@ -148,11 +93,7 @@ echo "Provision x2g0"
   $DIR/add_promax_service promax promax
 
 echo "Check for missing packages"
-# Hack to set to version 7 
 printf "y\ny\n" | $DIR/check_packages
-
-# Set no host checking
-set_user_ssh centos
 
 # Add any requested users
 add_users $numusers
