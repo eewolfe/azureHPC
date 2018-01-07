@@ -62,6 +62,10 @@ if [ -e "$SETUP_MARKER" ]; then
     exit 0
 fi
 
+#  Download and install epel repository
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+
 install_pkgs
 install_gmond
 
