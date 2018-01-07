@@ -100,6 +100,10 @@ if [ -e "$SETUP_MARKER" ]; then
     exit 0
 fi
 
+#  Download and install epel
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+
 # Disable SELinux
 sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 setenforce 0
