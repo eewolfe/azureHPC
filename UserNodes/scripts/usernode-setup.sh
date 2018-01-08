@@ -96,6 +96,10 @@ sh -c "echo -e \"chmod 777 /mnt/resource\" >> /etc/rc.d/rc.local"
 chmod u+x /etc/rc.d/rc.local
 systemctl start rc-local
 
+systemctl enable rpcbind || echo "Already enabled"
+systemctl start rpcbind || echo "Already enabled"
+
+
 }
 
 install_lsf()
