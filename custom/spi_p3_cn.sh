@@ -54,6 +54,9 @@ sed -i 's|4096|16384|' /etc/security/limits.d/20-nproc.conf
     echo "Add symbolic link for libXm.so.3"
     ln -s /usr/lib64/libXm.so.4 /usr/lib64/libXm.so.3
   fi
+  
+    systemctl enable rpcbind || echo "Already enabled"
+    systemctl start rpcbind || echo "Already enabled"
 
 }
 
