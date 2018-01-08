@@ -283,5 +283,11 @@
       }
     }
 
-  ]
+  ],
+  "outputs": {
+    "VMSSName": {
+      "value": "[reference('clusterSet0').parameters.vmSSName]",
+      "type": "string"
+    }
+  }
 }

@@ -2,8 +2,15 @@
 
 set -x 
 
-if [ -z $sas ]; then
-    sas=""
+if [ -z $SCRIPT_SASKEY ]; then
+    SCRIPT_SASKEY=""
+fi
+if [ -z $SCRIPT_URL ]; then
+    SCRIPT_URL='https://raw.githubusercontent.com/eewolfe/azureHPC/master'
 fi
 
-az group deployment create -g $1 --template-file ../autoscaling/managed-service-identity.json --parameters @rbac.param.json --parameters _artifactsLocation='https://raw.githubusercontent.com/eewolfe/azureHPC/master/autoscaling' _artifactsLocationSasToken='${sas}'
+templateuri=$SCRIPT_URL'/autoscaling/managed-service-identity.json'$SCRIPT_SASKEY
+
+
+az group deployment create -g $1 --template-uri "$templateuri" --parameters @rbac.param.json --parameters _artifactsLocation="$SCRIPT_URL/" _artifactsLocationSasToken="$SCRIPT_SASKEY"
+

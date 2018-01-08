@@ -61,7 +61,7 @@
 
 
       "containerName": "msi",
-      "createRBACUrl": "[concat(parameters('_artifactsLocation'), '/setUpRBAC.json', parameters('_artifactsLocationSasToken'))]",
+      "createRBACUrl": "[concat(parameters('_artifactsLocation'), 'autoscaling/setUpRBAC.json', parameters('_artifactsLocationSasToken'))]",
       "mastervmPrincipalID": "[concat(resourceId('Microsoft.Compute/virtualMachines/', parameters('mastervmname')),'/providers/Microsoft.ManagedIdentity/Identities/default')]"
     },
     "resources": [
@@ -85,30 +85,6 @@
             "vmssName": {
              "value": "[parameters('vmssName')]"
             }
-          }
-        }
-      },
-      {
-        "name": "[concat(parameters('mastervmname'),'/customscriptextension')]",
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "apiVersion": "2017-03-30",
-        "location": "[parameters('Location')]",
-        "dependsOn": [
-          "Microsoft.Resources/deployments/creatingRBAC"
-        ],
-        "properties": {
-          "publisher": "Microsoft.Azure.Extensions",
-          "type": "CustomScript",
-          "typeHandlerVersion": "2.0",
-          "autoUpgradeMinorVersion": true,
-          "settings": {
-            "fileUris": [
-              "[concat(parameters('_artifactsLocation'), '/scripts/setupfiles.sh', parameters('_artifactsLocationSasToken'))]",
-              "[concat(parameters('_artifactsLocation'), '/scripts/install-and-run-cli-2.sh', parameters('_artifactsLocationSasToken'))]"
-            ]
-          },
-          "protectedSettings": {
-            "commandToExecute": "[concat('./install-and-run-cli-2.sh\"','\" -a \"', parameters('storageAccountName'), '\" -t setupfiles.sh \"', '\" -r \"', resourceGroup().Name,'\"')]"
           }
         }
       }

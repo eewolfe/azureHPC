@@ -23,17 +23,28 @@
     },
     "variables": {
       "owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
-      "RBACResourceName":"[concat(parameters('storageAccountName'),'/Microsoft.Authorization/',parameters('principalId'))]"
+      "storageRBACResourceName":"[concat(parameters('storageAccountName'),'/Microsoft.Authorization/',parameters('principalId'))]",
+      "vmssRBACResourceName":"[concat(parameters('vmssName'),'/Microsoft.Authorization/',parameters('principalId'))]"
     },
     "resources": [
       {
         "apiVersion": "2016-07-01",
-        "name": "[variables('RBACResourceName')]",
+        "name": "[variables('storageRBACResourceName')]",
         "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
         "properties": {
           "roleDefinitionId": "[variables('owner')]",
           "principalId": "[parameters('principalId')]",
           "scope": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]"
+        }
+      },
+      {
+        "apiVersion": "2016-07-01",
+        "name": "[variables('vmssRBACResourceName')]",
+        "type": "Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments",
+        "properties": {
+          "roleDefinitionId": "[variables('owner')]",
+          "principalId": "[parameters('principalId')]",
+          "scope": "[resourceId('Microsoft.Compute/virtualMachineScaleSets',parameters('vmssName'))]"
         }
       }
     ]
