@@ -23,8 +23,10 @@ while True:
         vmssScaler = VmssScaler()
 
         queues = config.QUEUE_LIST.split(',')
-
+        scalesets = config.VMSS_LIST.split(',')
+        i = 0
         for queueName in queues:
+            scalesets[i]
             # logging.info("processing queue " + queueName)
             # # cleanup jobs
             # logging.info("cleaning jobs")
@@ -52,7 +54,7 @@ while True:
             #for n in nodes:
             #    loadrepo.UpdateDocument(n._dic)
 
-            vmssScaler.scaleTo(2)
+            vmssScaler.scaleTo(scalesets[i], 2)
     except Exception:
         logging.exception("message")
     finally:
