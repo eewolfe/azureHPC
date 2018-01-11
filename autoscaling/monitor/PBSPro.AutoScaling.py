@@ -8,12 +8,21 @@ import config as config
 from ClusterLoadRepository import ClusterLoadRepository
 from NodeMonitor import NodeMonitor
 import os
+import ptvsd
 
 realPath = os.path.realpath(__file__)
 dirPath = os.path.dirname(realPath)
 
 logging.config.fileConfig(dirPath + '/log.conf')
 logging.info('starting new session')
+
+ptvsd.enable_attach("mz_secret", address = ('10.127.91.132', 3000))
+
+# Enable the line of source code below only if you want the application to wait until the debugger has attached to it
+logging.info('Waiting for Debugger')
+ptvsd.wait_for_attach()
+
+
 
 while True:
     try:

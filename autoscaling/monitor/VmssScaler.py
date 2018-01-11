@@ -8,7 +8,9 @@ class VmssScaler(object):
     def __init__(self):
         # Create MSI Authentication
         # https://azure.microsoft.com/en-us/resources/samples/resource-manager-python-manage-resources-with-msi/
-        credentials = MSIAuthentication()
+        credentials = MSIAuthentication(
+              client_id = '8e95e0bb-d7cc-4454-9443-75ca862d34c1'
+        )
 
 
         # Create a Subscription Client

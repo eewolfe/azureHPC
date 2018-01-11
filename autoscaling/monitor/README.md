@@ -1,8 +1,11 @@
 #Install Instructions
 
+1. Set up DocumentDb
+
+2. install dependencies
+
 pip install pydocumentdb
-pip install 
 pip install azure-mgmt-compute
 pip install azure-mgmt-resource
-pip install mzrestazure
+pip install msrestazure
 
