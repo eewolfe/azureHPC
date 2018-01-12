@@ -19,17 +19,17 @@ logging.info('starting new session')
 ptvsd.enable_attach("mz_secret", address = ('10.127.91.132', 3000))
 
 # Enable the line of source code below only if you want the application to wait until the debugger has attached to it
-logging.info('Waiting for Debugger')
-ptvsd.wait_for_attach()
+#logging.info('Waiting for Debugger')
+#ptvsd.wait_for_attach()
 
 
+vmssScaler = VmssScaler()
 
 while True:
     try:
         loadrepo = ClusterLoadRepository(config.DOCUMENTDB_ENDPOINT, 
             config.DOCUMENTDB_AUTHKEY, config.DOCUMENTDB_DATABASE, config.DOCUMENTDB_COLLECTION)
         
-        vmssScaler = VmssScaler()
 
         queues = config.QUEUE_LIST.split(',')
         scalesets = config.VMSS_LIST.split(',')
@@ -57,7 +57,7 @@ while True:
             #for j in jobs:
             #    loadrepo.UpdateDocument(j._dic)
 
-            nodemonitor = NodeMonitor(queueName)
+            nodemonitor = NodeMonitor(scalesets[i])
             nodes = nodemonitor.GetNodes()
             logging.info(str(len(nodes)) + " nodes listed")
             #for n in nodes:
@@ -68,4 +68,4 @@ while True:
         logging.exception("message")
     finally:
         logging.info("wait 2mn")
-        time.sleep(120)
+        time.sleep(30)

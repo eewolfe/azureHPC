@@ -11,7 +11,7 @@ class JobMonitor(object):
         res = subprocess.check_output(['qstat','-a'])
         jobs = []
         if res:
-            job_result = str(res, encoding='utf-8')
+            job_result = res.encode('utf-8')
             # filter out jobs for the specified queue
             matching = [s for s in job_result.splitlines() if self.queueName in s]
             for jobline in matching:

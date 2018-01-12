@@ -11,7 +11,7 @@ class NodeMonitor(object):
         res = subprocess.check_output(['pbsnodes','-a','-F', 'dsv', '-L', '-S'])
         nodes = []
         if res:
-            result = str(res, encoding='utf-8')
+            result = res.encode('utf-8')
             # filter out nodes for the specified queue
             matching = [s for s in result.splitlines() if self.queueName in s]
             for line in matching:

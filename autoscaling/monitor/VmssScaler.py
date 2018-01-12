@@ -9,23 +9,22 @@ class VmssScaler(object):
         # Create MSI Authentication
         # https://azure.microsoft.com/en-us/resources/samples/resource-manager-python-manage-resources-with-msi/
         credentials = MSIAuthentication(
-              client_id = '8e95e0bb-d7cc-4454-9443-75ca862d34c1'
         )
 
 
         # Create a Subscription Client
         subscription_client = SubscriptionClient(credentials)
-        self.print_item(subscription_client)
-        self.print_properties(subscription_client)
+        #self.print_item(subscription_client)
+        #self.print_properties(subscription_client)
         subscription = next(subscription_client.subscriptions.list())
-        subscription_id = subscription.subscription_id
+        subscription_id = subscription.subscription_id.encode('utf-8')
          # Create a Resource Management client
         self.resource_client = ResourceManagementClient(credentials, subscription_id)
         logging.info("Created Azure RM Client")
         self.compute_client = ComputeManagementClient(credentials, subscription_id)
         logging.info("Created Azure Compute Client")
-        self.resource_group_name = 'mzdev'
-        self.vm_scaleset_name = 'spic00'
+        self.resource_group_name = 'mzspi'
+        self.vm_scaleset_name = 'VMPC00'
         logging.info("RG: " + self.resource_group_name)
         logging.info("RG: " + self.vm_scaleset_name)
         # Get Current State of VMSS
