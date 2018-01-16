@@ -8,4 +8,4 @@ pip install pydocumentdb
 pip install azure-mgmt-compute
 pip install azure-mgmt-resource
 pip install msrestazure
-
+pip install ptvsd
