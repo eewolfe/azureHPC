@@ -4,6 +4,7 @@ rg=$1
 custsa=$2
 vmssName=$3
 masterName=$4
+vnetName=$5
 
 subid=$(az account show --query "id" --out tsv)
 spID=$(az resource list -n $masterName -g $rg --query [*].identity.principalId --out tsv)
@@ -12,4 +13,4 @@ az role assignment create --assignee $spID --role 'Owner' --scope '/subscription
 
 az role assignment create --assignee $spID --role 'Owner' --scope '/subscriptions/'$subid'/resourceGroups/'$rg'/providers/Microsoft.Storage/storageAccounts/'$custsa
 
-
+az role assignment create --assignee $spID --role 'Owner' --scope '/subscriptions/'$subid'/resourceGroups/'$rg'/providers/Microsoft.Network/virtualNetworks/'$vnetName'/subnets/computeSubnet'

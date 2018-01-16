@@ -4,8 +4,9 @@ from NodeInstance import NodeInstance
 
 class NodeMonitor(object):
     """description of class"""
-    def __init__(self, queueName):
+    def __init__(self, queueName, vmssName = ""):
         self.queueName = queueName
+        self.vmssName = vmssName
 
     def GetNodes(self):        
         res = subprocess.check_output(['pbsnodes','-a','-F', 'dsv', '-L', '-S'])
@@ -13,6 +14,7 @@ class NodeMonitor(object):
         if res:
             result = res.encode('utf-8')
             # filter out nodes for the specified queue
+            logging.info(result)
             matching = [s for s in result.splitlines() if self.queueName in s]
             for line in matching:
                 logging.info(line)
