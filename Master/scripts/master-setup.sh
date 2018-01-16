@@ -102,13 +102,13 @@ mount_nfs()
 ######################################################################
 install_azure_cli()
 {
-	yum check-update; yum install -y gcc libffi-devel python-devel openssl-devel
-    curl --silent -L https://aka.ms/InstallAzureCli | bash << EOF
+	#yum check-update; yum install -y gcc libffi-devel python-devel openssl-devel
+    #curl --silent -L https://aka.ms/InstallAzureCli | bash << EOF
 
-
-
-
-EOF
+	rpm --import https://packages.microsoft.com/keys/microsoft.asc
+	sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+	yum check-update
+	yum -y install azure-cli
     
 }
 
@@ -185,7 +185,7 @@ if [ -e "$SETUP_MARKER" ]; then
     exit 0
 fi
 
-#install_azure_cli
+install_azure_cli
 #install_azure_files
 
 setup_disks
