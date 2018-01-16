@@ -130,7 +130,6 @@
     },
     "gangliaTemplateURI": "[concat(parameters('_artifactsLocation'), 'Ganglia/ganglia.json', parameters('_artifactsLocationSasToken'))]",
     "masterScriptTemplateURI": "[concat(parameters('_artifactsLocation'), 'Master/master-linux-script.json', parameters('_artifactsLocationSasToken'))]",
-    "customScriptTemplateURI": "[concat(parameters('_artifactsLocation'), 'custom/custom-script.json', parameters('_artifactsLocationSasToken'))]",
     "deploymentApiVersion": "2016-09-01"
   },
   "resources": [
