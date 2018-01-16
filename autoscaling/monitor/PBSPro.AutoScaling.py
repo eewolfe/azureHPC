@@ -63,9 +63,11 @@ while True:
             #for n in nodes:
             #    loadrepo.UpdateDocument(n._dic)
 
-            vmssScaler.scaleTo(scalesets[i], 2)
+            if (len(jobs) > 10)
+                vmssScaler.scaleTo(scalesets[i], 2)
+                
     except Exception:
         logging.exception("message")
     finally:
         logging.info("wait 2mn")
-        time.sleep(30)
+        time.sleep(120)
