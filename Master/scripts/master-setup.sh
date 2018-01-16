@@ -106,9 +106,9 @@ install_azure_cli()
 	rpm --import https://packages.microsoft.com/keys/microsoft.asc
 	sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
 	yum check-update
-	yum install azure-cli
+	yum install -y azure-cli
 
-	apt-get -y install python3-pip
+	#apt-get -y install python3-pip
 	pip install pydocumentdb
 	pip install azure-mgmt-compute
 	pip install azure-mgmt-resource

@@ -40,7 +40,7 @@ class VmssScaler(object):
             logging.info(response.status())
             newmodel = response.result(60)
         logging.info(response.status())
-        logging.info("current instance count: " + newmodel.sku.capacity)
+        logging.info("current instance count: %d" % newmodel.sku.capacity)
     def addInstances(self, vmss_name, num):
         # add num instances to current num of nodes
         model = self.compute_client.virtual_machine_scale_sets.get(self.resource_group_name, vmss_name) 

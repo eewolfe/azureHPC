@@ -4,7 +4,8 @@ rg=$1
 
 vmssName=$2
 masterName=$3
-
+vnetRG=$4
+vnetName=$5
 
 subid=$(az account show --query "id" --out tsv)
 spID=$(az resource list -n $masterName -g $rg --query [*].identity.principalId --out tsv)
