@@ -35,29 +35,35 @@ class VmssScaler(object):
         model.sku.capacity = num
         response = self.compute_client.virtual_machine_scale_sets.create_or_update(self.resource_group_name, vmss_name,
                 model)
-        logging.info("waiting for scale to %d" % num)
-        while (response.status() == 'InProgress'):
-            logging.info(response.status())
-            newmodel = response.result(60)
-        logging.info(response.status())
-        logging.info("current instance count: %d" % newmodel.sku.capacity)
+        logging.info("scaling to %d instance(s)" % num)
+        self.waitForComplete(response)
     def addInstances(self, vmss_name, num):
         # add num instances to current num of nodes
         model = self.compute_client.virtual_machine_scale_sets.get(self.resource_group_name, vmss_name) 
         current_capacity =  model.sku.capacity
         new_capacity = current_capacity + num
         model.sku.capacity = new_capacity
-        self.compute_client.virtual_machine_scale_sets.create_or_update(self.resource_group_name, vmss,
+        response = self.compute_client.virtual_machine_scale_sets.create_or_update(self.resource_group_name, vmss_name,
                 model)
+        logging.info("scaling to %d instance(s)" % new_capacity)
+        self.waitForComplete(response)
     def removeInstances(self, vmss_name, num):
         # remove num instances from vmss
         model = self.compute_client.virtual_machine_scale_sets.get(self.resource_group_name, vmss_name) 
         current_capacity = model.sku.capacity
         new_capacity = current_capacity - num if ((current_capacity - num) > 0) else 0
         model.sku.capacity = new_capacity
-        self.compute_client.virtual_machine_scale_sets.create_or_update(self.resource_group_name, vmss_name,
+        response = self.compute_client.virtual_machine_scale_sets.create_or_update(self.resource_group_name, vmss_name,
                 model)
+        logging.info("scaling down to %d instance(s)" % new_capacity)
+        self.waitForComplete(response)
 
+    def waitForComplete(self, response):
+        while (response.status() == 'InProgress'):
+            logging.info(response.status())
+            newmodel = response.result(60)
+        logging.info(response.status())
+        logging.info("current instance count: %d" % newmodel.sku.capacity)
 
     def print_item(self, group):
 
