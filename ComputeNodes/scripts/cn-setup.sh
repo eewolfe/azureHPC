@@ -61,7 +61,10 @@ install_azure_cli()
 	yum check-update
 	sudo yum -y install azure-cli
 
-	cat "#!/bin/bash\nexport STORAGE_ACCOUNT='$storage_account'\nexport RESOURCE_GROUP='$resource_group'\n" >> /var/local/env.vars.sh
+	instance_name=`curl -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-08-01" | python -c "import sys, json; print json.load(sys.stdin)['compute']['name']"`
+	
+	printf "#!/bin/bash\nexport STORAGE_ACCOUNT='$storage_account'\nexport RESOURCE_GROUP='$resource_group'\nexport INSTANCE_NAME='$instance_name'" >> /var/local/env.vars.sh
+
 }
 
 ######################################################################

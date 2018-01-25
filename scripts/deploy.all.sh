@@ -3,7 +3,7 @@
 set -x
 
 #INPUT
-rg=mzspi
+rg=$1
 vmssName=node00
 masterName=spimaster
 
