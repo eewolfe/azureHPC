@@ -113,8 +113,8 @@
                         },
                         {
                             "name": "tenantid",
-                            "value": "[parameters('tenantidtag')]"
-                        }
+                            "value": "[parameters('tenantid')]"
+                        },
                         {
                             "name": "WEBSITE_CONTENTSHARE",
                             "value": "[toLower(variables('functionAppName'))]"
@@ -133,7 +133,7 @@
         },
          {
             "type": "Microsoft.Web/sites/config",
-            "name": "[concat(parameters('functionAppName'),'/web')]",
+            "name": "[concat(variables('functionAppName'),'/web')]",
             "apiVersion": "2015-08-01",
             "location": "[resourceGroup().location]",
             "scale": null,
@@ -244,7 +244,7 @@
                 "ipSecurityRestrictions": null
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+                "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
             ]
         }
 
