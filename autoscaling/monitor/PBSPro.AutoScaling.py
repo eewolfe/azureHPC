@@ -27,7 +27,8 @@ logging.info('starting new session')
 
 
 vmssScaler = VmssScaler()
-scaledowncounter = 0;
+scaledowncounter = 0
+
 while True:
     try:
         loadrepo = ClusterLoadRepository(config.DOCUMENTDB_ENDPOINT, 
@@ -38,7 +39,7 @@ while True:
         scalesets = config.VMSS_LIST.split(',')
         i = 0
         for queueName in queues:
-            scalesets[i]
+           
             logging.info("processing queue " + queueName)
             # cleanup jobs
             logging.info("cleaning jobs")
@@ -63,13 +64,13 @@ while True:
                 loadrepo.UpdateDocument(j._dic)
 
             # nodemonitor = NodeMonitor(scalesets[i])
-            # nodes = nodemonitor.GetNodes()
+            nodes = nodemonitor.GetNodes()
             # numnodes = len(nodes)
             # freenodes = [node for node in nodes if (node.JobStatus == 'free')]
             # numfreenodes = len(freenodes)
             # logging.info(str(len(freenodes)) + " free nodes listed")
-            # for n in nodes:
-            #     loadrepo.UpdateDocument(n._dic)
+            for n in nodes:
+                loadrepo.UpdateDocument(n._dic)
             # if ((numjobs >= 10) and (numfreenodes <= 0) and (numnodes <= MAX_NODES)):
             #     vmssScaler.addInstances(scalesets[i], 1)
             # elif ((numjobs >= 1) and (numfreenodes <= 0)):
