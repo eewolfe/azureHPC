@@ -19,7 +19,7 @@ export storageAccount=''
 export storageKey=''
 
 # Nodes
-export vmSSprefix='node'
+export vmSSPrefix='node'
 
 # User nodes
 export vmNamePrefix='nav'
