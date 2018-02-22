@@ -286,7 +286,7 @@
   ],
   "outputs": {
     "VMSSName": {
-      "value": "[reference('clusterSet0').parameters.vmSSName]",
+      "value": "[reference('clusterSet00').parameters.vmSSName]",
       "type": "string"
     }
   }
