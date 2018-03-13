@@ -95,6 +95,23 @@ install_blobfuse () {
 
 }
 
+#######################################
+# Setup system
+#######################################
+
+setup_system () {
+echo "Downloading script to join a domain"
+  blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/domain_join-cvx.sh"
+echo "Joining a domain . . . "
+./domain_join-cvx.sh
+
+echo "Downloading script to configure samba"
+  blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/samba_config-cvx.sh"
+ehco "Starting samba . . . "
+./samba_config-cvx.sh
+
+}
+
 #################################
 # Run the script
 ##################################
@@ -367,7 +384,10 @@ mkdir -m 777 -p /shared/data/downloads
 mkdir -m 777 -p /shared/data/primary
 
 # Install and setup for blobfuse
-  install_blobfuse
+# install_blobfuse
+
+# Setup system
+setup_system
 
 # Download some tutorial and benchmark archive files
   blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path /shared/data/downloads --remote-path "$BLOBDIR/benchmarkIO_primary.arc"
