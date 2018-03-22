@@ -103,11 +103,13 @@ setup_system () {
 echo "Downloading script to join a domain"
   blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/domain_join-cvx.sh"
 echo "Joining a domain . . . "
+chmod +x domain_join-cvx.sh
 ./domain_join-cvx.sh
 
 echo "Downloading script to configure samba"
   blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/samba_config-cvx.sh"
 ehco "Starting samba . . . "
+chmod +x ./samba_config-cvx.sh
 ./samba_config-cvx.sh
 
 }
