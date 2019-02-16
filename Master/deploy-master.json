@@ -1,331 +1,328 @@
-{
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "VMsku": {
-      "type": "string",
-      "allowedValues": [
-        "Standard_DS1_v2",
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_DS5_v2",
-        "Standard_DS11_v2",
-        "Standard_DS12_v2",
-        "Standard_DS13_v2",
-        "Standard_DS14_v2"
-      ],
-      "metadata": {
-        "description": "sku to use for the master VM"
-      }
-    },
-    "masterImage": {
-      "type": "string",
-      "defaultValue": "CentOS_7.2",
-      "allowedValues": [
-        "CentOS_6.7",
-        "CentOS_7.2",
-        "RHEL_7.2",
-        "W2012R2"
-      ],
-      "metadata": {
-        "description": "The VM image of the master nodes"
-      }
-    },
-    "sharedStorage": {
-      "type": "string",
-      "defaultValue": "none",
-      "allowedValues": [
-        "none",
-        "beegfs",
-        "nfsonmaster"
-      ],
-      "metadata": {
-        "description": "specify the shared storage to be used. beegfs=> beegfs cluster, nfsonmaster=> nfs share on the master"
-      }
-    },
-    "dataDiskSize": {
-      "type": "string",
-      "defaultValue": "none",
-      "allowedValues": [
-        "none",
-        "P10",
-        "P20",
-        "P30"
-      ],
-      "metadata": {
-        "description": "Premium storage disk size to attach"
-      }
-    },
-    "scheduler": {
-      "type": "string",
-      "defaultValue": "none",
-      "allowedValues": [
-        "none",
-        "pbspro"
-      ],
-      "metadata": {
-        "description": "specify the job scheduler to be used"
-      }
-    },
-    "vmPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Base string for naming resources (max length of 8)"
+{  
+   "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+   "contentVersion":"1.0.0.0",
+   "parameters":{  
+      "VMsku":{  
+         "type":"string",
+         "allowedValues":[  
+            "Standard_DS1_v2",
+            "Standard_DS2_v2",
+            "Standard_DS3_v2",
+            "Standard_DS4_v2",
+            "Standard_DS5_v2",
+            "Standard_DS11_v2",
+            "Standard_DS12_v2",
+            "Standard_DS13_v2",
+            "Standard_DS14_v2"
+         ],
+         "metadata":{  
+            "description":"sku to use for the master VM"
+         }
       },
-      "maxLength": 8
-    },
-    "adminUserName": {
-      "type": "string",
-      "metadata": {
-        "description": "User name for the Virtual Machine."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "password for the Virtual Machine."
-      }
-    },
-    "sshKeyData": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SSH rsa public key file as a string."
-      }
-    },
-    "numberofusers": {
-      "type": "string",
-      "metadata": {
-        "description": "Number of user ID's to provision."
-      }
-    },
-    "networkDetails": {
-      "type": "object",
-      "metadata": {
-        "description": "Vnet name",
-        "default": {
-          "newOrExisting": "new",
-          "resourceGroup": "[resourceGroup().name]",
-          "virtualNetworkName": "grid-vnet",
-          "addressPrefix": "10.127.90.0/23",
-          "computeSubnetPrefix": "10.127.90.0/24",
-          "storageSubnetPrefix": "10.127.91.0/25",
-          "infraSubnetPrefix": "10.127.91.128/26",
-          "appGatewaySubnetPrefix": "10.127.91.192/27",
-          "gatewaySubnetPrefix": "10.127.91.224/27"
-        }
-      }
-    },
-    "_artifactsLocation": {
-      "type": "string",
-      "metadata": {
-        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      "masterImage":{  
+         "type":"string",
+         "defaultValue":"CentOS_7.2",
+         "allowedValues":[  
+            "CentOS_6.7",
+            "CentOS_7.2",
+            "RHEL_7.2",
+            "W2012R2"
+         ],
+         "metadata":{  
+            "description":"The VM image of the master nodes"
+         }
       },
-      "defaultValue": "https://raw.githubusercontent.com/eewolfe/azureHPC/master"
-    },
-    "_artifactsLocationSasToken": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The sasToken required to access _artifactsLocation."
+      "sharedStorage":{  
+         "type":"string",
+         "defaultValue":"none",
+         "allowedValues":[  
+            "none",
+            "beegfs",
+            "nfsonmaster"
+         ],
+         "metadata":{  
+            "description":"specify the shared storage to be used. beegfs=> beegfs cluster, nfsonmaster=> nfs share on the master"
+         }
       },
-      "defaultValue": ""
-    }
-  },
-  "variables": {
-    "namingInfix": "[toLower(substring(concat(parameters('vmPrefix'), uniqueString(resourceGroup().id)), 0, 9))]",
-    "longNamingInfix": "[toLower(parameters('vmPrefix'))]",
-    "newStorageAccountSuffix": "[concat(variables('longNamingInfix'), 'sa')]",
-    "vnetID": "[resourceId(if(equals(parameters('networkDetails').resourceGroup,''),resourceGroup().name,parameters('networkDetails').resourceGroup), 'Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
-    "networkSettings":  {
-      "newOrExisting": "[parameters('networkDetails').newOrExisting]",
-      "virtualNetworkName": "[parameters('networkDetails').virtualNetworkName]",
-      "addressPrefix": "[parameters('networkDetails').addressPrefix]",
-      "computeSubnetPrefix": "[parameters('networkDetails').computeSubnetPrefix]",
-      "storageSubnetPrefix": "[parameters('networkDetails').storageSubnetPrefix]",
-      "infraSubnetPrefix": "[parameters('networkDetails').infraSubnetPrefix]",
-      "gatewaySubnetPrefix": "[parameters('networkDetails').gatewaySubnetPrefix]",
-      "infraSubnetRef": "[concat(variables('vnetID'),'/subnets/infraSubnet/')]",
-      "nsgName": "nsg-master"
-    },
-    "masterBoxName": "[concat(variables('longNamingInfix'), 'master')]",
-    "masterSettings": {
-      "Name": "[variables('masterBoxName')]",
-      "DiagSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'diag')]",
-      "CustomerSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'cust')]",
-      "IPConfigName": "[concat(variables('masterBoxName'), 'ipconfig')]",
-      "NicName": "[concat(variables('masterBoxName'), 'nic')]",
-      "VMsku": "[parameters('VMsku')]",
-      "publicIPAddressName": "[concat(variables('masterBoxName'), 'pip')]",
-      "publicIPDomainName": "[variables('namingInfix')]",
-      "sharedStorage": "[parameters('sharedStorage')]",
-      "scheduler": "[parameters('scheduler')]",
-      "dataDiskSize": "[parameters('dataDiskSize')]",
-      "numberofusers": "[parameters('numberofusers')]"
-    },
-    "masterOSSettings": {
-      "osType": "[variables('osTypes')[parameters('masterImage')]]",
-      "adminUserName": "[parameters('adminUserName')]",
-      "sshKeyData": "[parameters('sshKeyData')]",
-      "imageReference": "[variables('computeImages')[parameters('masterImage')]]"
-    },
-
-    "osTypes": {
-      "CentOS_6.7": {
-        "os": "linux"
+      "dataDiskSize":{  
+         "type":"string",
+         "defaultValue":"none",
+         "allowedValues":[  
+            "none",
+            "P10",
+            "P20",
+            "P30"
+         ],
+         "metadata":{  
+            "description":"Premium storage disk size to attach"
+         }
       },
-      "CentOS_7.2": {
-        "os": "linux"
+      "scheduler":{  
+         "type":"string",
+         "defaultValue":"none",
+         "allowedValues":[  
+            "none",
+            "pbspro"
+         ],
+         "metadata":{  
+            "description":"specify the job scheduler to be used"
+         }
       },
-      "RHEL_7.2": {
-        "os": "linux"
+      "vmPrefix":{  
+         "type":"string",
+         "metadata":{  
+            "description":"Base string for naming resources (max length of 8)"
+         },
+         "maxLength":8
       },
-      "W2012R2": {
-        "os": "windows"
+      "adminUserName":{  
+         "type":"string",
+         "metadata":{  
+            "description":"User name for the Virtual Machine."
+         }
+      },
+      "adminPassword":{  
+         "type":"securestring",
+         "defaultValue":"",
+         "metadata":{  
+            "description":"password for the Virtual Machine."
+         }
+      },
+      "sshKeyData":{  
+         "type":"string",
+         "defaultValue":"",
+         "metadata":{  
+            "description":"SSH rsa public key file as a string."
+         }
+      },
+      "numberofusers":{  
+         "type":"string",
+         "metadata":{  
+            "description":"Number of user ID's to provision."
+         }
+      },
+      "networkDetails":{  
+         "type":"object",
+         "metadata":{  
+            "description":"Vnet name",
+            "default":{  
+               "newOrExisting":"new",
+               "resourceGroup":"[resourceGroup().name]",
+               "virtualNetworkName":"grid-vnet",
+               "addressPrefix":"10.127.90.0/23",
+               "computeSubnetPrefix":"10.127.90.0/24",
+               "storageSubnetPrefix":"10.127.91.0/25",
+               "infraSubnetPrefix":"10.127.91.128/26",
+               "appGatewaySubnetPrefix":"10.127.91.192/27",
+               "gatewaySubnetPrefix":"10.127.91.224/27"
+            }
+         }
+      },
+      "_artifactsLocation":{  
+         "type":"string",
+         "metadata":{  
+            "description":"The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+         },
+         "defaultValue":"https://raw.githubusercontent.com/eewolfe/azureHPC/master"
+      },
+      "_artifactsLocationSasToken":{  
+         "type":"securestring",
+         "metadata":{  
+            "description":"The sasToken required to access _artifactsLocation."
+         },
+         "defaultValue":""
       }
-    },
-    "computeImages": {
-      "CentOS_6.7": {
-        "publisher": "OpenLogic",
-        "offer": "CentOS",
-        "sku": "6.7",
-        "version": "latest"
+   },
+   "variables":{  
+      "namingInfix":"[toLower(substring(concat(parameters('vmPrefix'), uniqueString(resourceGroup().id)), 0, 9))]",
+      "longNamingInfix":"[toLower(parameters('vmPrefix'))]",
+      "newStorageAccountSuffix":"[concat(variables('longNamingInfix'), 'sa')]",
+      "vnetID":"[resourceId(if(equals(parameters('networkDetails').resourceGroup,''),resourceGroup().name,parameters('networkDetails').resourceGroup), 'Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
+      "networkSettings":{  
+         "newOrExisting":"[parameters('networkDetails').newOrExisting]",
+         "virtualNetworkName":"[parameters('networkDetails').virtualNetworkName]",
+         "addressPrefix":"[parameters('networkDetails').addressPrefix]",
+         "computeSubnetPrefix":"[parameters('networkDetails').computeSubnetPrefix]",
+         "storageSubnetPrefix":"[parameters('networkDetails').storageSubnetPrefix]",
+         "infraSubnetPrefix":"[parameters('networkDetails').infraSubnetPrefix]",
+         "gatewaySubnetPrefix":"[parameters('networkDetails').gatewaySubnetPrefix]",
+         "infraSubnetRef":"[concat(variables('vnetID'),'/subnets/infraSubnet/')]",
+         "nsgName":"nsg-master"
       },
-      "CentOS_7.2": {
-        "publisher": "OpenLogic",
-        "offer": "CentOS",
-        "sku": "7.2",
-        "version": "latest"
+      "masterBoxName":"[concat(variables('longNamingInfix'), 'master')]",
+      "masterSettings":{  
+         "Name":"[variables('masterBoxName')]",
+         "DiagSAName":"[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'diag')]",
+         "CustomerSAName":"[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'masterboxsadiag')), 'cust')]",
+         "IPConfigName":"[concat(variables('masterBoxName'), 'ipconfig')]",
+         "NicName":"[concat(variables('masterBoxName'), 'nic')]",
+         "VMsku":"[parameters('VMsku')]",
+         "publicIPAddressName":"[concat(variables('masterBoxName'), 'pip')]",
+         "publicIPDomainName":"[variables('namingInfix')]",
+         "sharedStorage":"[parameters('sharedStorage')]",
+         "scheduler":"[parameters('scheduler')]",
+         "dataDiskSize":"[parameters('dataDiskSize')]",
+         "numberofusers":"[parameters('numberofusers')]"
       },
-      "RHEL_7.2": {
-        "publisher": "RedHat",
-        "offer": "RHEL",
-        "sku": "7.2",
-        "version": "latest"
+      "masterOSSettings":{  
+         "osType":"[variables('osTypes')[parameters('masterImage')]]",
+         "adminUserName":"[parameters('adminUserName')]",
+         "sshKeyData":"[parameters('sshKeyData')]",
+         "imageReference":"[variables('computeImages')[parameters('masterImage')]]"
       },
-      "W2012R2": {
-        "publisher": "MicrosoftWindowsServer",
-        "offer": "WindowsServer",
-        "sku": "2012-R2-Datacenter",
-        "version": "latest"
+      "osTypes":{  
+         "CentOS_6.7":{  
+            "os":"linux"
+         },
+         "CentOS_7.2":{  
+            "os":"linux"
+         },
+         "RHEL_7.2":{  
+            "os":"linux"
+         },
+         "W2012R2":{  
+            "os":"windows"
+         }
+      },
+      "computeImages":{  
+         "CentOS_6.7":{  
+            "publisher":"OpenLogic",
+            "offer":"CentOS",
+            "sku":"6.7",
+            "version":"latest"
+         },
+         "CentOS_7.2":{  
+            "publisher":"OpenLogic",
+            "offer":"CentOS",
+            "sku":"7.2",
+            "version":"latest"
+         },
+         "RHEL_7.2":{  
+            "publisher":"RedHat",
+            "offer":"RHEL",
+            "sku":"7.2",
+            "version":"latest"
+         },
+         "W2012R2":{  
+            "publisher":"MicrosoftWindowsServer",
+            "offer":"WindowsServer",
+            "sku":"2012-R2-Datacenter",
+            "version":"latest"
+         }
+      },
+      "deploymentApiVersion":"2015-01-01",
+      "sharedTemplateUrl":"[concat(parameters('_artifactsLocation'), 'Shared/shared-resources.json', parameters('_artifactsLocationSasToken'))]",
+      "master-sharedTemplateUrl":"[concat(parameters('_artifactsLocation'), 'Master/master-shared-resources.json', parameters('_artifactsLocationSasToken'))]",
+      "master-OSTemplateUrl":"[concat(parameters('_artifactsLocation'), 'Master/', concat('master-', variables('masterOSSettings').osType.os, '-resources.json', parameters('_artifactsLocationSasToken')))]",
+      "master-NSGTemplateUrl":"[concat(parameters('_artifactsLocation'), concat('Master/nsg-master-', variables('masterOSSettings').osType.os, '.json', parameters('_artifactsLocationSasToken')))]"
+   },
+   "resources":[  
+      {  
+         "name":"shared-resources",
+         "type":"Microsoft.Resources/deployments",
+         "apiVersion":"[variables('deploymentApiVersion')]",
+         "properties":{  
+            "mode":"Incremental",
+            "templateLink":{  
+               "uri":"[variables('sharedTemplateUrl')]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters":{  
+               "networkSettings":{  
+                  "value":"[variables('networkSettings')]"
+               }
+            }
+         }
+      },
+      {  
+         "name":"master-nsg",
+         "type":"Microsoft.Resources/deployments",
+         "apiVersion":"[variables('deploymentApiVersion')]",
+         "properties":{  
+            "mode":"Incremental",
+            "templateLink":{  
+               "uri":"[variables('master-NSGTemplateUrl')]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters":{  
+               "nsgName":{  
+                  "value":"[variables('networkSettings').nsgName]"
+               }
+            }
+         }
+      },
+      {  
+         "name":"master-shared-resources",
+         "type":"Microsoft.Resources/deployments",
+         "apiVersion":"[variables('deploymentApiVersion')]",
+         "dependsOn":[  
+            "shared-resources",
+            "master-nsg"
+         ],
+         "properties":{  
+            "mode":"Incremental",
+            "templateLink":{  
+               "uri":"[variables('master-sharedTemplateUrl')]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters":{  
+               "networkSettings":{  
+                  "value":"[variables('networkSettings')]"
+               },
+               "masterSettings":{  
+                  "value":"[variables('masterSettings')]"
+               }
+            }
+         }
+      },
+      {  
+         "name":"master-OS-resources",
+         "type":"Microsoft.Resources/deployments",
+         "apiVersion":"[variables('deploymentApiVersion')]",
+         "dependsOn":[  
+            "master-shared-resources"
+         ],
+         "properties":{  
+            "mode":"Incremental",
+            "templateLink":{  
+               "uri":"[variables('master-OSTemplateUrl')]",
+               "contentVersion":"1.0.0.0"
+            },
+            "parameters":{  
+               "networkSettings":{  
+                  "value":"[variables('networkSettings')]"
+               },
+               "masterSettings":{  
+                  "value":"[variables('masterSettings')]"
+               },
+               "masterOSSettings":{  
+                  "value":"[variables('masterOSSettings')]"
+               },
+               "adminPassword":{  
+                  "value":"[parameters('adminPassword')]"
+               },
+               "_artifactsLocation":{  
+                  "value":"[parameters('_artifactsLocation')]"
+               },
+               "_artifactsLocationSasToken":{  
+                  "value":"[parameters('_artifactsLocationSasToken')]"
+               }
+            }
+         }
       }
-    },
-    "deploymentApiVersion": "2015-01-01",
-
-    "sharedTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Shared/shared-resources.json', parameters('_artifactsLocationSasToken'))]",
-    "master-sharedTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Master/master-shared-resources.json', parameters('_artifactsLocationSasToken'))]",
-    "master-OSTemplateUrl": "[concat(parameters('_artifactsLocation'), 'Master/', concat('master-', variables('masterOSSettings').osType.os, '-resources.json', parameters('_artifactsLocationSasToken')))]",
-    "master-NSGTemplateUrl": "[concat(parameters('_artifactsLocation'), concat('Master/nsg-master-', variables('masterOSSettings').osType.os, '.json', parameters('_artifactsLocationSasToken')))]"
-  },
-  "resources": [
-    {
-      "name": "shared-resources",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('deploymentApiVersion')]",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('sharedTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
-          }
-        }
+   ],
+   "outputs":{  
+      "GangliaURI":{  
+         "value":"[uri(concat('http://',reference('master-shared-resources').outputs.masterFQDN.value),'ganglia')]",
+         "type":"string"
+      },
+      "masterFQDN":{  
+         "value":"[reference('master-shared-resources').outputs.masterFQDN.value]",
+         "type":"string"
+      },
+      "CustomerStorage":{  
+         "value":"[variables('masterSettings').CustomerSAName]",
+         "type":"string"
       }
-    },
-    {
-      "name": "master-nsg",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('deploymentApiVersion')]",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('master-NSGTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "nsgName": {
-            "value": "[variables('networkSettings').nsgName]"
-          }
-        }
-      }
-    },
-    {
-      "name": "master-shared-resources",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('deploymentApiVersion')]",
-      "dependsOn": [
-        "shared-resources",
-        "master-nsg"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('master-sharedTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
-          },
-          "masterSettings": {
-            "value": "[variables('masterSettings')]"
-          }
-
-        }
-      }
-    },
-    {
-      "name": "master-OS-resources",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('deploymentApiVersion')]",
-      "dependsOn": [
-        "master-shared-resources"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('master-OSTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
-          },
-          "masterSettings": {
-            "value": "[variables('masterSettings')]"
-          },
-          "masterOSSettings": {
-            "value": "[variables('masterOSSettings')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "_artifactsLocation": {
-            "value": "[parameters('_artifactsLocation')]"
-          },
-          "_artifactsLocationSasToken": {
-            "value": "[parameters('_artifactsLocationSasToken')]"
-          }
-        }
-      }
-    }
-  ],
-  "outputs": {
-    "GangliaURI": {
-      "value": "[uri(concat('http://',reference('master-shared-resources').outputs.masterFQDN.value),'ganglia')]",
-      "type": "string"
-    },
-    "masterFQDN": {
-      "value": "[reference('master-shared-resources').outputs.masterFQDN.value]",
-      "type": "string"
-    },
-    "CustomerStorage": {
-      "value": "[variables('masterSettings').CustomerSAName]",
-      "type": "string"
-    }
-  }
+   }
 }
