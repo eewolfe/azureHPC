@@ -136,7 +136,7 @@
       "namingInfix":"[toLower(substring(concat(parameters('vmPrefix'), uniqueString(resourceGroup().id)), 0, 9))]",
       "longNamingInfix":"[toLower(parameters('vmPrefix'))]",
       "newStorageAccountSuffix":"[concat(variables('longNamingInfix'), 'sa')]",
-      "vnetID":"[resourceId(if(equals(parameters('networkDetails').resourceGroup,''),resourceGroup().name,parameters('networkDetails').resourceGroup), 'Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
+      "vnetID":"[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('networkDetails').virtualNetworkName)]",
       "networkSettings":{  
          "newOrExisting":"[parameters('networkDetails').newOrExisting]",
          "virtualNetworkName":"[parameters('networkDetails').virtualNetworkName]",
