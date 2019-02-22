@@ -54,7 +54,7 @@ install_pbspro()
 	
     	yum install -y gcc make rpm-build libtool hwloc-devel libX11-devel libXt-devel libedit-devel libical-devel ncurses-devel perl postgresql-devel python-devel tcl-devel tk-devel swig expat-devel openssl-devel libXext libXft autoconf automake expat libedit postgresql-server python sendmail tcl tk libical perl-Env perl-Switch
     	# Required on 7.2 as the libical lib changed
-    	ln -s /usr/lib64/libical.so.1 /usr/lib64/libical.so.0
+    	ln -s /usr/lib64/libical.so.3 /usr/lib64/libical.so.0
 
 	rpm -ivh --nodeps /mnt/CentOS_7/pbspro-server-14.1.0-13.1.x86_64.rpm
 
