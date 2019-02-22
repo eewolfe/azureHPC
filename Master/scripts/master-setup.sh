@@ -72,7 +72,7 @@ setup_user()
 	chown -R $HPC_USER:$HPC_GROUP $SHARE_HOME/$HPC_USER
 
 	# Fix permissions
-	chmod 777 $SHARED
+	chmod 777 $SHARE_HOME
 	chmod 700 $SHARE_HOME/$HPC_USER/.ssh
 	chmod 644 $SHARE_HOME/$HPC_USER/.ssh/config
 	chmod 644 $SHARE_HOME/$HPC_USER/.ssh/authorized_keys
@@ -108,7 +108,7 @@ install_azure_cli()
 	yum check-update
 	yum install -y azure-cli
 
-	yum install -y python2-pip
+	yum install -y python-pip
 	pip install pydocumentdb
 	pip install azure-mgmt-compute
 	pip install azure-mgmt-resource
