@@ -201,7 +201,7 @@ mount_nfs
 setup_user
 setup_system
 install_LIS
-install_azure_cli
+#install_azure_cli
 
 # Create marker file so we know we're configured
 touch $SETUP_MARKER
