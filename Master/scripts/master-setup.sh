@@ -108,7 +108,7 @@ install_azure_cli()
 	yum check-update
 	yum install -y azure-cli
 
-	#apt-get -y install python3-pip
+	yum install -y python2-pip
 	pip install pydocumentdb
 	pip install azure-mgmt-compute
 	pip install azure-mgmt-resource
