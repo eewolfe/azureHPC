@@ -4,19 +4,17 @@ set -x
 
 # General script variables
 
-# Master Node
-
-export vmPrefix=''
-export newOrExisting='existing'
-export resourceGroup=''
-export virtualNetworkName=''
-export sshKeyData=''
+export vmPrefix='cvx'
+export newOrExisting='new'
+export resourceGroup=$1
+export virtualNetworkName='VNN'
+export sshKeyData='ssh-rsa'
 
 # Beegfs
 
 # SeisSpace
-export storageAccount=''
-export storageKey=''
+export storageAccount='storeAcct'
+export storageKey='storeKey'
 
 # Nodes
 export vmSSPrefix='node'
@@ -34,6 +32,8 @@ update_master () {
   sed -i "s|RGP|$resourceGroup|"       ./master.param.json
   sed -i "s|VNN|$virtualNetworkName|"  ./master.param.json
   sed -i "s|ssh-rsa|$sshKeyData|"      ./master.param.json
+  sed -i "s|VMP|$vmPrefix|"            ./master.param.json
+  sed -i "s|VMP|$vmPrefix|"            ./deploy.master.sh
 
 }
 
@@ -74,10 +74,19 @@ update_usernode () {
 
 }
 
+update_deploy_all() {
+
+ sed -i "s|VMP|$vmPrefix|"            ./deploy.all.sh
+
+}
+
+env 
+
 update_master
 update_beegfs
 update_seisspace
 update_nodes
 update_usernode
+update_deploy_all
 
 exit 0
