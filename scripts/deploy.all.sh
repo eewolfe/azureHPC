@@ -18,4 +18,4 @@ hostname=$(az group deployment show -n $masterName -g $rg --query "properties.ou
 ./deploy.beegfs.sh $rg
 az vm restart -g $rg -n $masterName
 ./deploy.nodes.sh $rg
-./rbacmanual.sh $rg $vmssName $masterName
+#./rbacmanual.sh $rg $vmssName $masterName
