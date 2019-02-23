@@ -177,7 +177,7 @@
          "CentOS_7.2":{  
             "os":"linux"
          },
-         "RHEL_7.2":{  
+         "RHEL_7.6":{  
             "os":"linux"
          },
          "W2012R2":{  
@@ -197,13 +197,19 @@
             "sku":"7.2",
             "version":"latest"
          },
-         "RHEL_7.2":{  
+            "RHEL_7.2":{  
             "publisher":"RedHat",
             "offer":"RHEL",
             "sku":"7.2",
             "version":"latest"
          },
-         "W2012R2":{  
+             "RHEL_7.6":{  
+            "publisher":"RedHat",
+            "offer":"RHEL",
+            "sku":"7.6",
+            "version":"latest"
+         },   
+            "W2012R2":{  
             "publisher":"MicrosoftWindowsServer",
             "offer":"WindowsServer",
             "sku":"2012-R2-Datacenter",
