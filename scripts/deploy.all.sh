@@ -17,5 +17,13 @@ hostname=$(az group deployment show -n $masterName -g $rg --query "properties.ou
 
 ./deploy.beegfs.sh $rg
 az vm restart -g $rg -n $masterName
+
+systemctl start beegfs-admon.service
+systemctl start beegfs-helperd.service
+systemctl start beegfs-client.service
+systemctl status beegfs-client.service
+
+./deploy.seisspace.sh $rg
+
 ./deploy.nodes.sh $rg
 #./rbacmanual.sh $rg $vmssName $masterName
