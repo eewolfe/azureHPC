@@ -95,6 +95,19 @@ install_blobfuse () {
 
 }
 
+##############################################
+# Make sure the beegfs is started and mounted
+##############################################
+
+function start_beegfs () {
+
+systemctl start beegfs-admon.service
+systemctl start beegfs-helperd.service
+systemctl start beegfs-client.service
+systemctl status beegfs-client.service
+
+}
+
 #######################################
 # Setup system
 #######################################
@@ -127,6 +140,10 @@ chmod +x ./samba_config-cvx.sh
 echo "Command line arguments are $@"
 
 numusers=$3
+
+# Be sure the beegfs has started
+echo "Starting beegfs . . ."
+start_beegfs
 
 echo "Provision base OS"
 yum -y install epel-release
