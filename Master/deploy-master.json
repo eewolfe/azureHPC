@@ -25,6 +25,7 @@
             "CentOS_6.7",
             "CentOS_7.2",
             "RHEL_7.2",
+            "RHEL_7.6",
             "W2012R2"
          ],
          "metadata":{  
