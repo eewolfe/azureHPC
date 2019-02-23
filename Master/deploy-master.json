@@ -206,7 +206,7 @@
              "RHEL_7.6":{  
             "publisher":"RedHat",
             "offer":"RHEL",
-            "sku":"7.6",
+            "sku":"7-RAW",
             "version":"latest"
          },   
             "W2012R2":{  
