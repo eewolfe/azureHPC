@@ -128,11 +128,9 @@ echo "Command line arguments are $@"
 
 numusers=$3
 
-# code to MasterServer
-cfn_node_type="MasterServer"
-
 echo "Provision base OS"
 yum -y install epel-release
+yum -y install epel
 
 echo "Configuring SeisSpace"
 export PROWESS_HOME=/shared/Landmark/SeisSpace5000.10.0/SeisSpace
@@ -150,9 +148,6 @@ export BLOBDIR="5000-10-scripts"
 export BLOBFUSEDIR=/shared/data/blobsa
 export BLOBETC=/etc/sysconfig/blobfuse
 export BLOBMNT=/mnt/blobdir
-
-# Begin MasterServer block.
-if [ $cfn_node_type == "MasterServer" ]; then
 
   echo "Provision Desktop"
   yum -y install xorg-x11-utils*
@@ -180,11 +175,13 @@ python setup.py install
 wget https://bootstrap.pypa.io/get-pip.py
 python get-pip.py
 cd ..
-
-pip install blobxfer --upgrade
+ pip install --upgrade --force-reinstall pip==9.0.3
+ pip install blobxfer --disable-pip-version-check
+ pip install --upgrade pip
+ pip install blobxfer --upgrade
 
 echo "Provision x2g0"
- yum -y --enablerepo=epel install x2goserver-xsession.x86_64
+ yum -y --enablerepo=epel install x2goserver-xsession
 
  yum groupinstall "Xfce" -y
  yum groupinstall "Fonts" -y
@@ -348,16 +345,13 @@ s s query_other_jobs=true
 print server
 EOF
 
-# Install xpbs and xpbsmon not provided by cfncluster
+# Install xpbs and xpbsmon not provided by azure
 blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/torque_xpbs.tgz"
   tar -zxvf torque_xpbs.tgz -C /opt/pbs
 
 # Update hostname for xpbsmon
   sed -i "s/toyfj40/$HOSTNAME/g" /opt/pbs/lib/xpbsmon/xpbsmonrc
   sed -i "s/toyfj40/$HOSTNAME/g" /opt/pbs/lib/xpbs/xpbsrc
-
-# End of MasterServer block.
-fi
 
 # Adding service entries to every machine that may run a SeisSpace job
   echo "Adding services entry for PD"
