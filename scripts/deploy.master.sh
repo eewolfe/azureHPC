@@ -10,5 +10,5 @@ if [ -z $SCRIPT_URL ]; then
 fi
 
 templateuri=$SCRIPT_URL'/Master/deploy-master.json'$SCRIPT_SASKEY
-az group create -n $1 -l southcentralus 
-az group deployment create -g $1 --template-uri "$templateuri" --parameters @master.param.json --parameters _artifactsLocation="$SCRIPT_URL/" _artifactsLocationSasToken="$SCRIPT_SASKEY"
+az group create -n VMPmaster $1 -l southcentralus 
+az group deployment create -n -g $1 --template-uri "$templateuri" --parameters @master.param.json --parameters _artifactsLocation="$SCRIPT_URL/" _artifactsLocationSasToken="$SCRIPT_SASKEY"
