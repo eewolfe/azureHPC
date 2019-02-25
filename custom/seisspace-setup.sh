@@ -410,7 +410,7 @@ mkdir -m 777 -p /shared/data/primary
 setup_system
 
 # Download some tutorial and benchmark archive files
-  blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path /shared/data/downloads --remote-path "$BLOBDIR/benchmarkIO_primary.arc"
+  blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path /shared/data/downloads --remote-path "$BLOBDIR/benchmarksIO_primary.arc"
   blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path /shared/data/downloads --remote-path "$BLOBDIR/2d_3d_4d_vsp_ldi_cwt_tutorials_5000.10.0.x.tgz"
   blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path /shared/data/downloads --remote-path "$BLOBDIR/Landmark_Depth_Imaging5000.8.5.0_Lx64.tgz"
 
