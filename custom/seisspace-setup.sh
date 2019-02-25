@@ -301,7 +301,7 @@ echo "Downloading 5000.10.0.4 Patch . . . "
   ./PatchInstall_ProMAX_SeisSpace_5000.10.0.4_patch_linux64.sh
   
   echo "Downloading 5000.10.0.5 Patch . . . "
-  blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/ProMAX_SeisSpace_5000.10.0.4_lx64.tgz"
+  blobxfer download --storage-account $azstgacct --storage-account-key $BLOBXFER_STORAGEACCOUNTKEY --local-path . --remote-path "$BLOBDIR/ProMAX_SeisSpace_5000.10.0.5_lx64.tgz"
   echo "Untaring..."
   tar -xvzf ProMAX_SeisSpace_5000.10.0.5_lx64.tgz
   echo "Installing . . . "
