@@ -45,9 +45,9 @@ install_pkgs()
 #
 install_pbspro()
 {    
-    #wget -O /mnt/CentOS_7.zip  http://wpc.23a7.iotacdn.net/8023A7/origin2/rl/PBS-Open/CentOS_7.zip
+    wget -O /mnt/CentOS_7.zip  http://wpc.23a7.iotacdn.net/8023A7/origin2/rl/PBS-Open/CentOS_7.zip
     #wget -O /mnt/CentOS_7.zip  https://solliancehpcstrg.blob.core.windows.net/pbspro/CentOS_7.zip
-    wget -O /mnt/CentOS_7.zip https://github.com/eewolfe/azureHPC/blob/master/PBSPro/CentOS_7.zip
+    #wget -O /mnt/CentOS_7.zip https://github.com/eewolfe/azureHPC/blob/master/PBSPro/CentOS_7.zip
     
     unzip /mnt/CentOS_7.zip -d /mnt
        
