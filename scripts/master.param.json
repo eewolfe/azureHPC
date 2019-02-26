@@ -6,7 +6,7 @@
     "sharedStorage": { "value": "beegfs" },
     "dataDiskSize": { "value": "P10" },
     "scheduler": { "value": "pbspro" },
-    "masterImage": { "value": "RHEL_7.2" },
+    "masterImage": { "value": "RHEL_7.4" },
     "VMsku": { "value": "Standard_DS3_v2" },
     "networkDetails":  {
       "value": {
