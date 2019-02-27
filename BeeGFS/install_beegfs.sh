@@ -239,7 +239,7 @@ install_beegfs()
 
 	# setup management
 	if is_management; then
-		yum install -y beegfs-mgmtd beegfs-helperd beegfs-utils beegfs-admon
+		yum install -y beegfs-mgmtd beegfs-helperd beegfs-utils beegfs-admon java
         
 		# Install management server and client
 		mkdir -p /data/beegfs/mgmtd
@@ -248,6 +248,9 @@ install_beegfs()
 		systemctl daemon-reload
 		systemctl enable beegfs-mgmtd.service
 		systemctl enable beegfs-admon.service
+		systemctl enable beegfs-client.service 
+		systemctl enable beegfs-admon.service
+		systemctl enable beegfs-helperd.service 
 	fi
 
 	if is_client; then
