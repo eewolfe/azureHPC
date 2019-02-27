@@ -37,6 +37,7 @@ install_pkgs()
 {
     yum -y install epel-release
     yum -y install zlib zlib-devel bzip2 bzip2-devel bzip2-libs openssl openssl-devel openssl-libs gcc gcc-c++ nfs-utils rpcbind mdadm wget python-pip
+    yum -y install compat-libical1
 }
 
 # Downloads and installs PBS Pro OSS on the node.
@@ -45,10 +46,9 @@ install_pkgs()
 #
 install_pbspro()
 {    
-    #wget -O /mnt/CentOS_7.zip  http://wpc.23a7.iotacdn.net/8023A7/origin2/rl/PBS-Open/CentOS_7.zip
+    wget -O /mnt/CentOS_7.zip  http://wpc.23a7.iotacdn.net/8023A7/origin2/rl/PBS-Open/CentOS_7.zip
     #wget -O /mnt/CentOS_7.zip  https://solliancehpcstrg.blob.core.windows.net/pbspro/CentOS_7.zip
-
-    wget -O /mnt/CentOS_7.zip https://github.com/eewolfe/azureHPC/raw/master/PBSPro/CentOS_7.zip
+    #wget -O /mnt/CentOS_7.zip https://github.com/eewolfe/azureHPC/raw/master/PBSPro/CentOS_7.zip
     
     unzip /mnt/CentOS_7.zip -d /mnt
        
