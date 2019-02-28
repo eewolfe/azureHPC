@@ -101,6 +101,8 @@ install_blobfuse () {
 
 function start_beegfs () {
 
+systemctl start beegfs-client.service
+systemctl status beegfs-client.service
 systemctl start beegfs-admon.service
 systemctl start beegfs-helperd.service
 systemctl start beegfs-client.service
