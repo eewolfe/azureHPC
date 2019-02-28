@@ -4,6 +4,7 @@ set -x
 
 # General script variables
 
+export subscription='SBS'
 export vmPrefix='cvx'
 export newOrExisting='new'
 export resourceGroup=$1
@@ -27,6 +28,7 @@ export vmNamePrefix='nav'
 
 update_master () {
 
+  sed -i "s"|SBS|$subscription|"       ./master.param.json
   sed -i "s|VMP|$vmPrefix|"            ./master.param.json
   sed -i "s|existing|$newOrExisting|"  ./master.param.json
   sed -i "s|RGP|$resourceGroup|"       ./master.param.json
