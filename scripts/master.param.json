@@ -8,6 +8,9 @@
     "scheduler": { "value": "pbspro" },
     "masterImage": { "value": "RHEL_7.4" },
     "VMsku": { "value": "Standard_DS3_v2" },
+    "storageAccount": { "value": "StoreA" },
+    "storageKey": { "value": "StoreK" },
+    "storageBlob": {"value": "StoreB" },
     "networkDetails":  {
       "value": {
         "newOrExisting": "existing",
